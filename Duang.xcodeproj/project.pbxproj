@@ -21,6 +21,9 @@
 		5687C6571AB0E73E00ED0005 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5687C6561AB0E73E00ED0005 /* libz.dylib */; };
 		5687C6591AB0E74A00ED0005 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5687C6581AB0E74A00ED0005 /* libsqlite3.dylib */; };
 		5687C65C1AB0F32900ED0005 /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5687C65B1AB0F32900ED0005 /* LandingViewController.swift */; };
+		5687C65E1AB110D800ED0005 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5687C65D1AB110D800ED0005 /* Global.swift */; };
+		5687C6611AB118A800ED0005 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5687C6601AB118A800ED0005 /* APIManager.swift */; };
+		5687C6631AB11D1F00ED0005 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5687C6621AB11D1F00ED0005 /* Extension.swift */; };
 		569E7A771AB0DADF009BF47B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569E7A761AB0DADF009BF47B /* AppDelegate.swift */; };
 		569E7A791AB0DADF009BF47B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569E7A781AB0DADF009BF47B /* ViewController.swift */; };
 		569E7A7C1AB0DADF009BF47B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 569E7A7A1AB0DADF009BF47B /* Main.storyboard */; };
@@ -54,6 +57,9 @@
 		5687C6561AB0E73E00ED0005 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		5687C6581AB0E74A00ED0005 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		5687C65B1AB0F32900ED0005 /* LandingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandingViewController.swift; sourceTree = "<group>"; };
+		5687C65D1AB110D800ED0005 /* Global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
+		5687C6601AB118A800ED0005 /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		5687C6621AB11D1F00ED0005 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		569E7A711AB0DADF009BF47B /* Duang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Duang.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		569E7A751AB0DADF009BF47B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		569E7A761AB0DADF009BF47B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -105,6 +111,16 @@
 			name = LoginAndRegister;
 			sourceTree = "<group>";
 		};
+		5687C65F1AB1185200ED0005 /* Global */ = {
+			isa = PBXGroup;
+			children = (
+				5687C65D1AB110D800ED0005 /* Global.swift */,
+				5687C6621AB11D1F00ED0005 /* Extension.swift */,
+				5687C6601AB118A800ED0005 /* APIManager.swift */,
+			);
+			name = Global;
+			sourceTree = "<group>";
+		};
 		569E7A681AB0DADF009BF47B = {
 			isa = PBXGroup;
 			children = (
@@ -128,6 +144,7 @@
 			children = (
 				569E7A761AB0DADF009BF47B /* AppDelegate.swift */,
 				569E7A781AB0DADF009BF47B /* ViewController.swift */,
+				5687C65F1AB1185200ED0005 /* Global */,
 				5687C65A1AB0F2D400ED0005 /* LoginAndRegister */,
 				569E7A7A1AB0DADF009BF47B /* Main.storyboard */,
 				569E7A7D1AB0DADF009BF47B /* Images.xcassets */,
@@ -275,7 +292,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5687C65E1AB110D800ED0005 /* Global.swift in Sources */,
 				569E7A791AB0DADF009BF47B /* ViewController.swift in Sources */,
+				5687C6611AB118A800ED0005 /* APIManager.swift in Sources */,
+				5687C6631AB11D1F00ED0005 /* Extension.swift in Sources */,
 				5687C65C1AB0F32900ED0005 /* LandingViewController.swift in Sources */,
 				569E7A771AB0DADF009BF47B /* AppDelegate.swift in Sources */,
 			);

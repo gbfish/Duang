@@ -7,29 +7,56 @@
 //
 
 import UIKit
+import Parse
 
 class LandingViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+//        navigationController?.navigationBar.backgroundColor = DuangColor.NavigationBackground
+//        navigationController?.navigationBar.tintColor = DuangColor.Navigation
+        
+        login("gbfish", password: "801023")
+        
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        setNavigationBarStyle()
     }
-    */
-
+    
+    func login(userName: String, password: String) {
+        
+        PFUser.logInWithUsernameInBackground(userName, password: password) { (user, error) -> Void in
+            if user == nil {
+                println("The login failed. Check error to see why.")
+            } else {
+                println("Do stuff after successful login.")
+            }
+        }
+        
+        
+        
+        
+        /*
+        let query: PFQuery = PFQuery(className: "_User")
+        query.whereKey("username", equalTo: userName)
+        query.findObjectsInBackgroundWithBlock { (objectsArray, error) -> Void in
+            if (error == nil) {
+                println("objectsArray \(objectsArray.count) = \(objectsArray)")
+                
+                for object in objectsArray {
+                    if let user = object as? PFObject {
+                        println("user.objectId = \(user.objectId)")
+                        let password = user.objectForKey("password") as String
+                        println("user.password = \(password)")
+                    }
+                }
+            } else {
+                println("Error: \(error)")
+            }
+        }*/
+    }
 }
