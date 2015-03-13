@@ -9,11 +9,22 @@
 import Foundation
 import UIKit
 
-extension UIViewController
-{
+extension UIViewController {
     func setNavigationBarStyle() {
         navigationController?.navigationBar.barStyle = UIBarStyle.Black
         navigationController?.navigationBar.barTintColor = DuangColor.NavigationBackground
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: DuangColor.Navigation]
+    }
+}
+
+extension UIButton {
+    func setButtonStyleNormal() {
+        setTitleColor(DuangColor.ButtonNormal, forState: UIControlState.Normal)
+        backgroundColor = DuangColor.ButtonNormalBackground
+    }
+    
+    func setButtonStyleUnselected() {
+        setTitleColor(DuangColor.ButtonUnselected, forState: UIControlState.Normal)
+        backgroundColor = DuangColor.ButtonUnselectedBackground
     }
 }
