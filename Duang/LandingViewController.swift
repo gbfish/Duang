@@ -36,7 +36,7 @@ class LandingViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-//        checkButtons()
+        checkButtons()
     }
     
     // MARK: - Dynamic Animation
@@ -96,7 +96,13 @@ class LandingViewController: UIViewController {
     var viewControllerState: ViewControllerState = ViewControllerState.Login
         {
         didSet {
-            checkButtons()
+            UIView.animateWithDuration(0.5, animations: { () -> Void in
+                self.checkButtons()
+            })
+            
+            
+//            view.setNeedsLayout()
+//            checkButtons()
             
             
 //            let buttonRectUp = CGRectMake(Button.Spacing, DuangGlobal.screenHeight - ((Button.Spacing + Button.Height) * 2), DuangGlobal.screenWidth - (Button.Spacing * 2), Button.Height)
