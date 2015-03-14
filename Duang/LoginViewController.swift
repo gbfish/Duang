@@ -73,6 +73,7 @@ class LoginViewController: UIViewController {
     }
     
     func loginSuccess() {
+        navigationController?.popViewControllerAnimated(true)
         delegate?.loginSuccess()
         println("login success")
     }
