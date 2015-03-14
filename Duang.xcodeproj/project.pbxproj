@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		566AC3E61AB39430001B87D1 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AC3E51AB39430001B87D1 /* LoginViewController.swift */; };
+		566AC3E81AB39E99001B87D1 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AC3E71AB39E99001B87D1 /* SignupViewController.swift */; };
 		5687C6411AB0E53000ED0005 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5687C6401AB0E53000ED0005 /* Parse.framework */; };
 		5687C6431AB0E63500ED0005 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5687C6421AB0E63500ED0005 /* Bolts.framework */; };
 		5687C6451AB0E6C400ED0005 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5687C6441AB0E6C400ED0005 /* AudioToolbox.framework */; };
@@ -43,6 +45,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		566AC3E51AB39430001B87D1 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		566AC3E71AB39E99001B87D1 /* SignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		5687C6401AB0E53000ED0005 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		5687C6421AB0E63500ED0005 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		5687C6441AB0E6C400ED0005 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -107,6 +111,8 @@
 			isa = PBXGroup;
 			children = (
 				5687C65B1AB0F32900ED0005 /* LandingViewController.swift */,
+				566AC3E51AB39430001B87D1 /* LoginViewController.swift */,
+				566AC3E71AB39E99001B87D1 /* SignupViewController.swift */,
 			);
 			name = LoginAndRegister;
 			sourceTree = "<group>";
@@ -292,7 +298,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				566AC3E61AB39430001B87D1 /* LoginViewController.swift in Sources */,
 				5687C65E1AB110D800ED0005 /* Global.swift in Sources */,
+				566AC3E81AB39E99001B87D1 /* SignupViewController.swift in Sources */,
 				569E7A791AB0DADF009BF47B /* ViewController.swift in Sources */,
 				5687C6611AB118A800ED0005 /* APIManager.swift in Sources */,
 				5687C6631AB11D1F00ED0005 /* Extension.swift in Sources */,

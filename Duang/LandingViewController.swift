@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Parse
+//import Parse
 
 class LandingViewController: UIViewController {
 
@@ -16,22 +16,20 @@ class LandingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        navigationController?.navigationBar.backgroundColor = DuangColor.NavigationBackground
-//        navigationController?.navigationBar.tintColor = DuangColor.Navigation
-        
-//        dynamicAnimator.addBehavior(snapBehavior)
-        
-        login("gbfish", password: "801023")
-        
+        title = "Duang"
+//        login("gbfish", password: "801023")
+//        
+//        dynamicAnimator = UIDynamicAnimator(referenceView: view)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-//
-        
         setNavigationBarStyle()
     }
+    
+    /*
+    
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -41,15 +39,67 @@ class LandingViewController: UIViewController {
     
     // MARK: - Dynamic Animation
     
-//    @IBOutlet var mainView: UIView!
-//    let snapBehavior = UISnapBehavior()
-//    
-//    lazy var dynamicAnimator: UIDynamicAnimator = {
-//        let returnValue = UIDynamicAnimator(referenceView: self.mainView)
-//        return returnValue
-//    }()
+    var snapBehavior: UISnapBehavior!
+    var dynamicAnimator: UIDynamicAnimator!
     
+//    func animationCleanUp() {
+//        if (snapBehavior != nil) {
+//            dynamicAnimator.removeBehavior(snapBehavior)
+//        }
+//        snapBehavior = UISnapBehavior(item: usernameView, snapToPoint: Point.Bottom)
+//        dynamicAnimator.addBehavior(snapBehavior)
+//        
+//        snapBehavior = UISnapBehavior(item: passwordView, snapToPoint: Point.Bottom)
+//        dynamicAnimator.addBehavior(snapBehavior)
+//    }
     
+    func animationLogin() {
+        if (snapBehavior != nil) {
+            dynamicAnimator.removeBehavior(snapBehavior)
+        }
+        snapBehavior = UISnapBehavior(item: titleView, snapToPoint: Point.Number1)
+        dynamicAnimator.addBehavior(snapBehavior)
+        
+        snapBehavior = UISnapBehavior(item: usernameView, snapToPoint: Point.Number2)
+        dynamicAnimator.addBehavior(snapBehavior)
+        
+        snapBehavior = UISnapBehavior(item: passwordView, snapToPoint: Point.Number3)
+        dynamicAnimator.addBehavior(snapBehavior)
+        
+        snapBehavior = UISnapBehavior(item: emailView, snapToPoint: Point.BottomNone)
+        dynamicAnimator.addBehavior(snapBehavior)
+        
+        snapBehavior = UISnapBehavior(item: loginButton, snapToPoint: Point.Number4)
+        dynamicAnimator.addBehavior(snapBehavior)
+        
+        snapBehavior = UISnapBehavior(item: signupButton, snapToPoint: Point.Bottom)
+        dynamicAnimator.addBehavior(snapBehavior)
+        
+        
+    }
+    
+    func animationSignup() {
+        if (snapBehavior != nil) {
+            dynamicAnimator.removeBehavior(snapBehavior)
+        }
+        snapBehavior = UISnapBehavior(item: titleView, snapToPoint: Point.Number1)
+        dynamicAnimator.addBehavior(snapBehavior)
+        
+        snapBehavior = UISnapBehavior(item: usernameView, snapToPoint: Point.Number2)
+        dynamicAnimator.addBehavior(snapBehavior)
+        
+        snapBehavior = UISnapBehavior(item: passwordView, snapToPoint: Point.Number3)
+        dynamicAnimator.addBehavior(snapBehavior)
+        
+        snapBehavior = UISnapBehavior(item: emailView, snapToPoint: Point.Number4)
+        dynamicAnimator.addBehavior(snapBehavior)
+        
+        snapBehavior = UISnapBehavior(item: loginButton, snapToPoint: Point.Bottom)
+        dynamicAnimator.addBehavior(snapBehavior)
+        
+        snapBehavior = UISnapBehavior(item: signupButton, snapToPoint: Point.Number5)
+        dynamicAnimator.addBehavior(snapBehavior)
+    }
     
     // MARK: - View Controller State
     
@@ -61,7 +111,7 @@ class LandingViewController: UIViewController {
     func checkButtons() {
         var buttonRectUp = CGRectMake(Button.Spacing, DuangGlobal.screenHeight - ((Button.Spacing + Button.Height) * 2), DuangGlobal.screenWidth - (Button.Spacing * 2), Button.Height)
         let buttonRectDown = CGRectMake(Button.Spacing, DuangGlobal.screenHeight - Button.Spacing - Button.Height, DuangGlobal.screenWidth - (Button.Spacing * 2), Button.Height)
-        
+        /*
         switch viewControllerState {
         case ViewControllerState.Login:
             loginButton.setButtonStyleNormal()
@@ -90,7 +140,7 @@ class LandingViewController: UIViewController {
             
             loginButton.setButtonStyleUnselected()
             signupButton.layer.frame = buttonRectUp
-        }
+        }*/
     }
     
     var viewControllerState: ViewControllerState = ViewControllerState.Login
@@ -147,6 +197,23 @@ class LandingViewController: UIViewController {
         }
     }
     
+    // MARK: - Input View
+    
+    @IBOutlet weak var titleView: UILabel!
+    @IBOutlet weak var usernameView: UIView!
+    @IBOutlet weak var passwordView: UIView!
+    @IBOutlet weak var emailView: UIView!
+    
+    private struct Point {
+        static let Number1 = CGPointMake(DuangGlobal.screenWidth / 2, 94.0)
+        static let Number2 = CGPointMake(DuangGlobal.screenWidth / 2, 94.0 + 40.0)
+        static let Number3 = CGPointMake(DuangGlobal.screenWidth / 2, 94.0 + (40.0 * 2))
+        static let Number4 = CGPointMake(DuangGlobal.screenWidth / 2, 94.0 + (40.0 * 3))
+        static let Number5 = CGPointMake(DuangGlobal.screenWidth / 2, 94.0 + (40.0 * 4))
+        static let Bottom = CGPointMake(DuangGlobal.screenWidth / 2, DuangGlobal.screenHeight - 30.0)
+        static let BottomNone = CGPointMake(DuangGlobal.screenWidth / 2, DuangGlobal.screenHeight + 20.0)
+    }
+    
     // MARK: -
     
     struct Button {
@@ -162,11 +229,17 @@ class LandingViewController: UIViewController {
     }
     
     @IBAction func loginButtonAction(sender: UIButton) {
+        animationLogin()
+        
+        /*
         if viewControllerState == ViewControllerState.Signup {
             viewControllerState = ViewControllerState.Login
         } else {
+//            animationCleanUp()
             
-        }
+           
+            animationLogin()
+        }*/
     }
     
     @IBOutlet weak var signupButton: UIButton! {
@@ -176,11 +249,13 @@ class LandingViewController: UIViewController {
     }
     
     @IBAction func signupButtonAction(sender: UIButton) {
+        animationSignup()
+        /*
         if viewControllerState == ViewControllerState.Login {
             viewControllerState = ViewControllerState.Signup
         } else {
-            
-        }
+            animationSignup()
+        }*/
     }
     
     // MARK: - 
@@ -217,4 +292,5 @@ class LandingViewController: UIViewController {
             }
         }*/
     }
+*/
 }
