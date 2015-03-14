@@ -8,13 +8,23 @@
 
 import UIKit
 
+protocol LoginViewControllerProtocol {
+    func loginSuccess()
+}
+
 class LoginViewController: UIViewController {
 
+    // MARK: - View Controller Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         title = "Log in"
     }
+    
+    // MARK: - Protocol
+    
+    var delegate: LoginViewControllerProtocol?
     
     // MARK: - UITextField
     
@@ -63,6 +73,7 @@ class LoginViewController: UIViewController {
     }
     
     func loginSuccess() {
+        delegate?.loginSuccess()
         println("login success")
     }
     

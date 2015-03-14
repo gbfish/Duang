@@ -9,7 +9,7 @@
 import UIKit
 //import Parse
 
-class LandingViewController: UIViewController {
+class LandingViewController: UIViewController, LoginViewControllerProtocol {
 
     // MARK: - View Controller Lifecycle
     
@@ -26,6 +26,30 @@ class LandingViewController: UIViewController {
         super.viewWillAppear(animated)
         
         setNavigationBarStyle()
+    }
+    
+    // MARK: - LoginViewControllerProtocol
+    
+    func loginSuccess() {
+        performSegueWithIdentifier("mainView", sender: nil)
+    }
+    
+    // MARK: - Segue
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        print("prepareForSegue")
+        
+        if let identifier = segue.identifier {
+            switch identifier {
+            case "login":
+                if let destination = segue.destinationViewController as? LoginViewController {
+                    destination.delegate = self
+                }
+            default:
+                break
+            }
+        }
+        
     }
     
     /*
