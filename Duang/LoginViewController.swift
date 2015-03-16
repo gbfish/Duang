@@ -84,4 +84,10 @@ class LoginViewController: UIViewController {
         }))
         presentViewController(deleteAlert, animated: true, completion: nil)
     }
+    
+    // MARK: - Forgot Password
+    
+    @IBAction func forgotPassword(sender: UIButton) {
+        
+    }
 }
