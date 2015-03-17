@@ -1,14 +1,14 @@
 //
-//  FatherCellButton.swift
+//  DuangTableCellButton.swift
 //  Duang
 //
-//  Created by David Yu on 15/3/16.
+//  Created by David Yu on 15/3/17.
 //  Copyright (c) 2015年 David Yu. All rights reserved.
 //
 
 import UIKit
 
-class FatherCellButton: UITableViewCell {
+class DuangTableCellButton: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
