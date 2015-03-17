@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DuangTableViewController: UIViewController {
+class DuangTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,11 +25,26 @@ class DuangTableViewController: UIViewController {
             switch tableType {
             case TableType.Profile:
                 
-                let row = DuangTableDataRow()
+                var section = DuangTableDataSection()
+                
+                var row = DuangTableDataRow()
+                row.rowType = DuangTableDataRow.RowType.UserBig
+                row.titleString = "My Name"
+                
+                row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Arity0(tapAction)
+                
+                section.rowArray.append(row)
+                
+                duangTableData.sectionArray.append(section)
+                
+                section = DuangTableDataSection()
+                
+                row = DuangTableDataRow()
                 row.rowType = DuangTableDataRow.RowType.Button
                 row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Arity0(tapAction)
                 
-                let section = DuangTableDataSection()
+                
+//                section.sectionName = "the name of section"
                 section.rowArray.append(row)
                 
                 ////
@@ -75,32 +90,42 @@ class DuangTableViewController: UIViewController {
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row].heightForRow
+        let row = duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row]
+        switch row.rowType {
+        case DuangTableDataRow.RowType.UserBig:
+            return 100.0
+        case DuangTableDataRow.RowType.Button:
+            return 50.0
+        case DuangTableDataRow.RowType.RightDetail:
+            return 50.0
+        }
+    }
+    
+    private struct CellIdentifier {
+        static let UserBig = "DuangTableCellUserBig"
+        static let Button = "DuangTableCellButton"
+        static let RightDetail = "RightDetail"
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let row = duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row]
         switch row.rowType {
+        case DuangTableDataRow.RowType.UserBig:
+            let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.UserBig, forIndexPath: indexPath) as DuangTableCellUserBig
+            cell.userAvatarImageView.image = UIImage(named: "placeholder_user")
+            cell.userNameLabel.text = row.titleString
+            return cell
         case DuangTableDataRow.RowType.Button:
-            let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier, forIndexPath: indexPath) as DuangTableCellButton
+            let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.Button, forIndexPath: indexPath) as DuangTableCellButton
             return cell
         case DuangTableDataRow.RowType.RightDetail:
-            var cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: row.cellIdentifier)
+            var cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: CellIdentifier.RightDetail)
             cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
             cell.textLabel?.text = row.titleString
             cell.detailTextLabel?.text = row.detailString
             return cell
         }
-        
-        
-//        let cellIdentifier = duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row].cellIdentifier
-//        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as UITableViewCell
-//        
-////        var cellIdentifier = duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row].cellIdentifier
-////        var cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: cellIdentifier)
-//        duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row].setCell(cell)
-//        return cell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

@@ -24,10 +24,10 @@ class DuangTableDataSection {
 
 class DuangTableDataRow {
     enum RowType{
+        case UserBig
         case Button
         case RightDetail
     }
-    
     var rowType = RowType.Button
     
     // MARK: - 
@@ -35,50 +35,6 @@ class DuangTableDataRow {
     var titleString = ""
     var detailString = ""
     
-    // MARK: - 
-    
-    var heightForRow: CGFloat {
-        get{
-            switch rowType {
-            case RowType.Button:
-                return 50.0
-            case RowType.RightDetail:
-                return 50.0
-            }
-        }
-    }
-    
-    var cellIdentifier: String {
-        get {
-            switch rowType {
-            case RowType.Button:
-                return "DuangTableCellButton"
-            case RowType.RightDetail:
-                return "RightDetail"
-            }
-        }
-    }
-    
-//    func setCell(cell: UITableViewCell) {
-//        switch rowType {
-//        case RowType.Button:
-//            println("setCell - Button")
-//        case RowType.RightDetail:
-//            cell.textLabel?.text = cellTitle
-//            cell.detailTextLabel?.text = cellDetail
-//        }
-//    }
-//    
-//    var cell: UITableViewCell {
-//        get {
-//            
-//        }
-//    }
-    
-    // MARK: - Button
-    
-    var buttonText = ""
-
     // MARK: - Did Select Func
     
     enum DidSelectFunc {

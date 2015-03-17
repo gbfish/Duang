@@ -35,6 +35,7 @@
 		569E7A7E1AB0DADF009BF47B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 569E7A7D1AB0DADF009BF47B /* Images.xcassets */; };
 		569E7A811AB0DADF009BF47B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 569E7A7F1AB0DADF009BF47B /* LaunchScreen.xib */; };
 		569E7A8D1AB0DADF009BF47B /* DuangTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569E7A8C1AB0DADF009BF47B /* DuangTests.swift */; };
+		56F361751AB8DC0D00D94533 /* DuangTableCellUserBig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F361741AB8DC0D00D94533 /* DuangTableCellUserBig.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,6 +81,7 @@
 		569E7A861AB0DADF009BF47B /* DuangTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DuangTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		569E7A8B1AB0DADF009BF47B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		569E7A8C1AB0DADF009BF47B /* DuangTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuangTests.swift; sourceTree = "<group>"; };
+		56F361741AB8DC0D00D94533 /* DuangTableCellUserBig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableCellUserBig.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +140,7 @@
 			children = (
 				568A5CB51AB8A49100EF43F4 /* DuangTableViewController.swift */,
 				568A5CB81AB8A5A200EF43F4 /* DuangTableData.swift */,
+				56F361741AB8DC0D00D94533 /* DuangTableCellUserBig.swift */,
 				568A5CBA1AB8AAA500EF43F4 /* DuangTableCellButton.swift */,
 			);
 			name = DuangTable;
@@ -318,6 +321,7 @@
 			files = (
 				566AC3E61AB39430001B87D1 /* LoginViewController.swift in Sources */,
 				5687C65E1AB110D800ED0005 /* Global.swift in Sources */,
+				56F361751AB8DC0D00D94533 /* DuangTableCellUserBig.swift in Sources */,
 				566AC3E81AB39E99001B87D1 /* SignupViewController.swift in Sources */,
 				569E7A791AB0DADF009BF47B /* ViewController.swift in Sources */,
 				5687C6611AB118A800ED0005 /* APIManager.swift in Sources */,

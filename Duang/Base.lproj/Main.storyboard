@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14D105g" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="11A-mk-m4x">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -17,10 +18,46 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="AJg-Cx-CZb">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="AJg-Cx-CZb">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="DuangTableCellUserBig" rowHeight="100" id="4dy-3X-JdR" customClass="DuangTableCellUserBig" customModule="Duang" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4dy-3X-JdR" id="qhs-yT-G35">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DKU-kv-VDN">
+                                                    <rect key="frame" x="103" y="5" width="464" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="cpo-3h-RTz"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="E2u-ph-JCx">
+                                                    <rect key="frame" x="5" y="5" width="90" height="90"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="E2u-ph-JCx" secondAttribute="height" multiplier="1:1" id="k0g-Q6-C8o"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="DKU-kv-VDN" secondAttribute="trailing" constant="-8" id="JxZ-8T-byf"/>
+                                                <constraint firstItem="E2u-ph-JCx" firstAttribute="leading" secondItem="qhs-yT-G35" secondAttribute="leadingMargin" constant="-3" id="KD2-uS-O1Q"/>
+                                                <constraint firstItem="E2u-ph-JCx" firstAttribute="top" secondItem="qhs-yT-G35" secondAttribute="topMargin" constant="-3" id="MxK-ih-q3k"/>
+                                                <constraint firstItem="DKU-kv-VDN" firstAttribute="top" secondItem="E2u-ph-JCx" secondAttribute="top" id="gzj-eo-Pcp"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="E2u-ph-JCx" secondAttribute="bottom" constant="-4" id="qmd-o3-YKW"/>
+                                                <constraint firstItem="DKU-kv-VDN" firstAttribute="leading" secondItem="E2u-ph-JCx" secondAttribute="trailing" constant="8" id="v51-uG-tKz"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="userAvatarImageView" destination="E2u-ph-JCx" id="hLV-Lr-nbs"/>
+                                            <outlet property="userNameLabel" destination="DKU-kv-VDN" id="9GV-Yu-Sm7"/>
+                                        </connections>
+                                    </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DuangTableCellButton" rowHeight="50" id="RSy-Wc-Abl" customClass="DuangTableCellButton" customModule="Duang" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
@@ -42,7 +79,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RightDetail" textLabel="lAc-IT-1fZ" detailTextLabel="W4t-KS-RsG" rowHeight="50" style="IBUITableViewCellStyleValue1" id="dfJ-0Q-LwU">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="RightDetail" textLabel="lAc-IT-1fZ" detailTextLabel="W4t-KS-RsG" rowHeight="50" style="IBUITableViewCellStyleValue1" id="dfJ-0Q-LwU">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dfJ-0Q-LwU" id="7U6-ZE-6CS">
@@ -85,7 +122,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Czk-nn-jy1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2421" y="4090"/>
+            <point key="canvasLocation" x="2421" y="4088"/>
         </scene>
         <!--Landing View Controller-->
         <scene sceneID="BKo-Dg-9gF">
@@ -268,7 +305,6 @@
         <!--View Controller-->
         <scene sceneID="cL7-P1-E6A">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Mvl-eK-t1h" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="3Az-jS-YeX" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="lZ0-Nt-mIP"/>
@@ -302,6 +338,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="4YA-0d-og0"/>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Mvl-eK-t1h" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4179" y="3540"/>
         </scene>
