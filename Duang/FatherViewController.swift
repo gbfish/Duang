@@ -167,7 +167,6 @@ class FatherViewController: UIViewController {
         
         fatherData.dataArray[indexPath.section].dataArray[indexPath.row].buttonAction()
         
-        
 //        tableView.cellForRowAtIndexPath(indexPath)?.selected = false
 //        switch editType {
 //        case EditType.EditCollection:
