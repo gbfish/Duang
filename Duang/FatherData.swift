@@ -43,6 +43,13 @@ class FatherDataItem {
     
     var buttonText = ""
     
+//    var buttonAction: Any = buttonAction
+    
+    func buttonAction() -> () {
+        println("Father action")
+    }
+    
+    /*
     var saveAction: () -> () = emptyFunc()
     
     func emptyFunc() -> (() -> ()){
@@ -51,5 +58,5 @@ class FatherDataItem {
     
     func buttonAction(action:() -> ()) -> (){
         saveAction = action
-    }
+    }*/
 }

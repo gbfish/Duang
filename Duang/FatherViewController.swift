@@ -16,11 +16,11 @@ class FatherViewController: UIViewController {
         let item = FatherDataItem()
         item.itemType = FatherDataItem.ItemType.Button
         
-        item.buttonAction { () -> () in
-            self.tapAction()
-        }
+//        item.buttonAction { () -> () in
+//            self.tapAction()
+//        }
         
-        item.buttonAction(tapAction)
+//        item.buttonAction() = tapAction
         
         let fatherDataArray = FatherDataArray()
         fatherDataArray.dataArray.append(item)
@@ -163,10 +163,9 @@ class FatherViewController: UIViewController {
 */
     }
     
-    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        fatherData.dataArray[indexPath.section].dataArray[indexPath.row].saveAction()
+        fatherData.dataArray[indexPath.section].dataArray[indexPath.row].buttonAction()
         
         
 //        tableView.cellForRowAtIndexPath(indexPath)?.selected = false
