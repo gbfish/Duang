@@ -12,7 +12,7 @@ class FatherViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+/*
         let item = FatherDataItem()
         item.itemType = FatherDataItem.ItemType.Button
         
@@ -26,7 +26,7 @@ class FatherViewController: UIViewController {
         fatherDataArray.dataArray.append(item)
         
         fatherData.dataArray.append(fatherDataArray)
-        
+        */
         
 //        let buttonAction = item.buttonAction { () -> () in
 //            println("buttonAction")

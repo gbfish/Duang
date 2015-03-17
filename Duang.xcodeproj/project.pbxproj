@@ -35,6 +35,7 @@
 		569E7A7E1AB0DADF009BF47B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 569E7A7D1AB0DADF009BF47B /* Images.xcassets */; };
 		569E7A811AB0DADF009BF47B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 569E7A7F1AB0DADF009BF47B /* LaunchScreen.xib */; };
 		569E7A8D1AB0DADF009BF47B /* DuangTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569E7A8C1AB0DADF009BF47B /* DuangTests.swift */; };
+		E871D1971AB7FEEE00A43784 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E871D1961AB7FEEE00A43784 /* ProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,6 +81,7 @@
 		569E7A861AB0DADF009BF47B /* DuangTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DuangTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		569E7A8B1AB0DADF009BF47B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		569E7A8C1AB0DADF009BF47B /* DuangTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuangTests.swift; sourceTree = "<group>"; };
+		E871D1961AB7FEEE00A43784 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,6 +171,7 @@
 				5687C65F1AB1185200ED0005 /* Global */,
 				566AC3ED1AB78C86001B87D1 /* FatherViewController */,
 				5687C65A1AB0F2D400ED0005 /* LoginAndRegister */,
+				E871D1961AB7FEEE00A43784 /* ProfileViewController.swift */,
 				569E7A7A1AB0DADF009BF47B /* Main.storyboard */,
 				569E7A7D1AB0DADF009BF47B /* Images.xcassets */,
 				569E7A7F1AB0DADF009BF47B /* LaunchScreen.xib */,
@@ -322,6 +325,7 @@
 				566AC3E81AB39E99001B87D1 /* SignupViewController.swift in Sources */,
 				569E7A791AB0DADF009BF47B /* ViewController.swift in Sources */,
 				566AC3F61AB7B2CE001B87D1 /* FatherCellButton.swift in Sources */,
+				E871D1971AB7FEEE00A43784 /* ProfileViewController.swift in Sources */,
 				5687C6611AB118A800ED0005 /* APIManager.swift in Sources */,
 				566AC3EC1AB78C55001B87D1 /* FatherViewController.swift in Sources */,
 				5687C6631AB11D1F00ED0005 /* Extension.swift in Sources */,
