@@ -5,7 +5,7 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Father View Controller-->
+        <!--Item-->
         <scene sceneID="X2S-CG-Bwu">
             <objects>
                 <viewController id="rFC-IE-KG1" customClass="FatherViewController" customModule="Duang" customModuleProvider="target" sceneMemberID="viewController">
@@ -21,14 +21,14 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="RSy-Wc-Abl">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FatherCellButton" rowHeight="50" id="RSy-Wc-Abl" customClass="FatherCellButton" customModule="Duang" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RSy-Wc-Abl" id="3ne-PW-JLI">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Button" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ch0-Ww-zdu">
-                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Button" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ch0-Ww-zdu">
+                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="49"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
@@ -60,13 +60,14 @@
                             <constraint firstItem="AJg-Cx-CZb" firstAttribute="top" secondItem="qI6-Bp-eKT" secondAttribute="top" id="vyK-t3-rcs"/>
                         </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="SvQ-6Y-Wer"/>
                     <connections>
                         <outlet property="tableView" destination="AJg-Cx-CZb" id="tT6-0L-0Ue"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Czk-nn-jy1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1285" y="1192"/>
+            <point key="canvasLocation" x="1583" y="3926"/>
         </scene>
         <!--Landing View Controller-->
         <scene sceneID="BKo-Dg-9gF">
@@ -318,6 +319,7 @@
                     <connections>
                         <segue destination="Nma-iQ-Ukc" kind="relationship" relationship="viewControllers" id="4eZ-Lw-0ID"/>
                         <segue destination="ikL-pk-12B" kind="relationship" relationship="viewControllers" id="Yen-d2-CxR"/>
+                        <segue destination="rFC-IE-KG1" kind="relationship" relationship="viewControllers" id="lar-2n-9FL"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xjw-KU-t24" userLabel="First Responder" sceneMemberID="firstResponder"/>

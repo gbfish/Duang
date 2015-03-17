@@ -11,6 +11,7 @@
 		566AC3E81AB39E99001B87D1 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AC3E71AB39E99001B87D1 /* SignupViewController.swift */; };
 		566AC3EC1AB78C55001B87D1 /* FatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AC3EB1AB78C55001B87D1 /* FatherViewController.swift */; };
 		566AC3F11AB793A0001B87D1 /* FatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AC3F01AB793A0001B87D1 /* FatherData.swift */; };
+		566AC3F61AB7B2CE001B87D1 /* FatherCellButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AC3F51AB7B2CE001B87D1 /* FatherCellButton.swift */; };
 		5687C6411AB0E53000ED0005 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5687C6401AB0E53000ED0005 /* Parse.framework */; };
 		5687C6431AB0E63500ED0005 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5687C6421AB0E63500ED0005 /* Bolts.framework */; };
 		5687C6451AB0E6C400ED0005 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5687C6441AB0E6C400ED0005 /* AudioToolbox.framework */; };
@@ -51,6 +52,7 @@
 		566AC3E71AB39E99001B87D1 /* SignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		566AC3EB1AB78C55001B87D1 /* FatherViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FatherViewController.swift; sourceTree = "<group>"; };
 		566AC3F01AB793A0001B87D1 /* FatherData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FatherData.swift; sourceTree = "<group>"; };
+		566AC3F51AB7B2CE001B87D1 /* FatherCellButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FatherCellButton.swift; sourceTree = "<group>"; };
 		5687C6401AB0E53000ED0005 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		5687C6421AB0E63500ED0005 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		5687C6441AB0E6C400ED0005 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -116,6 +118,7 @@
 			children = (
 				566AC3EB1AB78C55001B87D1 /* FatherViewController.swift */,
 				566AC3F01AB793A0001B87D1 /* FatherData.swift */,
+				566AC3F51AB7B2CE001B87D1 /* FatherCellButton.swift */,
 			);
 			name = FatherViewController;
 			sourceTree = "<group>";
@@ -318,6 +321,7 @@
 				5687C65E1AB110D800ED0005 /* Global.swift in Sources */,
 				566AC3E81AB39E99001B87D1 /* SignupViewController.swift in Sources */,
 				569E7A791AB0DADF009BF47B /* ViewController.swift in Sources */,
+				566AC3F61AB7B2CE001B87D1 /* FatherCellButton.swift in Sources */,
 				5687C6611AB118A800ED0005 /* APIManager.swift in Sources */,
 				566AC3EC1AB78C55001B87D1 /* FatherViewController.swift in Sources */,
 				5687C6631AB11D1F00ED0005 /* Extension.swift in Sources */,

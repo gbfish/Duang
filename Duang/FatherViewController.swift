@@ -13,9 +13,30 @@ class FatherViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        let item = FatherDataItem()
+        item.itemType = FatherDataItem.ItemType.Button
+        
+        item.buttonAction { () -> () in
+            self.tapAction()
+        }
+        
+        item.buttonAction(tapAction)
+        
+        let fatherDataArray = FatherDataArray()
+        fatherDataArray.dataArray.append(item)
+        
+        fatherData.dataArray.append(fatherDataArray)
+        
+        
+//        let buttonAction = item.buttonAction { () -> () in
+//            println("buttonAction")
+//        }
     }
 
+    func tapAction() {
+        println("tapAction")
+    }
+    
     // MARK: - TableView Data
 
     var fatherData = FatherData()
@@ -37,6 +58,11 @@ class FatherViewController: UIViewController {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        var cellIdentifier = "FatherCellButton"
+        var cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: cellIdentifier)
+        
+        return cell
+        /*
         switch editType {
         case EditType.EditCollection:
             if indexPath.section == 0 {
@@ -134,55 +160,60 @@ class FatherViewController: UIViewController {
             tEditViewCellInput.inputTextView.text = inputText
             return tEditViewCellInput
         }
+*/
     }
     
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.cellForRowAtIndexPath(indexPath)?.selected = false
-        switch editType {
-        case EditType.EditCollection:
-            if indexPath == NSIndexPath(forRow: 0, inSection: 0) {
-                showInput("Edit Name", text: editCollectionCollectionName)
-            } else if indexPath == NSIndexPath(forRow: 1, inSection: 0) {
-                showSelectTopic()
-            } else if indexPath == NSIndexPath(forRow: 0, inSection: 1) {
-                deleteCollection()
-            }
-        case EditType.EditTap:
-            if indexPath == NSIndexPath(forRow: 0, inSection: 0) {
-                editTapType = EditTapType.Title
-                showInput("Edit Title", text: editTapTitle)
-            } else if indexPath == NSIndexPath(forRow: 1, inSection: 0) {
-                editTapType = EditTapType.Description
-                showInput("Edit Description", text: editTapDescription)
-            } else if indexPath == NSIndexPath(forRow: 2, inSection: 0) {
-                showSelectCollection()
-            } else if indexPath == NSIndexPath(forRow: 0, inSection: 1) {
-                deleteCollection()
-            }
-            
-        case EditType.CreateCollection:
-            if indexPath == NSIndexPath(forRow: 0, inSection: 0) {
-                showInput("Collection Name", text: createCollectionCollectionName)
-            } else if indexPath == NSIndexPath(forRow: 1, inSection: 0) {
-                showSelectTopic()
-            }
-            
-        case EditType.SelectTopic:
-            delegate?.tEditViewControllerSelectedTopic(TData.sharedInstance.topics[indexPath.row])
-            navigationController?.popViewControllerAnimated(true)
-        case EditType.SelectCollection:
-            if indexPath.section == 0 {
-                delegate?.tEditViewControllerSelectedCollection(TData.sharedInstance.userCollections[indexPath.row])
-                navigationController?.popViewControllerAnimated(true)
-            } else {
-                showCreateCollection()
-            }
-            
-        case EditType.Input:
-            println("EditType.Input")
-            
-        }
+        
+        fatherData.dataArray[indexPath.section].dataArray[indexPath.row].saveAction()
+        
+        
+//        tableView.cellForRowAtIndexPath(indexPath)?.selected = false
+//        switch editType {
+//        case EditType.EditCollection:
+//            if indexPath == NSIndexPath(forRow: 0, inSection: 0) {
+//                showInput("Edit Name", text: editCollectionCollectionName)
+//            } else if indexPath == NSIndexPath(forRow: 1, inSection: 0) {
+//                showSelectTopic()
+//            } else if indexPath == NSIndexPath(forRow: 0, inSection: 1) {
+//                deleteCollection()
+//            }
+//        case EditType.EditTap:
+//            if indexPath == NSIndexPath(forRow: 0, inSection: 0) {
+//                editTapType = EditTapType.Title
+//                showInput("Edit Title", text: editTapTitle)
+//            } else if indexPath == NSIndexPath(forRow: 1, inSection: 0) {
+//                editTapType = EditTapType.Description
+//                showInput("Edit Description", text: editTapDescription)
+//            } else if indexPath == NSIndexPath(forRow: 2, inSection: 0) {
+//                showSelectCollection()
+//            } else if indexPath == NSIndexPath(forRow: 0, inSection: 1) {
+//                deleteCollection()
+//            }
+//            
+//        case EditType.CreateCollection:
+//            if indexPath == NSIndexPath(forRow: 0, inSection: 0) {
+//                showInput("Collection Name", text: createCollectionCollectionName)
+//            } else if indexPath == NSIndexPath(forRow: 1, inSection: 0) {
+//                showSelectTopic()
+//            }
+//            
+//        case EditType.SelectTopic:
+//            delegate?.tEditViewControllerSelectedTopic(TData.sharedInstance.topics[indexPath.row])
+//            navigationController?.popViewControllerAnimated(true)
+//        case EditType.SelectCollection:
+//            if indexPath.section == 0 {
+//                delegate?.tEditViewControllerSelectedCollection(TData.sharedInstance.userCollections[indexPath.row])
+//                navigationController?.popViewControllerAnimated(true)
+//            } else {
+//                showCreateCollection()
+//            }
+//            
+//        case EditType.Input:
+//            println("EditType.Input")
+//            
+//        }
     }
 
 

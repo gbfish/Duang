@@ -24,7 +24,6 @@ class FatherDataArray {
 // MARK: - Father Data Item
 
 class FatherDataItem {
-    
     enum ItemType{
         case Button
     }
@@ -43,6 +42,14 @@ class FatherDataItem {
     // MARK: - Button
     
     var buttonText = ""
-    func buttonAction() {
+    
+    var saveAction: () -> () = emptyFunc()
+    
+    func emptyFunc() -> (() -> ()){
+//        return
+    }
+    
+    func buttonAction(action:() -> ()) -> (){
+        saveAction = action
     }
 }
