@@ -25,8 +25,12 @@ class DuangTableDataSection {
 class DuangTableDataRow {
     enum RowType{
         case UserBig
+        case UserSmall
+        
         case Button
-        case RightDetail
+        
+//        case DefaultImage
+        case DefaultRightDetail
     }
     var rowType = RowType.Button
     
@@ -39,8 +43,8 @@ class DuangTableDataRow {
     
     enum DidSelectFunc {
         case Nothing
-        case Arity0 ( Void -> Void )
-        case Arity2 ( (Int, String) -> Void)
+        case Function1 ( Void -> Void )
+//        case Function2 ( (Int, String) -> Void)
     }
     var didSelectFunc = DidSelectFunc.Nothing
 }

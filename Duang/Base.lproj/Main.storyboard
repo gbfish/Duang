@@ -37,7 +37,7 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="E2u-ph-JCx">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="E2u-ph-JCx">
                                                     <rect key="frame" x="5" y="5" width="90" height="90"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="E2u-ph-JCx" secondAttribute="height" multiplier="1:1" id="k0g-Q6-C8o"/>
@@ -56,6 +56,40 @@
                                         <connections>
                                             <outlet property="userAvatarImageView" destination="E2u-ph-JCx" id="hLV-Lr-nbs"/>
                                             <outlet property="userNameLabel" destination="DKU-kv-VDN" id="9GV-Yu-Sm7"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="DuangTableCellUserSmall" rowHeight="50" id="gNx-Pe-d5A" customClass="DuangTableCellUserSmall" customModule="Duang" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gNx-Pe-d5A" id="4Iu-nx-iim">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="F23-OW-Yr5">
+                                                    <rect key="frame" x="5" y="5" width="40" height="40"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="F23-OW-Yr5" secondAttribute="height" multiplier="1:1" id="oJg-yY-lAj"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Hd-Qk-vdV">
+                                                    <rect key="frame" x="53" y="5" width="514" height="41"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottomMargin" secondItem="F23-OW-Yr5" secondAttribute="bottom" constant="-4" id="LQl-iH-6Lr"/>
+                                                <constraint firstItem="6Hd-Qk-vdV" firstAttribute="bottom" secondItem="F23-OW-Yr5" secondAttribute="bottom" constant="1" id="Tep-gy-ii8"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="6Hd-Qk-vdV" secondAttribute="trailing" constant="-8" id="UK1-xK-zCn"/>
+                                                <constraint firstItem="6Hd-Qk-vdV" firstAttribute="top" secondItem="F23-OW-Yr5" secondAttribute="top" id="XGU-Sq-Tw5"/>
+                                                <constraint firstItem="6Hd-Qk-vdV" firstAttribute="leading" secondItem="F23-OW-Yr5" secondAttribute="trailing" constant="8" id="Yo5-73-JOb"/>
+                                                <constraint firstItem="F23-OW-Yr5" firstAttribute="leading" secondItem="4Iu-nx-iim" secondAttribute="leadingMargin" constant="-3" id="dbs-PG-Na5"/>
+                                                <constraint firstItem="F23-OW-Yr5" firstAttribute="top" secondItem="4Iu-nx-iim" secondAttribute="topMargin" constant="-3" id="jBl-ZV-yeV"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="userAvatarImageView" destination="F23-OW-Yr5" id="jho-Lk-lXz"/>
+                                            <outlet property="userNameLabel" destination="6Hd-Qk-vdV" id="ooD-Jg-CLb"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DuangTableCellButton" rowHeight="50" id="RSy-Wc-Abl" customClass="DuangTableCellButton" customModule="Duang" customModuleProvider="target">
@@ -79,7 +113,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="RightDetail" textLabel="lAc-IT-1fZ" detailTextLabel="W4t-KS-RsG" rowHeight="50" style="IBUITableViewCellStyleValue1" id="dfJ-0Q-LwU">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="DefaultCell" textLabel="lAc-IT-1fZ" detailTextLabel="W4t-KS-RsG" rowHeight="50" style="IBUITableViewCellStyleValue1" id="dfJ-0Q-LwU">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dfJ-0Q-LwU" id="7U6-ZE-6CS">
@@ -122,7 +156,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Czk-nn-jy1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2443" y="3648"/>
+            <point key="canvasLocation" x="2443" y="3650"/>
         </scene>
         <!--Landing View Controller-->
         <scene sceneID="BKo-Dg-9gF">
