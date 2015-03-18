@@ -20,6 +20,8 @@ class APIManager {
     init() {
     }
     
+    // MARK: - User
+    
     func login(userName: String, password: String, success: () -> (), failure: () -> ()) {
         PFUser.logInWithUsernameInBackground(userName, password: password) { (user, error) -> Void in
             if user != nil {
@@ -64,6 +66,15 @@ class APIManager {
 //                failure()
 //            }
 //        }
+    }
+    
+    var isCurrentUser: Bool {
+        var currentUser = PFUser.currentUser()
+        if currentUser != nil {
+            return true
+        } else {
+            return false
+        }
     }
     
     // MARK: - Validate Email

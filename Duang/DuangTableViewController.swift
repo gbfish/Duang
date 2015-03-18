@@ -68,7 +68,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         case Profile 
     }
     
-    var tableType: TableType = TableType.Profile {
+    var tableType: TableType = TableType.Profile{
         didSet {
             if tableType != oldValue {
                 checkTableType()

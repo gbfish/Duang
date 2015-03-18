@@ -20,13 +20,21 @@ class LandingViewController: UIViewController, LoginViewControllerProtocol {
 //        login("gbfish", password: "801023")
 //        
 //        dynamicAnimator = UIDynamicAnimator(referenceView: view)
+        
+        
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
         setNavigationBarStyle()
+        
+        if APIManager.sharedInstance.isCurrentUser {
+            loginSuccess()
+        }
     }
+    
+    
     
     // MARK: - LoginViewControllerProtocol
     
