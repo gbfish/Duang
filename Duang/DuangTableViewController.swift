@@ -34,16 +34,14 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // MARK: - Table Type
 
-    enum TableType{
+    enum TableType {
         case Profile
         case ProfileEdit
+        
+        case Input
     }
     
     var tableType: TableType?
-//        = TableType.Profile{
-//        didSet {
-//        }
-//    }
     
     var profileEditAvatarImage = UIImage(named: "placeholder_user")
     
@@ -56,7 +54,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 var row = DuangTableDataRow()
                 row.rowType = DuangTableDataRow.RowType.UserBig
-                row.titleString = "My Name"
+                row.titleString = APIManager.sharedInstance.currentUserUsername
                 
                 row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(showEditUser)
                 
@@ -78,7 +76,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                 let row1 = DuangTableDataRow()
                 row1.rowType = DuangTableDataRow.RowType.DefaultRightDetail
                 row1.titleString = "Name"
-                row1.detailString = "David"
+                row1.detailString = "David David David David David David David David David David David"
                 row1.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(tapAction2)
                 
                 //                let section = DuangTableDataSection()
@@ -103,8 +101,10 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                 section = DuangTableDataSection()
                 
                 row = DuangTableDataRow()
-                row.rowType = DuangTableDataRow.RowType.Button
-                row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(tapAction)
+                row.rowType = DuangTableDataRow.RowType.DefaultRightDetail
+                row.titleString = "Name"
+                row.detailString = APIManager.sharedInstance.currentUserUsername
+                row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(showInput)
                 
                 
                 //                section.sectionName = "the name of section"
@@ -112,28 +112,31 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 duangTableData.sectionArray.append(section)
                 
-                //            section = DuangTableDataSection()
-                //            row = DuangTableDataRow()
-                //            row.rowType = DuangTableDataRow.RowType.Button
-                //            row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Arity0(tapAction)
-                //
-                //
-                //            //                section.sectionName = "the name of section"
-                //            section.rowArray.append(row)
-                //
-                //            ////
-                //            let row1 = DuangTableDataRow()
-                //            row1.rowType = DuangTableDataRow.RowType.DefaultRightDetail
-                //            row1.titleString = "Name"
-                //            row1.detailString = "David"
-                //            row1.didSelectFunc = DuangTableDataRow.DidSelectFunc.Arity0(tapAction2)
-                //            
-                //            //                let section = DuangTableDataSection()
-                //            section.rowArray.append(row1)
+            case TableType.Input:
+                titleString = "Input"
+                var row = DuangTableDataRow()
+                var section = DuangTableDataSection()
                 
-                ////
+                row.rowType = DuangTableDataRow.RowType.UserSmall
+                row.titleString = "Profile Picture"
+                row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(selectImage)
                 
-                //            duangTableData.sectionArray.append(section)
+                section.rowArray.append(row)
+                duangTableData.sectionArray.append(section)
+                
+                section = DuangTableDataSection()
+                
+                row = DuangTableDataRow()
+                row.rowType = DuangTableDataRow.RowType.DefaultRightDetail
+                row.titleString = "Name"
+                row.detailString = APIManager.sharedInstance.currentUserUsername
+                row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(tapAction)
+                
+                
+                //                section.sectionName = "the name of section"
+                section.rowArray.append(row)
+                
+                duangTableData.sectionArray.append(section)
                 
             }
         }
@@ -159,6 +162,12 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         deleteAlert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: { (action) -> Void in
         }))
         presentViewController(deleteAlert, animated: true, completion: nil)
+    }
+    
+    func showInput() {
+        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
+        viewController.tableType = TableType.Input
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func tapAction() {

@@ -49,23 +49,6 @@ class APIManager {
                 failure(error: error)
             }
         }
-        
-//        [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-//        if (!error) {
-//        // Hooray! Let them use the app now.
-//        } else {
-//        NSString *errorString = [error userInfo][@"error"];
-//        // Show the errorString somewhere and let the user try again.
-//        }
-//        }];
-//        
-//        PFUser.logInWithUsernameInBackground(userName, password: password) { (user, error) -> Void in
-//            if user != nil {
-//                success()
-//            } else {
-//                failure()
-//            }
-//        }
     }
     
     var isCurrentUser: Bool {
@@ -74,6 +57,22 @@ class APIManager {
             return true
         } else {
             return false
+        }
+    }
+    
+    var currentUserUsername: String {
+        get {
+            if let currentUser = PFUser.currentUser() {
+                return currentUser.username
+            } else {
+                return ""
+            }
+        }
+        set {
+            if let currentUser = PFUser.currentUser() {
+                currentUser.username = newValue
+                currentUser.save()
+            }
         }
     }
     
