@@ -111,98 +111,44 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 duangTableData.sectionArray.append(section)
                 
-                // MARK: Input
             case TableType.Input:
                 titleString = selectedSection.sectionTitleForHeader
-                var row = DuangTableDataRow()
-                var section = DuangTableDataSection()
                 
-                row.rowType = DuangTableDataRow.RowType.Input
+                // TextField
+                duangTableData.sectionArray.append(DuangTableDataSection.initSectionInput(sectionTitleForHeader: ""))
                 
-                section.rowArray.append(row)
-                duangTableData.sectionArray.append(section)
-                section = DuangTableDataSection()
+                // Done
+                duangTableData.sectionArray.append(DuangTableDataSection.initSectionButton(sectionTitleForHeader: "", rowTitleString: "Done", buttonStyle: DuangTableDataRow.ButtonStyle.Nomal, didSelectFunc: DuangTableDataRow.DidSelectFunc.Function1(doneInput)))
                 
-                row = DuangTableDataRow()
-                row.rowType = DuangTableDataRow.RowType.Button
-                row.rowTitleString = "ok"
-                row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(doneInput)
-                
-                section.rowArray.append(row)
-                duangTableData.sectionArray.append(section)
-                
-                // MARK: Settings
             case TableType.Settings:
                 titleString = "Settings"
-                var row = DuangTableDataRow()
-                var section = DuangTableDataSection()
                 
                 // Username
                 duangTableData.sectionArray.append(DuangTableDataSection.initSectionDefaultRightDetail(sectionTitleForHeader: "Username", rowTitleString: APIManager.sharedInstance.getCurrentUserUsername(), rowDetailString: "", didSelectFunc: DuangTableDataRow.DidSelectFunc.Function1(showInput)))
                 
                 // Password
-//                section = DuangTableDataSection()
-//                section.sectionTitleForHeader = "Password"
-//                row = DuangTableDataRow()
-//                row.rowType = DuangTableDataRow.RowType.DefaultRightDetail
-//                row.rowTitleString = "Change Password"
-//                row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(showChangePassword)
-//                section.rowArray.append(row)
-//                duangTableData.sectionArray.append(section)
-                
                 duangTableData.sectionArray.append(DuangTableDataSection.initSectionDefaultRightDetail(sectionTitleForHeader: "Password", rowTitleString: "Change Password", rowDetailString: "", didSelectFunc: DuangTableDataRow.DidSelectFunc.Function1(showChangePassword)))
-                
                 
                 // Email
                 duangTableData.sectionArray.append(DuangTableDataSection.initSectionDefaultRightDetail(sectionTitleForHeader: "Email", rowTitleString: APIManager.sharedInstance.getCurrentUserEmail(), rowDetailString: "", didSelectFunc: DuangTableDataRow.DidSelectFunc.Function1(showInput)))
                 
                 // Log out
-                section = DuangTableDataSection()
-                row = DuangTableDataRow()
-                row.rowType = DuangTableDataRow.RowType.Button
-                row.rowTitleString = "Log out"
-                row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(logout)
-                section.rowArray.append(row)
-                duangTableData.sectionArray.append(section)
+                duangTableData.sectionArray.append(DuangTableDataSection.initSectionButton(sectionTitleForHeader: "", rowTitleString: "Log out", buttonStyle: DuangTableDataRow.ButtonStyle.Nomal, didSelectFunc: DuangTableDataRow.DidSelectFunc.Function1(logout)))
                 
-            case TableType.ChangePassword:// MARK: ChangePassword
+            case TableType.ChangePassword:
                 titleString = "Change Password"
-                var row = DuangTableDataRow()
-                var section = DuangTableDataSection()
                 
                 // Old Password
-                section = DuangTableDataSection()
-                section.sectionTitleForHeader = "Old Password"
-                row = DuangTableDataRow()
-                row.rowType = DuangTableDataRow.RowType.TextField
-                section.rowArray.append(row)
-                duangTableData.sectionArray.append(section)
+                duangTableData.sectionArray.append(DuangTableDataSection.initSectionTextField(sectionTitleForHeader: "Old Password", rowTitleString: "password"))
                 
                 // New Password
-                section = DuangTableDataSection()
-                section.sectionTitleForHeader = "New Password"
-                row = DuangTableDataRow()
-                row.rowType = DuangTableDataRow.RowType.TextField
-                section.rowArray.append(row)
-                duangTableData.sectionArray.append(section)
+                duangTableData.sectionArray.append(DuangTableDataSection.initSectionTextField(sectionTitleForHeader: "New Password", rowTitleString: "password"))
                 
                 // Retype Password
-                section = DuangTableDataSection()
-                section.sectionTitleForHeader = "Retype Password"
-                row = DuangTableDataRow()
-                row.rowType = DuangTableDataRow.RowType.TextField
-                section.rowArray.append(row)
-                duangTableData.sectionArray.append(section)
+                duangTableData.sectionArray.append(DuangTableDataSection.initSectionTextField(sectionTitleForHeader: "Retype Password", rowTitleString: "password"))
                 
                 // Done
-                section = DuangTableDataSection()
-                row = DuangTableDataRow()
-                row.rowType = DuangTableDataRow.RowType.Button
-                row.rowTitleString = "Done"
-                row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(changePasswordDone)
-                section.rowArray.append(row)
-                duangTableData.sectionArray.append(section)
-
+                duangTableData.sectionArray.append(DuangTableDataSection.initSectionButton(sectionTitleForHeader: "", rowTitleString: "Done", buttonStyle: DuangTableDataRow.ButtonStyle.Nomal, didSelectFunc: DuangTableDataRow.DidSelectFunc.Function1(changePasswordDone)))
             }
         }
         
@@ -507,12 +453,15 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         case DuangTableDataRow.RowType.TextField:
             let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.TextField, forIndexPath: indexPath) as DuangTableCellTextField
             cell.delegate = self
+            cell.textField.placeholder = row.rowTitleString
             addDuangTableCellTextField(cell)
             return cell
             
         case DuangTableDataRow.RowType.Button:
             let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.Button, forIndexPath: indexPath) as DuangTableCellButton
             cell.buttonLabel.text = row.rowTitleString
+            cell.buttonLabel.textColor = row.buttonTextColor
+            cell.buttonLabel.backgroundColor = row.buttonBackgroundColor
             return cell
             
         case DuangTableDataRow.RowType.DefaultRightDetail:

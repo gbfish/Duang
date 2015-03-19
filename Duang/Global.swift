@@ -19,6 +19,9 @@ struct DuangColor {
     static let ButtonNormal = UIColor(red: 217.0/255.0, green: 104.0/255.0, blue: 49.0/255.0, alpha: 1.0)
     static let ButtonNormalBackground = UIColor(red: 39.0/255.0, green: 72.0/255.0, blue: 98.0/255.0, alpha: 1.0)
     
+    static let ButtonAlert = UIColor(red: 153.0/255.0, green: 80.0/255.0, blue: 84.0/255.0, alpha: 1.0)
+    static let ButtonAlertBackground = UIColor(red: 23.0/255.0, green: 44.0/255.0, blue: 60.0/255.0, alpha: 1.0)
+    
     static let ButtonUnselected = UIColor(red: 39.0/255.0, green: 72.0/255.0, blue: 98.0/255.0, alpha: 1.0)
     static let ButtonUnselectedBackground = UIColor(red: 217.0/255.0, green: 104.0/255.0, blue: 49.0/255.0, alpha: 1.0)
     
