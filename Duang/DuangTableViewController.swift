@@ -98,6 +98,10 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                 row.rowType = DuangTableDataRow.RowType.UserSmall
                 row.titleString = "Profile Picture"
                 row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(selectImage)
+                row.imageFile = APIManager.sharedInstance.currentUserAvatarFile
+//                APIManager.sharedInstance.currentUserAvatar({ (image) -> () in
+//                    row.rowImage = image
+//                })
                 
                 section.rowArray.append(row)
                 duangTableData.sectionArray.append(section)
@@ -291,6 +295,8 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         if let type = tableType {
             switch type {
             case TableType.ProfileEdit:
+                APIManager.sharedInstance.currentUserAvatar = image
+                
                 profileEditAvatarImage = image
                 tableView.reloadData()
             default:
@@ -357,9 +363,11 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         case DuangTableDataRow.RowType.UserSmall:
             let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.UserSmall, forIndexPath: indexPath) as DuangTableCellUserSmall
             cell.userAvatarImageView.layer.cornerRadius = cell.userAvatarImageView.frame.size.height / 2.0
-            cell.userAvatarImageView.image = profileEditAvatarImage
+            cell.imageFile = row.imageFile
             cell.userNameLabel.text = row.titleString
             cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+            
+            cell.reloadView()
             return cell
             
         case DuangTableDataRow.RowType.Input:

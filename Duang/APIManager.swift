@@ -76,6 +76,48 @@ class APIManager {
         }
     }
     
+//    func currentUserAvatar(success: (UIImage) -> ()) {
+//        if let currentUser = PFUser.currentUser() {
+//            let imageFile = currentUser["avatar"] as PFFile
+//            imageFile.getDataInBackgroundWithBlock({ (imageData, error) -> Void in
+//                if error == nil {
+//                    if let image = UIImage(data:imageData) {
+//                        success(image)
+//                    }
+//                }
+//            })
+//        }
+//    }
+    
+    
+    
+    var currentUserAvatarFile: PFFile {
+        get {
+            if let currentUser = PFUser.currentUser() {
+                if let imageFile = currentUser["avatar"] as? PFFile {
+                    return imageFile
+                }
+            }
+            return PFFile()
+        }
+        
+    }
+    
+    var currentUserAvatar: UIImage? {
+        get {
+            return nil
+        }
+        set {
+            if let currentUser = PFUser.currentUser() {
+                let imageData = UIImagePNGRepresentation(newValue)
+                let imageFile = PFFile(name:"image.png", data:imageData)
+                
+                currentUser["avatar"] = imageFile
+                currentUser.saveInBackground()
+            }
+        }
+    }
+    
     // MARK: - Validate Email
     
     func validateEmail(email: NSString) -> Bool {

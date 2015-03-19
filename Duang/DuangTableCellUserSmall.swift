@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 class DuangTableCellUserSmall: UITableViewCell {
 
@@ -23,4 +24,17 @@ class DuangTableCellUserSmall: UITableViewCell {
 
     @IBOutlet weak var userAvatarImageView: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
+    
+    var imageFile: PFFile = PFFile()
+    
+    func reloadView() {
+        imageFile.getDataInBackgroundWithBlock { (imageData, error) -> Void in
+            if error == nil {
+                if let image = UIImage(data:imageData) {
+                    self.userAvatarImageView.image = image
+                }
+            }
+        }
+    }
+    
 }

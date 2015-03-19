@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Parse
 
 class DuangTableData {
     var sectionArray = [DuangTableDataSection]()
@@ -37,6 +38,9 @@ class DuangTableDataRow {
     
     var titleString = ""
     var detailString = ""
+    var imageFile: PFFile = PFFile()
+    
+    // MARK: - Reload
     
     // MARK: - Did Select Func
     
