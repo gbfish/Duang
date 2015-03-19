@@ -8,17 +8,28 @@
 
 import UIKit
 
-class DuangTableCellInput: UITableViewCell {
+protocol DuangTableCellInputProtocol {
+    func duangTableCellInputDoneAction()
+}
+
+class DuangTableCellInput: UITableViewCell, UITextViewDelegate {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+        inputTextView.delegate = self
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
+    var delegate: DuangTableCellInputProtocol?
 
-        // Configure the view for the selected state
+    @IBOutlet weak var inputTextView: UITextView!
+    
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            delegate?.duangTableCellInputDoneAction()
+            return false
+        } else {
+            return true
+        }
     }
-
 }

@@ -9,7 +9,11 @@
 import UIKit
 import MobileCoreServices
 
-class DuangTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+protocol DuangTableViewControllerProtocol {
+    func duangTableViewControllerInput(inputString: NSString)
+}
+
+class DuangTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, DuangTableViewControllerProtocol, DuangTableCellInputProtocol {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -113,29 +117,21 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                 duangTableData.sectionArray.append(section)
                 
             case TableType.Input:
-                titleString = "Input"
+                titleString = selectedRow.titleString
+                
                 var row = DuangTableDataRow()
                 var section = DuangTableDataSection()
                 
-                row.rowType = DuangTableDataRow.RowType.UserSmall
-                row.titleString = "Profile Picture"
-                row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(selectImage)
-                
+                row.rowType = DuangTableDataRow.RowType.Input
                 section.rowArray.append(row)
                 duangTableData.sectionArray.append(section)
                 
                 section = DuangTableDataSection()
-                
                 row = DuangTableDataRow()
-                row.rowType = DuangTableDataRow.RowType.DefaultRightDetail
-                row.titleString = "Name"
-                row.detailString = APIManager.sharedInstance.currentUserUsername
-                row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(tapAction)
+                row.rowType = DuangTableDataRow.RowType.Button
+                row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(doneInput)
                 
-                
-                //                section.sectionName = "the name of section"
                 section.rowArray.append(row)
-                
                 duangTableData.sectionArray.append(section)
                 
             }
@@ -164,18 +160,31 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         presentViewController(deleteAlert, animated: true, completion: nil)
     }
     
-    func showInput() {
-        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
-        viewController.tableType = TableType.Input
-        self.navigationController?.pushViewController(viewController, animated: true)
-    }
-    
     func tapAction() {
         println("tapAction")
     }
     
     func tapAction2() {
         println("tapAction2")
+    }
+    
+    // MARK: Input
+    
+    var duangTableCellInput = DuangTableCellInput()
+    
+    func showInput() {
+        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
+        viewController.delegate = self
+        viewController.tableType = TableType.Input
+        viewController.selectedRow = selectedRow
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func doneInput() {
+        if let inputString = duangTableCellInput.inputTextView.text {
+            delegate?.duangTableViewControllerInput(inputString)
+        }
+        navigationController?.popViewControllerAnimated(true)
     }
     
     // MARK: - Camera
@@ -290,10 +299,11 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         }
     }
 
-    
     // MARK: - TableView Data
     
     var duangTableData = DuangTableData()
+    
+    
     
     // MARK: - TableView
     
@@ -314,6 +324,8 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             return 100.0
         case DuangTableDataRow.RowType.UserSmall:
             return 50.0
+        case DuangTableDataRow.RowType.Input:
+            return 200.0
         case DuangTableDataRow.RowType.Button:
             return 50.0
         case DuangTableDataRow.RowType.DefaultRightDetail:
@@ -324,11 +336,13 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     private struct CellIdentifier {
         static let UserBig = "DuangTableCellUserBig"
         static let UserSmall = "DuangTableCellUserSmall"
-        
+        static let Input = "DuangTableCellInput"
         static let Button = "DuangTableCellButton"
         
         static let DefaultCell = "DefaultCell"
     }
+    
+    
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
@@ -339,30 +353,24 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             cell.userAvatarImageView.image = UIImage(named: "placeholder_user")
             cell.userNameLabel.text = row.titleString
             return cell
+            
         case DuangTableDataRow.RowType.UserSmall:
             let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.UserSmall, forIndexPath: indexPath) as DuangTableCellUserSmall
             cell.userAvatarImageView.layer.cornerRadius = cell.userAvatarImageView.frame.size.height / 2.0
             cell.userAvatarImageView.image = profileEditAvatarImage
             cell.userNameLabel.text = row.titleString
-            
-            
             cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-            
             return cell
-//            cell.textLabel?.text = row.titleString
-//            if let height = cell.imageView?.frame.size.height {
-//                cell.imageView?.frame.size = CGSizeMake(height, height)
-//                cell.imageView?.layer.cornerRadius = height / 2.0
-//            }
-//            
-//            cell.imageView?.contentMode = UIViewContentMode.ScaleAspectFill
-//            cell.imageView?.image = profileEditAvatarImage  //UIImage(named: "placeholder_user")
+            
+        case DuangTableDataRow.RowType.Input:
+            duangTableCellInput = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.Input, forIndexPath: indexPath) as DuangTableCellInput
+            duangTableCellInput.delegate = self
+            duangTableCellInput.inputTextView.text = selectedRow.detailString
+            return duangTableCellInput
             
         case DuangTableDataRow.RowType.Button:
             let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.Button, forIndexPath: indexPath) as DuangTableCellButton
             return cell
-            
-        
             
         case DuangTableDataRow.RowType.DefaultRightDetail:
             var cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: CellIdentifier.DefaultCell)
@@ -373,8 +381,12 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         }
     }
     
+    var selectedRow = DuangTableDataRow()
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.cellForRowAtIndexPath(indexPath)?.selected = false
+        
+        selectedRow = duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row]
         
         let didSelectFunc = duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row].didSelectFunc
         switch didSelectFunc {
@@ -388,6 +400,28 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         
     }
     
+    // MARK: - DuangTableViewControllerProtocol
     
+    var delegate: DuangTableViewControllerProtocol?
     
+    func duangTableViewControllerInput(inputString: NSString) {
+        if let type = tableType {
+            switch type {
+            case TableType.ProfileEdit:
+                if selectedRow.titleString == "Name" {
+                    APIManager.sharedInstance.currentUserUsername = inputString
+                    selectedRow.detailString = inputString
+                    tableView.reloadData()
+                }
+            default:
+                break
+            }
+        }
+    }
+    
+    // MARK: - DuangTableCellInputProtocol
+    
+    func duangTableCellInputDoneAction() {
+        doneInput()
+    }
 }
