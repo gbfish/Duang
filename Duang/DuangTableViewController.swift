@@ -13,7 +13,7 @@ protocol DuangTableViewControllerProtocol {
     func duangTableViewControllerInput(inputString: NSString)
 }
 
-class DuangTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, DuangTableViewControllerProtocol, DuangTableCellInputProtocol {
+class DuangTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, DuangTableViewControllerProtocol, DuangTableCellInputProtocol , DuangTableCellTextFieldProtocol{
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,7 +41,8 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     enum TableType {
         case Profile
         case ProfileEdit
-        
+        case Settings
+        case ChangePassword
         case Input
     }
     
@@ -52,45 +53,28 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     func checkTableType() {
         if let type = tableType {
             switch type {
-            case TableType.Profile:
+            case TableType.Profile:// MARK: Profile
                 titleString = "Me"
+                var row = DuangTableDataRow()
                 var section = DuangTableDataSection()
                 
-                var row = DuangTableDataRow()
                 row.rowType = DuangTableDataRow.RowType.UserBig
                 row.rowTitleString = APIManager.sharedInstance.getCurrentUserUsername()
-                
                 row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(showEditUser)
                 
                 section.rowArray.append(row)
-                
                 duangTableData.sectionArray.append(section)
-                
                 section = DuangTableDataSection()
-                
+
                 row = DuangTableDataRow()
-                row.rowType = DuangTableDataRow.RowType.Button
-                row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(tapAction)
+                row.rowType = DuangTableDataRow.RowType.DefaultRightDetail
+                row.rowTitleString = "Settings"
+                row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(showSettings)
                 
-                
-                //                section.sectionName = "the name of section"
                 section.rowArray.append(row)
-                
-                ////
-                let row1 = DuangTableDataRow()
-                row1.rowType = DuangTableDataRow.RowType.DefaultRightDetail
-                row1.rowTitleString = "Username"
-                row1.rowDetailString = "David David David David David David David David David David David"
-                row1.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(tapAction2)
-                
-                //                let section = DuangTableDataSection()
-                section.rowArray.append(row1)
-                
-                ////
-                
                 duangTableData.sectionArray.append(section)
                 
-            case TableType.ProfileEdit:
+            case TableType.ProfileEdit:// MARK: ProfileEdit
                 titleString = "Edit Profile"
                 var row = DuangTableDataRow()
                 var section = DuangTableDataSection()
@@ -108,8 +92,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 row = DuangTableDataRow()
                 row.rowType = DuangTableDataRow.RowType.DefaultRightDetail
-                row.rowTitleString = "Username"
-                row.rowDetailString = APIManager.sharedInstance.getCurrentUserUsername()
+                row.rowTitleString = APIManager.sharedInstance.getCurrentUserUsername()
                 row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(showInput)
                 
                 section.rowArray.append(row)
@@ -128,17 +111,18 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 duangTableData.sectionArray.append(section)
                 
+                // MARK: Input
             case TableType.Input:
-                titleString = selectedRow.rowTitleString
-                
+                titleString = selectedSection.sectionTitleForHeader
                 var row = DuangTableDataRow()
                 var section = DuangTableDataSection()
                 
                 row.rowType = DuangTableDataRow.RowType.Input
+                
                 section.rowArray.append(row)
                 duangTableData.sectionArray.append(section)
-                
                 section = DuangTableDataSection()
+                
                 row = DuangTableDataRow()
                 row.rowType = DuangTableDataRow.RowType.Button
                 row.rowTitleString = "ok"
@@ -147,6 +131,78 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                 section.rowArray.append(row)
                 duangTableData.sectionArray.append(section)
                 
+                // MARK: Settings
+            case TableType.Settings:
+                titleString = "Settings"
+                var row = DuangTableDataRow()
+                var section = DuangTableDataSection()
+                
+                // Username
+                duangTableData.sectionArray.append(DuangTableDataSection.initSectionDefaultRightDetail(sectionTitleForHeader: "Username", rowTitleString: APIManager.sharedInstance.getCurrentUserUsername(), rowDetailString: "", didSelectFunc: DuangTableDataRow.DidSelectFunc.Function1(showInput)))
+                
+                // Password
+//                section = DuangTableDataSection()
+//                section.sectionTitleForHeader = "Password"
+//                row = DuangTableDataRow()
+//                row.rowType = DuangTableDataRow.RowType.DefaultRightDetail
+//                row.rowTitleString = "Change Password"
+//                row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(showChangePassword)
+//                section.rowArray.append(row)
+//                duangTableData.sectionArray.append(section)
+                
+                duangTableData.sectionArray.append(DuangTableDataSection.initSectionDefaultRightDetail(sectionTitleForHeader: "Password", rowTitleString: "Change Password", rowDetailString: "", didSelectFunc: DuangTableDataRow.DidSelectFunc.Function1(showChangePassword)))
+                
+                
+                // Email
+                duangTableData.sectionArray.append(DuangTableDataSection.initSectionDefaultRightDetail(sectionTitleForHeader: "Email", rowTitleString: APIManager.sharedInstance.getCurrentUserEmail(), rowDetailString: "", didSelectFunc: DuangTableDataRow.DidSelectFunc.Function1(showInput)))
+                
+                // Log out
+                section = DuangTableDataSection()
+                row = DuangTableDataRow()
+                row.rowType = DuangTableDataRow.RowType.Button
+                row.rowTitleString = "Log out"
+                row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(logout)
+                section.rowArray.append(row)
+                duangTableData.sectionArray.append(section)
+                
+            case TableType.ChangePassword:// MARK: ChangePassword
+                titleString = "Change Password"
+                var row = DuangTableDataRow()
+                var section = DuangTableDataSection()
+                
+                // Old Password
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = "Old Password"
+                row = DuangTableDataRow()
+                row.rowType = DuangTableDataRow.RowType.TextField
+                section.rowArray.append(row)
+                duangTableData.sectionArray.append(section)
+                
+                // New Password
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = "New Password"
+                row = DuangTableDataRow()
+                row.rowType = DuangTableDataRow.RowType.TextField
+                section.rowArray.append(row)
+                duangTableData.sectionArray.append(section)
+                
+                // Retype Password
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = "Retype Password"
+                row = DuangTableDataRow()
+                row.rowType = DuangTableDataRow.RowType.TextField
+                section.rowArray.append(row)
+                duangTableData.sectionArray.append(section)
+                
+                // Done
+                section = DuangTableDataSection()
+                row = DuangTableDataRow()
+                row.rowType = DuangTableDataRow.RowType.Button
+                row.rowTitleString = "Done"
+                row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(changePasswordDone)
+                section.rowArray.append(row)
+                duangTableData.sectionArray.append(section)
+
             }
         }
         
@@ -158,6 +214,49 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
         viewController.tableType = TableType.ProfileEdit
         self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func showSettings() {
+        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
+        viewController.tableType = TableType.Settings
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func showChangePassword() {
+        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
+        viewController.tableType = TableType.ChangePassword
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func changePasswordDone() {
+        if duangTableCellTextFieldArray.count == 3 {
+            if let oldPassword = duangTableCellTextFieldArray[0].textField.text {
+                if let newPassword = duangTableCellTextFieldArray[1].textField.text {
+                    if let retypePassword = duangTableCellTextFieldArray[2].textField.text {
+                        
+                        if newPassword == retypePassword {
+                            
+                            if let errorString = APIManager.sharedInstance.changePassword(oldPassword, newPassword: newPassword) {
+                                var deleteAlert = UIAlertController(title: "Sorry", message: errorString, preferredStyle: UIAlertControllerStyle.Alert)
+                                deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
+                                presentViewController(deleteAlert, animated: true, completion: nil)
+                            } else {
+                                navigationController?.popViewControllerAnimated(true)
+                            }
+                        } else {
+                            var deleteAlert = UIAlertController(title: "Sorry", message: "New password don't match.", preferredStyle: UIAlertControllerStyle.Alert)
+                            deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
+                            presentViewController(deleteAlert, animated: true, completion: nil)
+                        }
+                    }
+                }
+            }
+            
+            
+            
+        }
+        
+        
     }
     
     func selectImage() {
@@ -189,7 +288,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
         viewController.delegate = self
         viewController.tableType = TableType.Input
-        viewController.selectedRow = selectedRow
+        viewController.selectedSection = selectedSection
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -198,6 +297,13 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             delegate?.duangTableViewControllerInput(inputString)
         }
         navigationController?.popViewControllerAnimated(true)
+    }
+    
+    // MARK: Log out
+    
+    func logout() {
+        APIManager.sharedInstance.logout()
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     // MARK: - Camera
@@ -306,7 +412,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             case TableType.ProfileEdit:
                 APIManager.sharedInstance.currentUserAvatar = image
                 
-                selectedRow.rowImageFile = APIManager.sharedInstance.currentUserAvatarFile
+                selectedSection.rowArray[0].rowImageFile = APIManager.sharedInstance.currentUserAvatarFile
                 tableView.reloadData()
             default:
                 break
@@ -352,6 +458,8 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             return 50.0
         case DuangTableDataRow.RowType.Input:
             return 200.0
+        case DuangTableDataRow.RowType.TextField:
+            return 50.0
         case DuangTableDataRow.RowType.Button:
             return 50.0
         case DuangTableDataRow.RowType.DefaultRightDetail:
@@ -364,7 +472,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         static let UserSmall = "DuangTableCellUserSmall"
         static let Input = "DuangTableCellInput"
         static let Button = "DuangTableCellButton"
-        
+        static let TextField = "DuangTableCellTextField"
         static let DefaultCell = "DefaultCell"
     }
     
@@ -393,8 +501,14 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         case DuangTableDataRow.RowType.Input:
             duangTableCellInput = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.Input, forIndexPath: indexPath) as DuangTableCellInput
             duangTableCellInput.delegate = self
-            duangTableCellInput.inputTextView.text = selectedRow.rowDetailString
+            duangTableCellInput.inputTextView.text = selectedSection.rowArray[0].rowTitleString
             return duangTableCellInput
+            
+        case DuangTableDataRow.RowType.TextField:
+            let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.TextField, forIndexPath: indexPath) as DuangTableCellTextField
+            cell.delegate = self
+            addDuangTableCellTextField(cell)
+            return cell
             
         case DuangTableDataRow.RowType.Button:
             let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.Button, forIndexPath: indexPath) as DuangTableCellButton
@@ -411,12 +525,12 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         }
     }
     
-    var selectedRow = DuangTableDataRow()
+    var selectedSection = DuangTableDataSection()
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.cellForRowAtIndexPath(indexPath)?.selected = false
         
-        selectedRow = duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row]
+        selectedSection = duangTableData.sectionArray[indexPath.section]
         
         let didSelectFunc = duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row].didSelectFunc
         switch didSelectFunc {
@@ -437,21 +551,25 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     func duangTableViewControllerInput(inputString: NSString) {
         if let type = tableType {
             switch type {
-            case TableType.ProfileEdit:
-                if selectedRow.rowTitleString == "Username" {
+            case TableType.Settings:
+                if selectedSection.sectionTitleForHeader == "Username" {
                     if let errorString = APIManager.sharedInstance.setCurrentUserUsername(inputString) {
                         var deleteAlert = UIAlertController(title: "Sorry", message: errorString, preferredStyle: UIAlertControllerStyle.Alert)
                         deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
                         presentViewController(deleteAlert, animated: true, completion: nil)
                     } else {
-                        selectedRow.rowDetailString = inputString
+                        selectedSection.rowArray[0].rowTitleString = inputString
                         tableView.reloadData()
                     }
-                    
-                    
-//                    APIManager.sharedInstance.currentUserUsername = inputString
-//                    selectedRow.rowDetailString = inputString
-//                    tableView.reloadData()
+                } else if selectedSection.sectionTitleForHeader == "Email" {
+                    if let errorString = APIManager.sharedInstance.setCurrentUserEmail(inputString) {
+                        var deleteAlert = UIAlertController(title: "Sorry", message: errorString, preferredStyle: UIAlertControllerStyle.Alert)
+                        deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
+                        presentViewController(deleteAlert, animated: true, completion: nil)
+                    } else {
+                        selectedSection.rowArray[0].rowTitleString = inputString
+                        tableView.reloadData()
+                    }
                 }
             default:
                 break
@@ -463,5 +581,30 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func duangTableCellInputDoneAction() {
         doneInput()
+    }
+    
+    // MARK: - DuangTableCellTextFieldProtocol
+    
+    var duangTableCellTextFieldArray = [DuangTableCellTextField]()
+    
+    func addDuangTableCellTextField(duangTableCellTextField: DuangTableCellTextField) {
+        for temDuangTableCellTextField in duangTableCellTextFieldArray {
+            if temDuangTableCellTextField == duangTableCellTextField {
+                return
+            }
+        }
+        duangTableCellTextFieldArray.append(duangTableCellTextField)
+    }
+    
+    func duangTableCellTextFieldReturn(duangTableCellTextField: DuangTableCellTextField) {
+        duangTableCellTextField.textField.resignFirstResponder()
+        
+        for var index = 0; index < duangTableCellTextFieldArray.count; ++index {
+            let temDuangTableCellTextField = duangTableCellTextFieldArray[index]
+            if temDuangTableCellTextField == duangTableCellTextField && index < duangTableCellTextFieldArray.count - 1 {
+                let nextDuangTableCellTextField = duangTableCellTextFieldArray[index + 1]
+                nextDuangTableCellTextField.textField.becomeFirstResponder()
+            }
+        }
     }
 }

@@ -37,6 +37,7 @@
 		569E7A8D1AB0DADF009BF47B /* DuangTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569E7A8C1AB0DADF009BF47B /* DuangTests.swift */; };
 		56E9469F1ABA21A900634F5B /* DuangTableCellUserSmall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E9469E1ABA21A900634F5B /* DuangTableCellUserSmall.swift */; };
 		56E946A11ABA351E00634F5B /* DuangTableCellInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E946A01ABA351E00634F5B /* DuangTableCellInput.swift */; };
+		56E946A31ABB464700634F5B /* DuangTableCellTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E946A21ABB464700634F5B /* DuangTableCellTextField.swift */; };
 		56F361751AB8DC0D00D94533 /* DuangTableCellUserBig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F361741AB8DC0D00D94533 /* DuangTableCellUserBig.swift */; };
 /* End PBXBuildFile section */
 
@@ -85,6 +86,7 @@
 		569E7A8C1AB0DADF009BF47B /* DuangTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuangTests.swift; sourceTree = "<group>"; };
 		56E9469E1ABA21A900634F5B /* DuangTableCellUserSmall.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableCellUserSmall.swift; sourceTree = "<group>"; };
 		56E946A01ABA351E00634F5B /* DuangTableCellInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableCellInput.swift; sourceTree = "<group>"; };
+		56E946A21ABB464700634F5B /* DuangTableCellTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableCellTextField.swift; sourceTree = "<group>"; };
 		56F361741AB8DC0D00D94533 /* DuangTableCellUserBig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableCellUserBig.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -147,6 +149,7 @@
 				56F361741AB8DC0D00D94533 /* DuangTableCellUserBig.swift */,
 				56E9469E1ABA21A900634F5B /* DuangTableCellUserSmall.swift */,
 				56E946A01ABA351E00634F5B /* DuangTableCellInput.swift */,
+				56E946A21ABB464700634F5B /* DuangTableCellTextField.swift */,
 				568A5CBA1AB8AAA500EF43F4 /* DuangTableCellButton.swift */,
 			);
 			name = DuangTable;
@@ -327,6 +330,7 @@
 			files = (
 				56E9469F1ABA21A900634F5B /* DuangTableCellUserSmall.swift in Sources */,
 				56E946A11ABA351E00634F5B /* DuangTableCellInput.swift in Sources */,
+				56E946A31ABB464700634F5B /* DuangTableCellTextField.swift in Sources */,
 				566AC3E61AB39430001B87D1 /* LoginViewController.swift in Sources */,
 				5687C65E1AB110D800ED0005 /* Global.swift in Sources */,
 				56F361751AB8DC0D00D94533 /* DuangTableCellUserBig.swift in Sources */,

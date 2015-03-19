@@ -30,11 +30,16 @@ class APIManager {
         return errorString
     }
     
+    // MARK: - 
+    
+    
+    
     // MARK: - User
     
     func login(userName: String, password: String, success: () -> (), failure: () -> ()) {
         PFUser.logInWithUsernameInBackground(userName, password: password) { (user, error) -> Void in
             if user != nil {
+                self.saveUsernameAndPassowrd(userName, password: password)
                 success()
             } else {
                 failure()
@@ -48,12 +53,10 @@ class APIManager {
         user.username = userName
         user.password = password
         user.email = email
-        
-        // other fields can be set just like with PFObject
-//        user[@"phone"] = @"415-392-0202";
-        
+
         user.signUpInBackgroundWithBlock { (succeeded, error) -> Void in
             if error == nil {
+                self.saveUsernameAndPassowrd(userName, password: password)
                 success()
             } else {
                 failure(error: error)
@@ -61,13 +64,34 @@ class APIManager {
         }
     }
     
-    var isCurrentUser: Bool {
-        var currentUser = PFUser.currentUser()
-        if currentUser.isAuthenticated() {
-            return true
-        } else {
-            return false
+    func logout() {
+        PFUser.logOut()
+    }
+    
+    func saveUsernameAndPassowrd(userName: String, password: String) {
+        saveUsername(userName)
+        savePassowrd(password)
+    }
+    
+    func saveUsername(userName: String) {
+        NSUserDefaults.standardUserDefaults().setObject(userName, forKey: "CurrentUserUserName")
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
+    
+    func savePassowrd(password: String) {
+        NSUserDefaults.standardUserDefaults().setObject(password, forKey: "CurrentPassword")
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
+    
+    
+    
+    var isCurrentUserAuthenticated: Bool {
+        if let currentUser = PFUser.currentUser() {
+            if currentUser.isAuthenticated() {
+                return true
+            }
         }
+        return false
     }
     /*
     var currentUserUsername: String {
@@ -100,6 +124,8 @@ class APIManager {
         }
     }*/
     
+    // MARK: Username
+    
     func getCurrentUserUsername() -> String {
         return PFUser.currentUser().username
     }
@@ -112,22 +138,50 @@ class APIManager {
         if let theError = error {
             return APIManager.errorMessage(theError)
         } else {
-            return nil
+            saveUsername(username)
         }
+        return nil
     }
     
-//    func currentUserAvatar(success: (UIImage) -> ()) {
-//        if let currentUser = PFUser.currentUser() {
-//            let imageFile = currentUser["avatar"] as PFFile
-//            imageFile.getDataInBackgroundWithBlock({ (imageData, error) -> Void in
-//                if error == nil {
-//                    if let image = UIImage(data:imageData) {
-//                        success(image)
-//                    }
-//                }
-//            })
-//        }
-//    }
+    // MARK: Password
+    
+    func changePassword(oldPassword: String, newPassword: String) -> String? {
+        if let currentPassword = NSUserDefaults.standardUserDefaults().objectForKey("CurrentPassword") as? String {
+            if currentPassword == oldPassword {
+                let currentUser = PFUser.currentUser()
+                currentUser.password = newPassword
+                var error: NSError? = nil
+                currentUser.save(&error)
+                if let theError = error {
+                    return APIManager.errorMessage(theError)
+                } else {
+                    savePassowrd(newPassword)
+                }
+            } else {
+                return "Your old password was entered incorrectly. Please enter it again."
+            }
+        }
+        return nil
+    }
+    
+    // MARK: Email
+    
+    func getCurrentUserEmail() -> String {
+        return PFUser.currentUser().email
+    }
+    
+    func setCurrentUserEmail(email: String) -> String? {
+        let currentUser = PFUser.currentUser()
+        currentUser.email = email
+        var error: NSError? = nil
+        currentUser.save(&error)
+        if let theError = error {
+            return APIManager.errorMessage(theError)
+        }
+        return nil
+    }
+    
+    // MARK:
     
     var imagePlaceholderAvatar = UIImage(named: "placeholder_user")
     

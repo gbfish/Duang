@@ -28,7 +28,7 @@ class LandingViewController: UIViewController, LoginViewControllerProtocol {
         
         setNavigationBarStyle()
         
-        if APIManager.sharedInstance.isCurrentUser {
+        if APIManager.sharedInstance.isCurrentUserAuthenticated {
             loginSuccess()
         }
     }

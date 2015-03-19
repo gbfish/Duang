@@ -12,17 +12,15 @@ protocol DuangTableCellInputProtocol {
     func duangTableCellInputDoneAction()
 }
 
-class DuangTableCellInput: UITableViewCell, UITextViewDelegate {
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-        inputTextView.delegate = self
-    }
-
+class DuangTableCellInput: UITableViewCell, UITextViewDelegate
+{
     var delegate: DuangTableCellInputProtocol?
 
-    @IBOutlet weak var inputTextView: UITextView!
+    @IBOutlet weak var inputTextView: UITextView! {
+        didSet {
+            inputTextView.delegate = self
+        }
+    }
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {

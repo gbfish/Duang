@@ -19,19 +19,36 @@ class DuangTableData {
 class DuangTableDataSection {
     var sectionTitleForHeader = ""
     var rowArray = [DuangTableDataRow]()
+    
+    class func initSectionDefaultRightDetail(#sectionTitleForHeader: String, rowTitleString: String, rowDetailString: String, didSelectFunc: DuangTableDataRow.DidSelectFunc) -> DuangTableDataSection {
+        let section = DuangTableDataSection()
+        section.sectionTitleForHeader = sectionTitleForHeader
+        section.rowArray.append(DuangTableDataRow.initRowDefaultRightDetail(rowTitleString, rowDetailString: rowDetailString, didSelectFunc: didSelectFunc))
+        return section
+    }
 }
 
 // MARK: - Father Data Item
 
 class DuangTableDataRow {
+    class func initRowDefaultRightDetail(titleString: String, rowDetailString: String, didSelectFunc: DidSelectFunc) -> DuangTableDataRow {
+        let row = DuangTableDataRow()
+        row.rowType = DuangTableDataRow.RowType.DefaultRightDetail
+        row.rowTitleString = titleString
+        row.rowDetailString = rowDetailString
+        row.didSelectFunc = didSelectFunc
+        return row
+    }
+    
     enum RowType{
         case UserBig
         case UserSmall
         case Input
         case Button
-        
+        case TextField
         case DefaultRightDetail
     }
+    
     var rowType = RowType.Button
     
     // MARK: - 
@@ -49,5 +66,6 @@ class DuangTableDataRow {
         case Function1 ( Void -> Void )
 //        case Function2 ( (String, String) -> Void)
     }
+    
     var didSelectFunc = DidSelectFunc.Nothing
 }
