@@ -28,6 +28,7 @@ class DuangTableCellUserSmall: UITableViewCell {
     var imageFile: PFFile = PFFile()
     
     func reloadView() {
+        userAvatarImageView.image = APIManager.sharedInstance.imagePlaceholderAvatar
         imageFile.getDataInBackgroundWithBlock { (imageData, error) -> Void in
             if error == nil {
                 if let image = UIImage(data:imageData) {

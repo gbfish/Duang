@@ -7,7 +7,6 @@
 //
 
 import UIKit
-//import Parse
 
 class LandingViewController: UIViewController, LoginViewControllerProtocol {
 

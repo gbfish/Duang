@@ -17,7 +17,7 @@ class DuangTableData {
 // MARK: - Father Data Array
 
 class DuangTableDataSection {
-    var sectionName = ""
+    var sectionTitleForHeader = ""
     var rowArray = [DuangTableDataRow]()
 }
 
@@ -36,9 +36,9 @@ class DuangTableDataRow {
     
     // MARK: - 
     
-    var titleString = ""
-    var detailString = ""
-    var imageFile: PFFile = PFFile()
+    var rowTitleString = ""
+    var rowDetailString = ""
+    var rowImageFile: PFFile = PFFile()
     
     // MARK: - Reload
     

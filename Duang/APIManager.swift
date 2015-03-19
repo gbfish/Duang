@@ -20,6 +20,16 @@ class APIManager {
     init() {
     }
     
+    class func errorMessage(error: NSError) -> String {
+        var errorString = "There was a problem processing your request."
+        if let userInfo = error.userInfo as? [NSObject: NSObject] {
+            if let errorInfoString: NSString = userInfo["error"] as? NSString {
+                errorString = errorInfoString
+            }
+        }
+        return errorString
+    }
+    
     // MARK: - User
     
     func login(userName: String, password: String, success: () -> (), failure: () -> ()) {
@@ -53,13 +63,13 @@ class APIManager {
     
     var isCurrentUser: Bool {
         var currentUser = PFUser.currentUser()
-        if currentUser != nil {
+        if currentUser.isAuthenticated() {
             return true
         } else {
             return false
         }
     }
-    
+    /*
     var currentUserUsername: String {
         get {
             if let currentUser = PFUser.currentUser() {
@@ -71,8 +81,38 @@ class APIManager {
         set {
             if let currentUser = PFUser.currentUser() {
                 currentUser.username = newValue
-                currentUser.save()
+                var error: NSError? = nil
+                currentUser.save(&error)
+                if let theError = error {
+                    var errorString = "There was a problem processing your request."
+                    if let userInfo = theError.userInfo as? [NSObject: NSObject] {
+                        if let errorInfoString: NSString = userInfo["error"] as? NSString {
+                            
+                            errorString = errorInfoString
+                            
+                            println("--errorString = \(errorString)")
+                        }
+                    }
+                } else {
+                    // Error is still nil - proceed with business logic.
+                }
             }
+        }
+    }*/
+    
+    func getCurrentUserUsername() -> String {
+        return PFUser.currentUser().username
+    }
+    
+    func setCurrentUserUsername(username: String) -> String? {
+        let currentUser = PFUser.currentUser()
+        currentUser.username = username
+        var error: NSError? = nil
+        currentUser.save(&error)
+        if let theError = error {
+            return APIManager.errorMessage(theError)
+        } else {
+            return nil
         }
     }
     
@@ -89,7 +129,7 @@ class APIManager {
 //        }
 //    }
     
-    
+    var imagePlaceholderAvatar = UIImage(named: "placeholder_user")
     
     var currentUserAvatarFile: PFFile {
         get {
