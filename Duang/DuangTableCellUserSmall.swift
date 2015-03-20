@@ -14,14 +14,16 @@ class DuangTableCellUserSmall: UITableViewCell
     @IBOutlet weak var userAvatarImageView: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
     
-    var imageFile: PFFile = PFFile()
+    var imageFile: PFFile?
     
     func reloadView() {
         userAvatarImageView.image = APIManager.sharedInstance.imagePlaceholderAvatar
-        imageFile.getDataInBackgroundWithBlock { (imageData, error) -> Void in
-            if error == nil {
-                if let image = UIImage(data:imageData) {
-                    self.userAvatarImageView.image = image
+        if let file = imageFile {
+            file.getDataInBackgroundWithBlock { (imageData, error) -> Void in
+                if error == nil {
+                    if let image = UIImage(data:imageData) {
+                        self.userAvatarImageView.image = image
+                    }
                 }
             }
         }

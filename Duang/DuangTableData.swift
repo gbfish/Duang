@@ -22,14 +22,14 @@ class DuangTableDataSection
     var sectionTitleForHeader = ""
     var rowArray = [DuangTableDataRow]()
     
-    class func initSectionUserBig(#sectionTitleForHeader: String, rowTitleString: String, rowDetailString: String, rowImageFile: PFFile, didSelectFunc: DuangTableDataRow.DidSelectFunc) -> DuangTableDataSection {
+    class func initSectionUserBig(#sectionTitleForHeader: String, rowTitleString: String, rowDetailString: String, rowImageFileAvatar: PFFile, rowImageFileBanner: PFFile?, didSelectFunc: DuangTableDataRow.DidSelectFunc) -> DuangTableDataSection {
         let section = DuangTableDataSection()
         section.sectionTitleForHeader = sectionTitleForHeader
-        section.rowArray.append(DuangTableDataRow.initRowUserBig(rowTitleString, rowDetailString: rowDetailString, rowImageFile: rowImageFile, didSelectFunc: didSelectFunc))
+        section.rowArray.append(DuangTableDataRow.initRowUserBig(rowTitleString, rowDetailString: rowDetailString, rowImageFileAvatar: rowImageFileAvatar, rowImageFileBanner: rowImageFileBanner, didSelectFunc: didSelectFunc))
         return section
     }
     
-    class func initSectionUserSmall(#sectionTitleForHeader: String, rowTitleString: String, rowImageFile: PFFile, didSelectFunc: DuangTableDataRow.DidSelectFunc) -> DuangTableDataSection {
+    class func initSectionUserSmall(#sectionTitleForHeader: String, rowTitleString: String, rowImageFile: PFFile?, didSelectFunc: DuangTableDataRow.DidSelectFunc) -> DuangTableDataSection {
         let section = DuangTableDataSection()
         section.sectionTitleForHeader = sectionTitleForHeader
         section.rowArray.append(DuangTableDataRow.initRowUserSmall(rowTitleString, rowImageFile: rowImageFile, didSelectFunc: didSelectFunc))
@@ -63,27 +63,47 @@ class DuangTableDataSection
         section.rowArray.append(DuangTableDataRow.initRowDefaultRightDetail(rowTitleString, rowDetailString: rowDetailString, didSelectFunc: didSelectFunc))
         return section
     }
+    
+    ////////
+    
+    
+    
+    func initSection(sectionTitleForHeader: String, textArray: [String]?, imageFileArray: [PFFile]?, imageArray: [UIImage]?, colorArray: [UIColor]?, function: DuangTableDataRow.DidSelectFunc?) -> DuangTableDataSection {
+        let section = DuangTableDataSection()
+        section.sectionTitleForHeader = sectionTitleForHeader
+        
+        let row = DuangTableDataRow()
+        row.textArray = textArray
+        row.imageFileArray = imageFileArray
+        row.imageArray = imageArray
+        row.colorArray = colorArray
+        row.function = function
+        
+        section.rowArray.append(row)
+        return section
+    }
 }
 
 // MARK: - Father Data Item
 
 class DuangTableDataRow
 {
-    class func initRowUserBig(rowTitleString: String, rowDetailString: String, rowImageFile: PFFile, didSelectFunc: DidSelectFunc) -> DuangTableDataRow {
+    class func initRowUserBig(rowTitleString: String, rowDetailString: String, rowImageFileAvatar: PFFile, rowImageFileBanner: PFFile?, didSelectFunc: DidSelectFunc) -> DuangTableDataRow {
         let row = DuangTableDataRow()
         row.rowType = DuangTableDataRow.RowType.UserBig
         row.rowTitleString = rowTitleString
         row.rowDetailString = rowDetailString
-        row.rowImageFile = rowImageFile
+        row.rowImageFileAvatar = rowImageFileAvatar
+        row.rowImageFileBanner = rowImageFileBanner
         row.didSelectFunc = didSelectFunc
         return row
     }
     
-    class func initRowUserSmall(rowTitleString: String, rowImageFile: PFFile, didSelectFunc: DidSelectFunc) -> DuangTableDataRow {
+    class func initRowUserSmall(rowTitleString: String, rowImageFile: PFFile?, didSelectFunc: DidSelectFunc) -> DuangTableDataRow {
         let row = DuangTableDataRow()
         row.rowType = DuangTableDataRow.RowType.UserSmall
         row.rowTitleString = rowTitleString
-        row.rowImageFile = rowImageFile
+        row.rowImageFileAvatar = rowImageFile
         row.didSelectFunc = didSelectFunc
         return row
     }
@@ -132,9 +152,12 @@ class DuangTableDataRow
     
     // MARK: - 
     
+    var rowType: 
+    
     var rowTitleString = ""
     var rowDetailString = ""
-    var rowImageFile: PFFile = PFFile()
+    var rowImageFileAvatar: PFFile?
+    var rowImageFileBanner: PFFile?
     
     // MARK: - Button
     
@@ -171,8 +194,24 @@ class DuangTableDataRow
     enum DidSelectFunc {
         case Nothing
         case Function1 ( Void -> Void )
-//        case Function2 ( (String, String) -> Void)
+        //        case Function2 ( (String, String) -> Void)
     }
     
     var didSelectFunc = DidSelectFunc.Nothing
+    
+    /////////
+    
+    var textArray: [String]?
+    var imageFileArray: [PFFile]?
+    var imageArray: [UIImage]?
+    var colorArray: [UIColor]?
+    
+    // MARK: - Function
+    
+    enum Function {
+        case Nothing
+        case Function1 ( Void -> Void )
+    }
+    
+    var function: DidSelectFunc?
 }

@@ -17,16 +17,33 @@ class DuangTableCellUserBig: UITableViewCell
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var userDescriptionLabel: UILabel!
     
-    var imageFile: PFFile = PFFile()
+    var imageFileAvatar: PFFile?
+    var imageFileBanner: PFFile?
     
     func reloadView() {
         userAvatarImageView.image = APIManager.sharedInstance.imagePlaceholderAvatar
-        imageFile.getDataInBackgroundWithBlock { (imageData, error) -> Void in
-            if error == nil {
-                if let image = UIImage(data:imageData) {
-                    self.userAvatarImageView.image = image
+        if let avatar = imageFileAvatar {
+            avatar.getDataInBackgroundWithBlock { (imageData, error) -> Void in
+                if error == nil {
+                    if let image = UIImage(data:imageData) {
+                        self.userAvatarImageView.image = image
+                    }
                 }
             }
         }
+        
+        
+        userBannerImageView.image = APIManager.sharedInstance.imagePlaceholderAvatar
+        if let banner = imageFileBanner {
+            banner.getDataInBackgroundWithBlock { (imageData, error) -> Void in
+                if error == nil {
+                    if let image = UIImage(data:imageData) {
+                        self.userBannerImageView.image = image
+                    }
+                }
+            }
+        }
+        
+        
     }
 }

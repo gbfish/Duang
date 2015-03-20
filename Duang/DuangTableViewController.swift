@@ -44,6 +44,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         case Settings
         case ChangePassword
         case Input
+        case AddPhoto
     }
     
     var tableType: TableType?
@@ -57,7 +58,10 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                 titleString = "Me"
                 
                 // Profile Picture
-                duangTableData.sectionArray.append(DuangTableDataSection.initSectionUserBig(sectionTitleForHeader: "", rowTitleString: "\(APIManager.sharedInstance.getCurrentUserFirstName()) \(APIManager.sharedInstance.getCurrentUserLastName())", rowDetailString: APIManager.sharedInstance.getCurrentUserDescription(), rowImageFile: APIManager.sharedInstance.getCurrentUserAvatarFile(), didSelectFunc: DuangTableDataRow.DidSelectFunc.Function1(showEditUser)))
+                duangTableData.sectionArray.append(DuangTableDataSection.initSectionUserBig(sectionTitleForHeader: "", rowTitleString: "\(APIManager.sharedInstance.getCurrentUserFirstName()) \(APIManager.sharedInstance.getCurrentUserLastName())", rowDetailString: APIManager.sharedInstance.getCurrentUserDescription(), rowImageFileAvatar: APIManager.sharedInstance.getCurrentUserAvatarFile(), rowImageFileBanner: APIManager.sharedInstance.getCurrentUserBannerFile(), didSelectFunc: DuangTableDataRow.DidSelectFunc.Function1(showEditUser)))
+                
+                // Add a Photo
+                duangTableData.sectionArray.append(DuangTableDataSection.initSectionButton(sectionTitleForHeader: "", rowTitleString: "Add a Photo", buttonStyle: DuangTableDataRow.ButtonStyle.Nomal, didSelectFunc: DuangTableDataRow.DidSelectFunc.Function1(showAddPhoto)))
                 
                 // Setting
                 duangTableData.sectionArray.append(DuangTableDataSection.initSectionDefaultRightDetail(sectionTitleForHeader: "", rowTitleString: "Settings", rowDetailString: "", didSelectFunc: DuangTableDataRow.DidSelectFunc.Function1(showSettings)))
@@ -67,6 +71,9 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 // Profile Picture
                 duangTableData.sectionArray.append(DuangTableDataSection.initSectionUserSmall(sectionTitleForHeader: "", rowTitleString: "Profile Picture", rowImageFile: APIManager.sharedInstance.getCurrentUserAvatarFile(), didSelectFunc: DuangTableDataRow.DidSelectFunc.Function1(selectImage)))
+                
+                // Banner Picture
+                duangTableData.sectionArray.append(DuangTableDataSection.initSectionUserSmall(sectionTitleForHeader: "", rowTitleString: "Banner Picture", rowImageFile: APIManager.sharedInstance.getCurrentUserBannerFile(), didSelectFunc: DuangTableDataRow.DidSelectFunc.Function1(selectImage)))
                 
                 // First Name
                 duangTableData.sectionArray.append(DuangTableDataSection.initSectionDefaultRightDetail(sectionTitleForHeader: "First Name", rowTitleString: APIManager.sharedInstance.getCurrentUserFirstName(), rowDetailString: "", didSelectFunc: DuangTableDataRow.DidSelectFunc.Function1(showInput)))
@@ -115,6 +122,12 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                 
                 // Done
                 duangTableData.sectionArray.append(DuangTableDataSection.initSectionButton(sectionTitleForHeader: "", rowTitleString: "Done", buttonStyle: DuangTableDataRow.ButtonStyle.Nomal, didSelectFunc: DuangTableDataRow.DidSelectFunc.Function1(changePasswordDone)))
+                
+            case TableType.AddPhoto:
+                
+                // Photo
+                duangTableData.sectionArray.append(DuangTableDataSection.initSectionUserSmall(sectionTitleForHeader: "", rowTitleString: "Photo", rowImageFile: APIManager.sharedInstance.getCurrentUserAvatarFile(), didSelectFunc: DuangTableDataRow.DidSelectFunc.Function1(selectImage)))
+
             }
         }
         
@@ -131,6 +144,12 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     func showSettings() {
         let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
         viewController.tableType = TableType.Settings
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func showAddPhoto() {
+        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
+        viewController.tableType = TableType.AddPhoto
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -322,8 +341,17 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         if let type = tableType {
             switch type {
             case TableType.ProfileEdit:
-                APIManager.sharedInstance.setCurrentUserAvatar(image)
-                selectedSection.rowArray[0].rowImageFile = APIManager.sharedInstance.getCurrentUserAvatarFile()
+                if selectedSection.rowArray[0].rowTitleString == "Profile Picture" {
+                    APIManager.sharedInstance.setCurrentUserAvatar(image)
+                    selectedSection.rowArray[0].rowImageFileAvatar = APIManager.sharedInstance.getCurrentUserAvatarFile()
+                    tableView.reloadData()
+                } else if selectedSection.rowArray[0].rowTitleString == "Banner Picture" {
+                    APIManager.sharedInstance.setCurrentUserBanner(image)
+                    selectedSection.rowArray[0].rowImageFileAvatar = APIManager.sharedInstance.getCurrentUserBannerFile()
+                    tableView.reloadData()
+                }
+            case TableType.AddPhoto:
+                selectedImage = image
                 tableView.reloadData()
             default:
                 break
@@ -331,6 +359,10 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         }
     }
 
+    // MARK: - Data
+    
+    var selectedImage: UIImage?
+    
     // MARK: - TableView Data
     
     var duangTableData = DuangTableData()
@@ -391,17 +423,17 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         switch row.rowType {
         case DuangTableDataRow.RowType.UserBig:
             let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.UserBig, forIndexPath: indexPath) as DuangTableCellUserBig
-            cell.imageFile = row.rowImageFile
+            cell.imageFileAvatar = row.rowImageFileAvatar
+            cell.imageFileBanner = row.rowImageFileBanner
             cell.userNameLabel.text = row.rowTitleString
             cell.userDescriptionLabel.text = row.rowDetailString
-//            cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
             cell.reloadView()
             return cell
             
         case DuangTableDataRow.RowType.UserSmall:
             let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.UserSmall, forIndexPath: indexPath) as DuangTableCellUserSmall
             cell.userAvatarImageView.layer.cornerRadius = cell.userAvatarImageView.frame.size.height / 2.0
-            cell.imageFile = row.rowImageFile
+            cell.imageFile = row.rowImageFileAvatar
             cell.userNameLabel.text = row.rowTitleString
             cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
             cell.reloadView()

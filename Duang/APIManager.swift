@@ -30,13 +30,14 @@ class APIManager {
         return errorString
     }
     
-    // MARK: - 
+    // MARK: - Table User
     
     private struct TableUser {
         static let Avatar = "avatar"
+        static let Banner = "banner"
         static let FirstName = "firstName"
         static let LastName = "lastName"
-        static let Description = "Description"
+        static let Description = "description"
     }
     
     // MARK: - User
@@ -184,6 +185,22 @@ class APIManager {
         currentUser.saveInBackground()
     }
     
+    // MARK: Banner
+
+    func getCurrentUserBannerFile() -> PFFile? {
+        if let imageFile = currentUser[TableUser.Banner] as? PFFile {
+            return imageFile
+        }
+        return nil
+    }
+    
+    func setCurrentUserBanner(image: UIImage) {
+        let imageData = UIImagePNGRepresentation(image)
+        let imageFile = PFFile(name:"image.png", data:imageData)
+        currentUser[TableUser.Banner] = imageFile
+        currentUser.saveInBackground()
+    }
+    
     // MARK: First Name
     
     func getCurrentUserFirstName() -> String {
@@ -224,6 +241,35 @@ class APIManager {
     func setCurrentUserDescription(lastName: String) {
         currentUser[TableUser.Description] = lastName
         currentUser.saveInBackground()
+    }
+    
+    // MARK: - Table Photo
+    
+    private struct TablePhoto {
+        static let ClassName = "Photo"
+        
+        static let Image = "image"
+        static let Owner = "owner"
+        static let Description = "description"
+    }
+    
+    func addNewPhoto(image: UIImage, description: String, success: () -> (), failure: (error: NSError) -> ()) {
+        var photo = PFObject(className:TablePhoto.ClassName)
+        
+        let imageData = UIImagePNGRepresentation(image)
+        let imageFile = PFFile(name:"image.png", data:imageData)
+        photo[TablePhoto.Image] = imageFile
+        
+        photo[TablePhoto.Owner] = currentUser
+        photo[TablePhoto.Description] = description
+        
+        photo.saveInBackgroundWithBlock { (ifSuccess, error) -> Void in
+            if (ifSuccess) {
+                success()
+            } else {
+                failure(error: error)
+            }
+        }
     }
     
     // MARK: - Validate Email
