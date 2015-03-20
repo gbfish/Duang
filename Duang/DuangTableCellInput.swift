@@ -8,7 +8,8 @@
 
 import UIKit
 
-protocol DuangTableCellInputProtocol {
+protocol DuangTableCellInputProtocol
+{
     func duangTableCellInputDoneAction()
 }
 

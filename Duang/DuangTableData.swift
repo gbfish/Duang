@@ -10,15 +10,31 @@ import Foundation
 import UIKit
 import Parse
 
-class DuangTableData {
+class DuangTableData
+{
     var sectionArray = [DuangTableDataSection]()
 }
 
 // MARK: - Father Data Array
 
-class DuangTableDataSection {
+class DuangTableDataSection
+{
     var sectionTitleForHeader = ""
     var rowArray = [DuangTableDataRow]()
+    
+    class func initSectionUserBig(#sectionTitleForHeader: String, rowTitleString: String, rowDetailString: String, rowImageFile: PFFile, didSelectFunc: DuangTableDataRow.DidSelectFunc) -> DuangTableDataSection {
+        let section = DuangTableDataSection()
+        section.sectionTitleForHeader = sectionTitleForHeader
+        section.rowArray.append(DuangTableDataRow.initRowUserBig(rowTitleString, rowDetailString: rowDetailString, rowImageFile: rowImageFile, didSelectFunc: didSelectFunc))
+        return section
+    }
+    
+    class func initSectionUserSmall(#sectionTitleForHeader: String, rowTitleString: String, rowImageFile: PFFile, didSelectFunc: DuangTableDataRow.DidSelectFunc) -> DuangTableDataSection {
+        let section = DuangTableDataSection()
+        section.sectionTitleForHeader = sectionTitleForHeader
+        section.rowArray.append(DuangTableDataRow.initRowUserSmall(rowTitleString, rowImageFile: rowImageFile, didSelectFunc: didSelectFunc))
+        return section
+    }
     
     class func initSectionInput(#sectionTitleForHeader: String) -> DuangTableDataSection {
         let section = DuangTableDataSection()
@@ -41,7 +57,6 @@ class DuangTableDataSection {
         return section
     }
     
-    
     class func initSectionDefaultRightDetail(#sectionTitleForHeader: String, rowTitleString: String, rowDetailString: String, didSelectFunc: DuangTableDataRow.DidSelectFunc) -> DuangTableDataSection {
         let section = DuangTableDataSection()
         section.sectionTitleForHeader = sectionTitleForHeader
@@ -52,7 +67,27 @@ class DuangTableDataSection {
 
 // MARK: - Father Data Item
 
-class DuangTableDataRow {
+class DuangTableDataRow
+{
+    class func initRowUserBig(rowTitleString: String, rowDetailString: String, rowImageFile: PFFile, didSelectFunc: DidSelectFunc) -> DuangTableDataRow {
+        let row = DuangTableDataRow()
+        row.rowType = DuangTableDataRow.RowType.UserBig
+        row.rowTitleString = rowTitleString
+        row.rowDetailString = rowDetailString
+        row.rowImageFile = rowImageFile
+        row.didSelectFunc = didSelectFunc
+        return row
+    }
+    
+    class func initRowUserSmall(rowTitleString: String, rowImageFile: PFFile, didSelectFunc: DidSelectFunc) -> DuangTableDataRow {
+        let row = DuangTableDataRow()
+        row.rowType = DuangTableDataRow.RowType.UserSmall
+        row.rowTitleString = rowTitleString
+        row.rowImageFile = rowImageFile
+        row.didSelectFunc = didSelectFunc
+        return row
+    }
+    
     class func initRowInput() -> DuangTableDataRow {
         let row = DuangTableDataRow()
         row.rowType = DuangTableDataRow.RowType.Input
@@ -83,8 +118,6 @@ class DuangTableDataRow {
         row.didSelectFunc = didSelectFunc
         return row
     }
-    
-    
     
     enum RowType{
         case UserBig

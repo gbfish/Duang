@@ -32,7 +32,11 @@ class APIManager {
     
     // MARK: - 
     
-    
+    private struct TableUser {
+        static let Avatar = "avatar"
+        static let FirstName = "firstName"
+        static let LastName = "lastName"
+    }
     
     // MARK: - User
     
@@ -93,45 +97,27 @@ class APIManager {
         }
         return false
     }
-    /*
-    var currentUserUsername: String {
+
+    // MARK: - Current User
+    
+    var currentUser: PFUser {
         get {
             if let currentUser = PFUser.currentUser() {
-                return currentUser.username
+                return currentUser
             } else {
-                return ""
+                // show the signup or login screen
             }
+            return PFUser()
         }
-        set {
-            if let currentUser = PFUser.currentUser() {
-                currentUser.username = newValue
-                var error: NSError? = nil
-                currentUser.save(&error)
-                if let theError = error {
-                    var errorString = "There was a problem processing your request."
-                    if let userInfo = theError.userInfo as? [NSObject: NSObject] {
-                        if let errorInfoString: NSString = userInfo["error"] as? NSString {
-                            
-                            errorString = errorInfoString
-                            
-                            println("--errorString = \(errorString)")
-                        }
-                    }
-                } else {
-                    // Error is still nil - proceed with business logic.
-                }
-            }
-        }
-    }*/
+    }
     
     // MARK: Username
     
     func getCurrentUserUsername() -> String {
-        return PFUser.currentUser().username
+        return currentUser.username
     }
     
     func setCurrentUserUsername(username: String) -> String? {
-        let currentUser = PFUser.currentUser()
         currentUser.username = username
         var error: NSError? = nil
         currentUser.save(&error)
@@ -148,7 +134,6 @@ class APIManager {
     func changePassword(oldPassword: String, newPassword: String) -> String? {
         if let currentPassword = NSUserDefaults.standardUserDefaults().objectForKey("CurrentPassword") as? String {
             if currentPassword == oldPassword {
-                let currentUser = PFUser.currentUser()
                 currentUser.password = newPassword
                 var error: NSError? = nil
                 currentUser.save(&error)
@@ -167,11 +152,10 @@ class APIManager {
     // MARK: Email
     
     func getCurrentUserEmail() -> String {
-        return PFUser.currentUser().email
+        return currentUser.email
     }
     
     func setCurrentUserEmail(email: String) -> String? {
-        let currentUser = PFUser.currentUser()
         currentUser.email = email
         var error: NSError? = nil
         currentUser.save(&error)
@@ -181,35 +165,50 @@ class APIManager {
         return nil
     }
     
-    // MARK:
+    // MARK: Avatar
     
     var imagePlaceholderAvatar = UIImage(named: "placeholder_user")
     
-    var currentUserAvatarFile: PFFile {
-        get {
-            if let currentUser = PFUser.currentUser() {
-                if let imageFile = currentUser["avatar"] as? PFFile {
-                    return imageFile
-                }
-            }
-            return PFFile()
+    func getCurrentUserAvatarFile() -> PFFile {
+        if let imageFile = currentUser[TableUser.Avatar] as? PFFile {
+            return imageFile
         }
-        
+        return PFFile()
     }
     
-    var currentUserAvatar: UIImage? {
-        get {
-            return nil
+    func setCurrentUserAvatar(image: UIImage) {
+        let imageData = UIImagePNGRepresentation(image)
+        let imageFile = PFFile(name:"image.png", data:imageData)
+        currentUser[TableUser.Avatar] = imageFile
+        currentUser.saveInBackground()
+    }
+    
+    // MARK: First Name
+    
+    func getCurrentUserFirstName() -> String {
+        if let returnValue = currentUser[TableUser.FirstName] as? String {
+            return returnValue
         }
-        set {
-            if let currentUser = PFUser.currentUser() {
-                let imageData = UIImagePNGRepresentation(newValue)
-                let imageFile = PFFile(name:"image.png", data:imageData)
-                
-                currentUser["avatar"] = imageFile
-                currentUser.saveInBackground()
-            }
+        return ""
+    }
+    
+    func setCurrentUserFirstName(firstName: String) {
+        currentUser[TableUser.FirstName] = firstName
+        currentUser.saveInBackground()
+    }
+    
+    // MARK: Last Name
+    
+    func getCurrentUserLastName() -> String {
+        if let returnValue = currentUser[TableUser.LastName] as? String {
+            return returnValue
         }
+        return ""
+    }
+    
+    func setCurrentUserLastName(lastName: String) {
+        currentUser[TableUser.LastName] = lastName
+        currentUser.saveInBackground()
     }
     
     // MARK: - Validate Email

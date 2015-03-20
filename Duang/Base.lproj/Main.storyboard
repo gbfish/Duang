@@ -43,18 +43,29 @@
                                                         <constraint firstAttribute="width" secondItem="E2u-ph-JCx" secondAttribute="height" multiplier="1:1" id="k0g-Q6-C8o"/>
                                                     </constraints>
                                                 </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WZl-Qh-hDv">
+                                                    <rect key="frame" x="103" y="43" width="464" height="52"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="bottomMargin" secondItem="WZl-Qh-hDv" secondAttribute="bottom" constant="-4" id="BrY-fl-g9M"/>
+                                                <constraint firstItem="WZl-Qh-hDv" firstAttribute="leading" secondItem="E2u-ph-JCx" secondAttribute="trailing" constant="8" id="Dqi-v2-TPc"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="DKU-kv-VDN" secondAttribute="trailing" constant="-8" id="JxZ-8T-byf"/>
                                                 <constraint firstItem="E2u-ph-JCx" firstAttribute="leading" secondItem="qhs-yT-G35" secondAttribute="leadingMargin" constant="-3" id="KD2-uS-O1Q"/>
                                                 <constraint firstItem="E2u-ph-JCx" firstAttribute="top" secondItem="qhs-yT-G35" secondAttribute="topMargin" constant="-3" id="MxK-ih-q3k"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="WZl-Qh-hDv" secondAttribute="trailing" constant="-8" id="eFX-AZ-7FL"/>
                                                 <constraint firstItem="DKU-kv-VDN" firstAttribute="top" secondItem="E2u-ph-JCx" secondAttribute="top" id="gzj-eo-Pcp"/>
+                                                <constraint firstItem="WZl-Qh-hDv" firstAttribute="top" secondItem="DKU-kv-VDN" secondAttribute="bottom" constant="8" id="iBU-yU-JCr"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="E2u-ph-JCx" secondAttribute="bottom" constant="-4" id="qmd-o3-YKW"/>
                                                 <constraint firstItem="DKU-kv-VDN" firstAttribute="leading" secondItem="E2u-ph-JCx" secondAttribute="trailing" constant="8" id="v51-uG-tKz"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="userAvatarImageView" destination="E2u-ph-JCx" id="hLV-Lr-nbs"/>
+                                            <outlet property="userDescriptionLabel" destination="WZl-Qh-hDv" id="d9z-Jm-3Tp"/>
                                             <outlet property="userNameLabel" destination="DKU-kv-VDN" id="9GV-Yu-Sm7"/>
                                         </connections>
                                     </tableViewCell>
@@ -205,7 +216,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Czk-nn-jy1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2459" y="3648"/>
+            <point key="canvasLocation" x="2459" y="3647"/>
         </scene>
         <!--Landing View Controller-->
         <scene sceneID="BKo-Dg-9gF">

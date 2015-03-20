@@ -53,63 +53,45 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     func checkTableType() {
         if let type = tableType {
             switch type {
-            case TableType.Profile:// MARK: Profile
+            case TableType.Profile:
                 titleString = "Me"
-                var row = DuangTableDataRow()
-                var section = DuangTableDataSection()
+//                var row = DuangTableDataRow()
+//                var section = DuangTableDataSection()
                 
-                row.rowType = DuangTableDataRow.RowType.UserBig
-                row.rowTitleString = APIManager.sharedInstance.getCurrentUserUsername()
-                row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(showEditUser)
+//                row.rowType = DuangTableDataRow.RowType.UserBig
+//                row.rowTitleString = APIManager.sharedInstance.getCurrentUserUsername()
+//                row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(showEditUser)
+//                
+//                section.rowArray.append(row)
+//                duangTableData.sectionArray.append(section)
                 
-                section.rowArray.append(row)
-                duangTableData.sectionArray.append(section)
-                section = DuangTableDataSection()
-
-                row = DuangTableDataRow()
-                row.rowType = DuangTableDataRow.RowType.DefaultRightDetail
-                row.rowTitleString = "Settings"
-                row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(showSettings)
+                // Profile Picture
+                duangTableData.sectionArray.append(DuangTableDataSection.initSectionUserBig(sectionTitleForHeader: "", rowTitleString: "\(APIManager.sharedInstance.getCurrentUserFirstName()) \(APIManager.sharedInstance.getCurrentUserLastName())", rowDetailString: "description", rowImageFile: APIManager.sharedInstance.getCurrentUserAvatarFile(), didSelectFunc: DuangTableDataRow.DidSelectFunc.Function1(showEditUser)))
                 
-                section.rowArray.append(row)
-                duangTableData.sectionArray.append(section)
+                // Setting
+                duangTableData.sectionArray.append(DuangTableDataSection.initSectionDefaultRightDetail(sectionTitleForHeader: "", rowTitleString: "Settings", rowDetailString: "", didSelectFunc: DuangTableDataRow.DidSelectFunc.Function1(showSettings)))
                 
-            case TableType.ProfileEdit:// MARK: ProfileEdit
+//                section = DuangTableDataSection()
+//
+//                row = DuangTableDataRow()
+//                row.rowType = DuangTableDataRow.RowType.DefaultRightDetail
+//                row.rowTitleString = "Settings"
+//                row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(showSettings)
+//                
+//                section.rowArray.append(row)
+//                duangTableData.sectionArray.append(section)
+                
+            case TableType.ProfileEdit:
                 titleString = "Edit Profile"
-                var row = DuangTableDataRow()
-                var section = DuangTableDataSection()
                 
-                row.rowType = DuangTableDataRow.RowType.UserSmall
-                row.rowTitleString = "Profile Picture"
-                row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(selectImage)
-                row.rowImageFile = APIManager.sharedInstance.currentUserAvatarFile
+                // Profile Picture
+                duangTableData.sectionArray.append(DuangTableDataSection.initSectionUserSmall(sectionTitleForHeader: "", rowTitleString: "Profile Picture", rowImageFile: APIManager.sharedInstance.getCurrentUserAvatarFile(), didSelectFunc: DuangTableDataRow.DidSelectFunc.Function1(selectImage)))
                 
-                section.rowArray.append(row)
-                duangTableData.sectionArray.append(section)
+                // First Name
+                duangTableData.sectionArray.append(DuangTableDataSection.initSectionDefaultRightDetail(sectionTitleForHeader: "First Name", rowTitleString: APIManager.sharedInstance.getCurrentUserFirstName(), rowDetailString: "", didSelectFunc: DuangTableDataRow.DidSelectFunc.Function1(showInput)))
                 
-                section = DuangTableDataSection()
-                section.sectionTitleForHeader = "Username"
-                
-                row = DuangTableDataRow()
-                row.rowType = DuangTableDataRow.RowType.DefaultRightDetail
-                row.rowTitleString = APIManager.sharedInstance.getCurrentUserUsername()
-                row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(showInput)
-                
-                section.rowArray.append(row)
-                duangTableData.sectionArray.append(section)
-                
-                section = DuangTableDataSection()
-                section.sectionTitleForHeader = "Password"
-                
-                row = DuangTableDataRow()
-                row.rowType = DuangTableDataRow.RowType.DefaultRightDetail
-                row.rowTitleString = "Username"
-                row.rowDetailString = APIManager.sharedInstance.getCurrentUserUsername()
-                row.didSelectFunc = DuangTableDataRow.DidSelectFunc.Function1(showInput)
-                
-                section.rowArray.append(row)
-                
-                duangTableData.sectionArray.append(section)
+                // Last Name
+                duangTableData.sectionArray.append(DuangTableDataSection.initSectionDefaultRightDetail(sectionTitleForHeader: "Last Name", rowTitleString: APIManager.sharedInstance.getCurrentUserLastName(), rowDetailString: "", didSelectFunc: DuangTableDataRow.DidSelectFunc.Function1(showInput)))
                 
             case TableType.Input:
                 titleString = selectedSection.sectionTitleForHeader
@@ -356,9 +338,8 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         if let type = tableType {
             switch type {
             case TableType.ProfileEdit:
-                APIManager.sharedInstance.currentUserAvatar = image
-                
-                selectedSection.rowArray[0].rowImageFile = APIManager.sharedInstance.currentUserAvatarFile
+                APIManager.sharedInstance.setCurrentUserAvatar(image)
+                selectedSection.rowArray[0].rowImageFile = APIManager.sharedInstance.getCurrentUserAvatarFile()
                 tableView.reloadData()
             default:
                 break
@@ -430,8 +411,11 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         switch row.rowType {
         case DuangTableDataRow.RowType.UserBig:
             let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.UserBig, forIndexPath: indexPath) as DuangTableCellUserBig
-            cell.userAvatarImageView.image = UIImage(named: "placeholder_user")
+            cell.imageFile = row.rowImageFile
             cell.userNameLabel.text = row.rowTitleString
+            cell.userDescriptionLabel.text = row.rowDetailString
+            cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+            cell.reloadView()
             return cell
             
         case DuangTableDataRow.RowType.UserSmall:
@@ -440,7 +424,6 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             cell.imageFile = row.rowImageFile
             cell.userNameLabel.text = row.rowTitleString
             cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-            
             cell.reloadView()
             return cell
             
@@ -500,6 +483,16 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     func duangTableViewControllerInput(inputString: NSString) {
         if let type = tableType {
             switch type {
+            case TableType.ProfileEdit:
+                if selectedSection.sectionTitleForHeader == "First Name" {
+                    APIManager.sharedInstance.setCurrentUserFirstName(inputString)
+                    selectedSection.rowArray[0].rowTitleString = inputString
+                    tableView.reloadData()
+                } else if selectedSection.sectionTitleForHeader == "Last Name" {
+                    APIManager.sharedInstance.setCurrentUserLastName(inputString)
+                    selectedSection.rowArray[0].rowTitleString = inputString
+                    tableView.reloadData()
+                }
             case TableType.Settings:
                 if selectedSection.sectionTitleForHeader == "Username" {
                     if let errorString = APIManager.sharedInstance.setCurrentUserUsername(inputString) {
