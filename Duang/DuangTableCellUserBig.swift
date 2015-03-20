@@ -11,6 +11,8 @@ import Parse
 
 class DuangTableCellUserBig: UITableViewCell
 {
+    @IBOutlet weak var mainBackgroundView: UIView!
+    @IBOutlet weak var userBannerImageView: UIImageView!
     @IBOutlet weak var userAvatarImageView: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var userDescriptionLabel: UILabel!

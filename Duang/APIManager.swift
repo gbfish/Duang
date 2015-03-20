@@ -36,6 +36,7 @@ class APIManager {
         static let Avatar = "avatar"
         static let FirstName = "firstName"
         static let LastName = "lastName"
+        static let Description = "Description"
     }
     
     // MARK: - User
@@ -208,6 +209,20 @@ class APIManager {
     
     func setCurrentUserLastName(lastName: String) {
         currentUser[TableUser.LastName] = lastName
+        currentUser.saveInBackground()
+    }
+    
+    // MARK: Description
+    
+    func getCurrentUserDescription() -> String {
+        if let returnValue = currentUser[TableUser.Description] as? String {
+            return returnValue
+        }
+        return ""
+    }
+    
+    func setCurrentUserDescription(lastName: String) {
+        currentUser[TableUser.Description] = lastName
         currentUser.saveInBackground()
     }
     
