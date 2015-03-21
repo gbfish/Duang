@@ -23,6 +23,8 @@ class DuangTableCellInput: UITableViewCell, UITextViewDelegate
         }
     }
     
+    // MARK: - UITextViewDelegate
+    
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             delegate?.duangTableCellInputDoneAction()

@@ -169,13 +169,21 @@ class APIManager {
     
     // MARK: Avatar
     
-    var imagePlaceholderAvatar = UIImage(named: "placeholder_user")
+    struct Placeholder {
+        static let Avatar = UIImage(named: "placeholder_user")
+        static let Image = UIImage(named: "placeholder_image")
+    }
+
     
-    func getCurrentUserAvatarFile() -> PFFile {
+//    let imagePlaceholderAvatar = UIImage(named: "placeholder_user")
+//    let imagePlaceholderImage = UIImage(named: "placeholder_image")
+    
+    
+    func getCurrentUserAvatarFile() -> PFFile? {
         if let imageFile = currentUser[TableUser.Avatar] as? PFFile {
             return imageFile
         }
-        return PFFile()
+        return nil
     }
     
     func setCurrentUserAvatar(image: UIImage) {

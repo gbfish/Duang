@@ -151,38 +151,38 @@
                                             <outlet property="userNameLabel" destination="DKU-kv-VDN" id="9GV-Yu-Sm7"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="DuangTableCellUserSmall" rowHeight="50" id="gNx-Pe-d5A" customClass="DuangTableCellUserSmall" customModule="Duang" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="DuangTableCellImageSmall" rowHeight="50" id="nFg-Ga-ZMG" customClass="DuangTableCellImageSmall" customModule="Duang" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gNx-Pe-d5A" id="4Iu-nx-iim">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nFg-Ga-ZMG" id="5XP-Wb-FO7">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="F23-OW-Yr5">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PAZ-5L-7m4">
                                                     <rect key="frame" x="5" y="5" width="40" height="40"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" secondItem="F23-OW-Yr5" secondAttribute="height" multiplier="1:1" id="oJg-yY-lAj"/>
+                                                        <constraint firstAttribute="width" secondItem="PAZ-5L-7m4" secondAttribute="height" multiplier="1:1" id="cWr-O8-dBu"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Hd-Qk-vdV">
-                                                    <rect key="frame" x="53" y="5" width="514" height="41"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Image" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Ch-6i-kcC">
+                                                    <rect key="frame" x="53" y="4" width="514" height="41"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottomMargin" secondItem="F23-OW-Yr5" secondAttribute="bottom" constant="-4" id="LQl-iH-6Lr"/>
-                                                <constraint firstItem="6Hd-Qk-vdV" firstAttribute="bottom" secondItem="F23-OW-Yr5" secondAttribute="bottom" constant="1" id="Tep-gy-ii8"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="6Hd-Qk-vdV" secondAttribute="trailing" constant="-8" id="UK1-xK-zCn"/>
-                                                <constraint firstItem="6Hd-Qk-vdV" firstAttribute="top" secondItem="F23-OW-Yr5" secondAttribute="top" id="XGU-Sq-Tw5"/>
-                                                <constraint firstItem="6Hd-Qk-vdV" firstAttribute="leading" secondItem="F23-OW-Yr5" secondAttribute="trailing" constant="8" id="Yo5-73-JOb"/>
-                                                <constraint firstItem="F23-OW-Yr5" firstAttribute="leading" secondItem="4Iu-nx-iim" secondAttribute="leadingMargin" constant="-3" id="dbs-PG-Na5"/>
-                                                <constraint firstItem="F23-OW-Yr5" firstAttribute="top" secondItem="4Iu-nx-iim" secondAttribute="topMargin" constant="-3" id="jBl-ZV-yeV"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="7Ch-6i-kcC" secondAttribute="trailing" constant="-8" id="25C-vk-urU"/>
+                                                <constraint firstItem="PAZ-5L-7m4" firstAttribute="bottom" secondItem="7Ch-6i-kcC" secondAttribute="bottom" id="4hp-77-dUe"/>
+                                                <constraint firstItem="PAZ-5L-7m4" firstAttribute="top" secondItem="5XP-Wb-FO7" secondAttribute="topMargin" constant="-3" id="AJw-C9-6yy"/>
+                                                <constraint firstItem="7Ch-6i-kcC" firstAttribute="leading" secondItem="PAZ-5L-7m4" secondAttribute="trailing" constant="8" id="HWh-Ad-YbN"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="PAZ-5L-7m4" secondAttribute="bottom" constant="-4" id="Kvs-CG-O3U"/>
+                                                <constraint firstItem="PAZ-5L-7m4" firstAttribute="top" secondItem="7Ch-6i-kcC" secondAttribute="top" constant="1" id="XHa-hb-CAS"/>
+                                                <constraint firstItem="PAZ-5L-7m4" firstAttribute="leading" secondItem="5XP-Wb-FO7" secondAttribute="leadingMargin" constant="-3" id="ipv-r7-gQy"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="userAvatarImageView" destination="F23-OW-Yr5" id="jho-Lk-lXz"/>
-                                            <outlet property="userNameLabel" destination="6Hd-Qk-vdV" id="ooD-Jg-CLb"/>
+                                            <outlet property="cellImageView" destination="PAZ-5L-7m4" id="tei-dd-S5X"/>
+                                            <outlet property="cellTitleLabel" destination="7Ch-6i-kcC" id="k5d-Bk-aux"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DuangTableCellInput" rowHeight="200" id="Sn2-Z5-Z81" customClass="DuangTableCellInput" customModule="Duang" customModuleProvider="target">
@@ -298,7 +298,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Czk-nn-jy1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2459" y="3650"/>
+            <point key="canvasLocation" x="2459" y="3644"/>
         </scene>
         <!--Landing View Controller-->
         <scene sceneID="BKo-Dg-9gF">
