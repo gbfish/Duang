@@ -49,7 +49,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         if let type = tableType {
             var section = DuangTableDataSection()
             switch type {
-            case TableType.Profile:
+            case TableType.Profile:// MARK: Profile
                 titleString = "Me"
                 
                 // Profile Picture
@@ -82,7 +82,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     function: DuangTableDataRow.Function.Function1(showSettings))
                 duangTableData.sectionArray.append(section)
                 
-            case TableType.ProfileEdit:
+            case TableType.ProfileEdit:// MARK: ProfileEdit
                 titleString = "Edit Profile"
                 
                 // Profile Picture
@@ -135,7 +135,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     function: DuangTableDataRow.Function.Function1(showInput))
                 duangTableData.sectionArray.append(section)
                 
-            case TableType.Input:
+            case TableType.Input:// MARK: Input
                 if let text = inputTitle {
                     titleString = text
                 }
@@ -160,7 +160,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     function: DuangTableDataRow.Function.Function1(doneInput))
                 duangTableData.sectionArray.append(section)
                 
-            case TableType.Settings:
+            case TableType.Settings:// MARK: Settings
                 titleString = "Settings"
                 
                 // Username
@@ -203,7 +203,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     function: DuangTableDataRow.Function.Function1(logout))
                 duangTableData.sectionArray.append(section)
                 
-            case TableType.ChangePassword:
+            case TableType.ChangePassword:// MARK: ChangePassword
                 titleString = "Change Password"
                 
                 // Old Password
@@ -247,7 +247,8 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                 duangTableData.sectionArray.append(section)
 
                 
-            case TableType.AddPhoto:
+            case TableType.AddPhoto:// MARK: AddPhoto
+                titleString = "Add a Photo"
                 
                 // Photo
                 section = DuangTableDataSection.initSection(sectionTitleForHeader: nil,
@@ -258,7 +259,26 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     colorArray: nil,
                     function: DuangTableDataRow.Function.Function1(selectImage))
                 duangTableData.sectionArray.append(section)
-
+                
+                // Description
+                section = DuangTableDataSection.initSection(sectionTitleForHeader: TitleName.InputPhotoDescription,
+                    rowType: DuangTableDataRow.RowType.DefaultRightDetail,
+                    textArray: [""],
+                    imageFileArray: nil,
+                    imageArray: nil,
+                    colorArray: nil,
+                    function: DuangTableDataRow.Function.Function1(showInput))
+                duangTableData.sectionArray.append(section)
+                
+                // Done
+                section = DuangTableDataSection.initSection(sectionTitleForHeader: nil,
+                    rowType: DuangTableDataRow.RowType.Button,
+                    textArray: ["Done"],
+                    imageFileArray: nil,
+                    imageArray: nil,
+                    colorArray: nil,
+                    function: DuangTableDataRow.Function.Function1(addPhotoDone))
+                duangTableData.sectionArray.append(section)
             }
         }
         
@@ -282,6 +302,24 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
         viewController.tableType = TableType.AddPhoto
         self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func addPhotoDone() {
+        if temImage == nil {
+            var deleteAlert = UIAlertController(title: "Sorry", message: "The photo is empty.", preferredStyle: UIAlertControllerStyle.Alert)
+            deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
+            presentViewController(deleteAlert, animated: true, completion: nil)
+        } else if temText == nil {
+            var deleteAlert = UIAlertController(title: "Sorry", message: "The description is empty.", preferredStyle: UIAlertControllerStyle.Alert)
+            deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
+            presentViewController(deleteAlert, animated: true, completion: nil)
+        } else {
+            APIManager.sharedInstance.addNewPhoto(temImage!, description: temText!, success: { () -> () in
+                println("ok")
+            }, failure: { (error) -> () in
+                
+            })
+        }
     }
     
     func showChangePassword() {
@@ -351,8 +389,6 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // MARK: - Input
     
-    
-    
     var duangTableCellInput = DuangTableCellInput()
     
     var inputTitle: String?
@@ -393,7 +429,6 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     var delegate: DuangTableViewControllerProtocol?
     
     func duangTableViewControllerInput(inputString: NSString) {
-        
         if let sectionNumber = selectedIndexPath?.section {
             if let inputName = duangTableData.sectionArray[sectionNumber].sectionTitleForHeader {
                 if let type = tableType {
@@ -402,15 +437,12 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                         if inputName == TitleName.InputFirstName {
                             APIManager.sharedInstance.setCurrentUserFirstName(inputString)
                             setSelectedInputText(inputString)
-                            tableView.reloadData()
                         } else if inputName == TitleName.InputLastName {
                             APIManager.sharedInstance.setCurrentUserLastName(inputString)
                             setSelectedInputText(inputString)
-                            tableView.reloadData()
                         } else if inputName == TitleName.InputAboutYou {
                             APIManager.sharedInstance.setCurrentUserDescription(inputString)
                             setSelectedInputText(inputString)
-                            tableView.reloadData()
                         }
                     case TableType.Settings:
                         if inputName == TitleName.InputUsername {
@@ -420,7 +452,6 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                                 presentViewController(deleteAlert, animated: true, completion: nil)
                             } else {
                                 setSelectedInputText(inputString)
-                                tableView.reloadData()
                             }
                         } else if inputName == TitleName.InputEmail {
                             if let errorString = APIManager.sharedInstance.setCurrentUserEmail(inputString) {
@@ -429,8 +460,12 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                                 presentViewController(deleteAlert, animated: true, completion: nil)
                             } else {
                                 setSelectedInputText(inputString)
-                                tableView.reloadData()
                             }
+                        }
+                    case TableType.AddPhoto:
+                        if inputName == TitleName.InputPhotoDescription {
+                            temText = inputString
+                            setSelectedInputText(inputString)
                         }
                     default:
                         break
@@ -441,12 +476,20 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func setSelectedInputText(inputText: String) {
-        if let sectionNumber = selectedIndexPath?.section {
-            if let rowNumber = selectedIndexPath?.row {
-                duangTableData.sectionArray[sectionNumber].rowArray?[rowNumber].textArray?[0] = inputText
+        if let theSection = selectedIndexPath?.section {
+            if let theRow = selectedIndexPath?.row {
+                if let theRowArray = duangTableData.sectionArray[theSection].rowArray {
+                    if theRowArray.count > 0 {
+                        if let theTextArray = theRowArray[0].textArray {
+                            if theTextArray.count > 0 {
+                                duangTableData.sectionArray[theSection].rowArray![theRow].textArray![0] = inputText
+                                tableView.reloadData()
+                            }
+                        }
+                    }
+                }
             }
         }
-        
     }
     
     // MARK: - Camera
@@ -550,45 +593,44 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     // MARK: Handle Image
     
     func handleImage (image: UIImage) {
-        if let sectionNumber = selectedIndexPath?.section {
-            if let imageName = duangTableData.sectionArray[sectionNumber].sectionTitleForHeader {
-                
-                if let type = tableType {
-                    switch type {
-                    case TableType.ProfileEdit:
-                        if imageName == TitleName.ImageProfilePicture {
-                            APIManager.sharedInstance.setCurrentUserAvatar(image)
-                            setSelectedImage()
-                            tableView.reloadData()
-                        } else if imageName == TitleName.ImageBannerPicture {
-                            APIManager.sharedInstance.setCurrentUserBanner(image)
-                            setSelectedImage()
-                            tableView.reloadData()
+        if let theSection = selectedIndexPath?.section {
+            if let theRow = selectedIndexPath?.row {
+                if let theRowArray = duangTableData.sectionArray[theSection].rowArray {
+                    if theRowArray.count > 0 {
+                        if let theTextArray = theRowArray[0].textArray {
+                            if theTextArray.count > 0 {
+                                if let type = tableType {
+                                    switch type {
+                                    case TableType.ProfileEdit:
+                                        if theTextArray[0] == TitleName.ImageProfilePicture {
+                                            APIManager.sharedInstance.setCurrentUserAvatar(image)
+                                            duangTableData.sectionArray[theSection].rowArray![theRow].imageFileArray![0] = APIManager.sharedInstance.getCurrentUserAvatarFile()
+                                            tableView.reloadData()
+                                        } else if theTextArray[0] == TitleName.ImageBannerPicture {
+                                            APIManager.sharedInstance.setCurrentUserBanner(image)
+                                            duangTableData.sectionArray[theSection].rowArray![theRow].imageFileArray![0] = APIManager.sharedInstance.getCurrentUserBannerFile()
+                                            tableView.reloadData()
+                                        }
+                                    case TableType.AddPhoto:
+                                        temImage = image
+                                        duangTableData.sectionArray[theSection].rowArray![theRow].imageArray![0] = image
+                                        tableView.reloadData()
+                                    default:
+                                        break
+                                    }
+                                }
+                            }
                         }
-                    case TableType.AddPhoto:
-                        selectedImage = image
-                        tableView.reloadData()
-                    default:
-                        break
                     }
                 }
             }
         }
-        
-    }
-    
-    func setSelectedImage() {////////
-        if let sectionNumber = selectedIndexPath?.section {
-            if let rowNumber = selectedIndexPath?.row {
-                duangTableData.sectionArray[sectionNumber].rowArray?[rowNumber].imageFileArray?[0] = APIManager.sharedInstance.getCurrentUserAvatarFile()
-            }
-        }
-        
     }
 
     // MARK: - Data
     
-    var selectedImage: UIImage?
+    var temImage: UIImage?
+    var temText: String?
     
     private struct TitleName {
         static let InputFirstName = "First Name"
@@ -596,6 +638,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         static let InputAboutYou = "About You"
         static let InputUsername = "Username"
         static let InputEmail = "Email"
+        static let InputPhotoDescription = "Photo Description"
         
         static let ImageProfilePicture = "Profile Picture"
         static let ImageBannerPicture = "Banner Picture"

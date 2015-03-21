@@ -264,12 +264,15 @@ class APIManager {
     func addNewPhoto(image: UIImage, description: String, success: () -> (), failure: (error: NSError) -> ()) {
         var photo = PFObject(className:TablePhoto.ClassName)
         
+        photo[TablePhoto.Description] = description
+        
         let imageData = UIImagePNGRepresentation(image)
         let imageFile = PFFile(name:"image.png", data:imageData)
         photo[TablePhoto.Image] = imageFile
         
-        photo[TablePhoto.Owner] = currentUser
-        photo[TablePhoto.Description] = description
+                
+        photo[TablePhoto.Owner] = PFUser.currentUser()
+        
         
         photo.saveInBackgroundWithBlock { (ifSuccess, error) -> Void in
             if (ifSuccess) {

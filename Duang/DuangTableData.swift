@@ -24,7 +24,7 @@ class DuangTableDataSection
     var sectionTitleForHeader: String?
     var rowArray: [DuangTableDataRow]?
     
-    class func initSection(#sectionTitleForHeader: String?, rowType: DuangTableDataRow.RowType?, textArray: [String]?, imageFileArray: [PFFile?]?, imageArray: [UIImage?]?, colorArray: [UIColor]?, function: DuangTableDataRow.Function?) -> DuangTableDataSection {
+    class func initSection(#sectionTitleForHeader: String?, rowType: DuangTableDataRow.RowType?, textArray: [String?]?, imageFileArray: [PFFile?]?, imageArray: [UIImage?]?, colorArray: [UIColor]?, function: DuangTableDataRow.Function?) -> DuangTableDataSection {
         let section = DuangTableDataSection()
         section.sectionTitleForHeader = sectionTitleForHeader
         section.rowArray = [DuangTableDataRow]()
@@ -32,7 +32,7 @@ class DuangTableDataSection
         return section
     }
     
-    func addRow(rowType: DuangTableDataRow.RowType?, textArray: [String]?, imageFileArray: [PFFile?]?, imageArray: [UIImage?]?, colorArray: [UIColor]?, function: DuangTableDataRow.Function?) {
+    func addRow(rowType: DuangTableDataRow.RowType?, textArray: [String?]?, imageFileArray: [PFFile?]?, imageArray: [UIImage?]?, colorArray: [UIColor]?, function: DuangTableDataRow.Function?) {
         let row = DuangTableDataRow()
         row.rowType = rowType
         row.textArray = textArray
@@ -74,7 +74,7 @@ class DuangTableDataRow
     // Get Item at Index
     
     var imageFileArray: [PFFile?]?
-    var textArray: [String]?
+    var textArray: [String?]?
     var imageArray: [UIImage?]?
     var colorArray: [UIColor]?
     
