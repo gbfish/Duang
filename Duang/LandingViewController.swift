@@ -38,7 +38,7 @@ class LandingViewController: UIViewController, LoginViewControllerProtocol {
     // MARK: - LoginViewControllerProtocol
     
     func loginSuccess() {
-        performSegueWithIdentifier("mainView", sender: nil)
+        performSegueWithIdentifier("MainTabBar", sender: nil)
     }
     
     // MARK: - Segue

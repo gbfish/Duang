@@ -50,7 +50,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             var section = DuangTableDataSection()
             switch type {
             case TableType.Profile:// MARK: Profile
-                titleString = "Me"
+                titleString = "Me Me"
                 
                 // Profile Picture
                 section = DuangTableDataSection.initSection(sectionTitleForHeader: "",

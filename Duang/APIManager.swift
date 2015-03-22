@@ -51,6 +51,7 @@ class APIManager {
                 failure()
             }
         }
+        
     }
     
     func signup(userName: String, password: String, email: String, success: () -> (), failure: (error: NSError) -> ()) {
