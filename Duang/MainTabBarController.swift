@@ -13,58 +13,40 @@ class MainTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+//        setViewController(DuangTableViewController.TableType.Profile, systemItem: UITabBarSystemItem.MostRecent, tag: 0)
+//        setViewController(DuangTableViewController.TableType.Settings, systemItem: UITabBarSystemItem.Featured, tag: 1)
+//        setViewController(DuangTableViewController.TableType.ProfileEdit, systemItem: UITabBarSystemItem.TopRated, tag: 2)
+        
+        
+        
+//        viewControllers?.append(getViewController(DuangTableViewController.TableType.Settings))
+//        viewControllers?.append(getViewController(DuangTableViewController.TableType.ProfileEdit))
+//        
+//        
+//        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
+//        viewController.tableType = DuangTableViewController.TableType.Settings
+//        viewController.tabBarItem = UITabBarItem(tabBarSystemItem: UITabBarSystemItem.Favorites, tag: 0)
+////        return UINavigationController(rootViewController: viewController)
+        
+        
+        
+        viewControllers = [getViewController(DuangTableViewController.TableType.Profile, systemItem: UITabBarSystemItem.Contacts, tag: 3), getViewController(DuangTableViewController.TableType.Profile, systemItem: UITabBarSystemItem.Contacts, tag: 3)]
+        
+
+    }
+    
+    func getViewController(tableType: DuangTableViewController.TableType, systemItem: UITabBarSystemItem, tag: NSInteger) -> UINavigationController {
         let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
-        viewController.tableType = DuangTableViewController.TableType.Profile
-        
-        let navigationController = UINavigationController(rootViewController: viewController)
-        
-        navigationController.title = "Mee"
-        
-        
-        viewControllers = [navigationController, navigationController]
-        
-        /*
-        FirstViewController *obj_FirstViewController = [[FirstViewController alloc]initWithNibName:@"FirstViewController" bundle:nil];
-        SecondViewController *obj_SecondViewController = [[SecondViewController alloc] initWithNibName:@"SecondViewController" bundle:nil];
-        ThirdViewController *obj_ThirdViewController = [[ThirdViewController alloc] initWithNibName:@"ThirdViewController" bundle:nil];
-        
-        navigation1 = [[UINavigationController alloc] initWithRootViewController:obj_FirstViewController];
-        navigation2 = [[UINavigationController alloc] initWithRootViewController:obj_SecondViewController];
-        navigation3 = [[UINavigationController alloc] initWithRootViewController:obj_ThirdViewController];
-        
-        navigation1.title=@"Home";
-        navigation2.title=@"Second";
-        
-        MainTabBar = [[UITabBarController alloc] init];
-        MainTabBar.delegate=self;
-        [MainTabBar setViewControllers:[NSArray   arrayWithObjects:navigation1,navigation2,navigation3,nil]];
-        MainTabBar.view.frame=self.view.frame;
-        MainTabBar.selectedIndex=0;
-        [self.view addSubview:MainTabBar.view]
-*/
+        viewController.tableType = tableType
+        viewController.tabBarItem = UITabBarItem(title: "MMEE", image: UIImage(named: "TabBar_person"), tag: 1)
+        return UINavigationController(rootViewController: viewController)
     }
     
-    @IBOutlet weak var mainTabBar: UITabBar! {
-        didSet {
-            
-
-        }
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+//    func setViewController(tableType: DuangTableViewController.TableType, systemItem: UITabBarSystemItem, tag: NSInteger) {
+//        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
+//        viewController.tableType = tableType
+//        viewController.tabBarItem = UITabBarItem(tabBarSystemItem: systemItem, tag: tag)
+//        viewControllers?.append(UINavigationController(rootViewController: viewController))
+//    }
 }
