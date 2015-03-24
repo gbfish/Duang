@@ -62,7 +62,7 @@ class APIManager {
         return nil
     }
     
-    class func getHeight(object: PFObject, keyWidth: String, keyHeight: String) -> CGFloat? {
+    class func getHeightFromObject(object: PFObject, keyWidth: String, keyHeight: String) -> CGFloat? {
         if let width = object[keyWidth] as? CGFloat {
             if let height = object[keyHeight] as? CGFloat {
                 return DuangGlobal.screenWidth * height / width
@@ -78,6 +78,29 @@ class APIManager {
             if let returnValue = user![key] as? String {
                 return returnValue
             }
+        }
+        return nil
+    }
+    
+    class func getFileFromUser(user: PFUser?, key: String) -> PFFile? {
+        if user != nil {
+            if let returnValue = user![key] as? PFFile {
+                return returnValue
+            }
+        }
+        return nil
+    }
+    
+    class func getNameFromUser(user: PFUser?) -> String? {
+        if user != nil {
+            var returnValue = ""
+            if let firstName = APIManager.getStringFromUser(user, key: TableUser.FirstName) {
+                returnValue = "\(firstName) "
+            }
+            if let lastName = APIManager.getStringFromUser(user, key: TableUser.LastName) {
+                returnValue = "\(returnValue)\(lastName)"
+            }
+            return returnValue
         }
         return nil
     }
@@ -318,52 +341,30 @@ class APIManager {
             }
         }
     }
-    /*
-    func getFeed(success: ([DataPhoto]) -> (), failure: (error: NSError) -> ()) {
-        var query = PFQuery(className:TablePhoto.ClassName)
-//        query.whereKey("playerName", equalTo:"Sean Plott")
-        
-        query.limit = 10
-        query.findObjectsInBackgroundWithBlock {
-            (objects: [AnyObject]!, error: NSError!) -> Void in
-            if error == nil {
-                
-                
-                // The find succeeded.
-                println("Successfully retrieved \(objects.count) scores.")
-                // Do something with the found objects
-                if let objects = objects as? [PFObject] {
-                    success(DataPhoto.photoArray(objects))
-                    
-//                    for object in objects {
-//                        println(object.objectId)
-//                        
-//                        
-//                        if let returnValue = object["description"] as? String {
-//                            println("returnValue = \(returnValue)")
-//                        }
-//
-//                        
-//
-//                        
-//                    }
-                }
-            } else {
-                // Log details of the failure
-                println("Error: \(error) \(error.userInfo!)")
-            }
-        }
-    }*/
     
     func getFeed(success: ([PFObject]) -> (), failure: (NSError) -> ()) {
         var query = PFQuery(className:TablePhoto.ClassName)
-        //        query.whereKey("playerName", equalTo:"Sean Plott")
-        
-        query.limit = 10
+        query.limit = 20
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]!, error: NSError!) -> Void in
             if error == nil {
                 if let objects = objects as? [PFObject] {
+                    success(objects)
+                }
+            } else {
+                failure(error)
+            }
+        }
+    }
+    
+    // MARK: - Table User
+    
+    func getUsers(success: ([PFUser]) -> (), failure: (NSError) -> ()) {
+        var query = PFUser.query()
+        query.limit = 20
+        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+            if error == nil {
+                if let objects = objects as? [PFUser] {
                     success(objects)
                 }
             } else {

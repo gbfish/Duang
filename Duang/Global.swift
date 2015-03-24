@@ -54,6 +54,7 @@ struct DuangGlobal {
 
 struct TabBarTitle {
     static let Feed = "Feed"
+    static let Users = "Users"
     static let Profile = "Me"
 }
 
@@ -70,6 +71,8 @@ struct TablePhoto {
 }
 
 struct TableUser {
+    static let ClassName = "_User"
+    
     static let Avatar = "avatar"
     static let Banner = "banner"
     static let FirstName = "firstName"

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14D113c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="11A-mk-m4x">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="11A-mk-m4x">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -41,6 +41,40 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="cellImageView" destination="byN-m0-iqV" id="wOn-oX-C5O"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="DuangTableCellImageSmall" rowHeight="50" id="nFg-Ga-ZMG" customClass="DuangTableCellImageSmall" customModule="Duang" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nFg-Ga-ZMG" id="5XP-Wb-FO7">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PAZ-5L-7m4">
+                                                    <rect key="frame" x="5" y="5" width="40" height="40"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="PAZ-5L-7m4" secondAttribute="height" multiplier="1:1" id="cWr-O8-dBu"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Image" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Ch-6i-kcC">
+                                                    <rect key="frame" x="53" y="4" width="514" height="41"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="7Ch-6i-kcC" secondAttribute="trailing" constant="-8" id="25C-vk-urU"/>
+                                                <constraint firstItem="PAZ-5L-7m4" firstAttribute="bottom" secondItem="7Ch-6i-kcC" secondAttribute="bottom" id="4hp-77-dUe"/>
+                                                <constraint firstItem="PAZ-5L-7m4" firstAttribute="top" secondItem="5XP-Wb-FO7" secondAttribute="topMargin" constant="-3" id="AJw-C9-6yy"/>
+                                                <constraint firstItem="7Ch-6i-kcC" firstAttribute="leading" secondItem="PAZ-5L-7m4" secondAttribute="trailing" constant="8" id="HWh-Ad-YbN"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="PAZ-5L-7m4" secondAttribute="bottom" constant="-4" id="Kvs-CG-O3U"/>
+                                                <constraint firstItem="PAZ-5L-7m4" firstAttribute="top" secondItem="7Ch-6i-kcC" secondAttribute="top" constant="1" id="XHa-hb-CAS"/>
+                                                <constraint firstItem="PAZ-5L-7m4" firstAttribute="leading" secondItem="5XP-Wb-FO7" secondAttribute="leadingMargin" constant="-3" id="ipv-r7-gQy"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="cellImageView" destination="PAZ-5L-7m4" id="tei-dd-S5X"/>
+                                            <outlet property="cellTitleLabel" destination="7Ch-6i-kcC" id="k5d-Bk-aux"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DuangTableCellUserBig" rowHeight="600" id="4dy-3X-JdR" customClass="DuangTableCellUserBig" customModule="Duang" customModuleProvider="target">
@@ -172,40 +206,6 @@
                                             <outlet property="userNameLabel" destination="DKU-kv-VDN" id="9GV-Yu-Sm7"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="DuangTableCellImageSmall" rowHeight="50" id="nFg-Ga-ZMG" customClass="DuangTableCellImageSmall" customModule="Duang" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nFg-Ga-ZMG" id="5XP-Wb-FO7">
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PAZ-5L-7m4">
-                                                    <rect key="frame" x="5" y="5" width="40" height="40"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" secondItem="PAZ-5L-7m4" secondAttribute="height" multiplier="1:1" id="cWr-O8-dBu"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Image" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Ch-6i-kcC">
-                                                    <rect key="frame" x="53" y="4" width="514" height="41"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="7Ch-6i-kcC" secondAttribute="trailing" constant="-8" id="25C-vk-urU"/>
-                                                <constraint firstItem="PAZ-5L-7m4" firstAttribute="bottom" secondItem="7Ch-6i-kcC" secondAttribute="bottom" id="4hp-77-dUe"/>
-                                                <constraint firstItem="PAZ-5L-7m4" firstAttribute="top" secondItem="5XP-Wb-FO7" secondAttribute="topMargin" constant="-3" id="AJw-C9-6yy"/>
-                                                <constraint firstItem="7Ch-6i-kcC" firstAttribute="leading" secondItem="PAZ-5L-7m4" secondAttribute="trailing" constant="8" id="HWh-Ad-YbN"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="PAZ-5L-7m4" secondAttribute="bottom" constant="-4" id="Kvs-CG-O3U"/>
-                                                <constraint firstItem="PAZ-5L-7m4" firstAttribute="top" secondItem="7Ch-6i-kcC" secondAttribute="top" constant="1" id="XHa-hb-CAS"/>
-                                                <constraint firstItem="PAZ-5L-7m4" firstAttribute="leading" secondItem="5XP-Wb-FO7" secondAttribute="leadingMargin" constant="-3" id="ipv-r7-gQy"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="cellImageView" destination="PAZ-5L-7m4" id="tei-dd-S5X"/>
-                                            <outlet property="cellTitleLabel" destination="7Ch-6i-kcC" id="k5d-Bk-aux"/>
-                                        </connections>
-                                    </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DuangTableCellInput" rowHeight="200" id="Sn2-Z5-Z81" customClass="DuangTableCellInput" customModule="Duang" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
@@ -251,6 +251,27 @@
                                         <connections>
                                             <outlet property="textField" destination="Edc-HP-O8o" id="9QL-DX-BVf"/>
                                         </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="hgS-DL-Ct6">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hgS-DL-Ct6" id="leQ-1C-x6P">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kef-wD-aPL">
+                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="49"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="kef-wD-aPL" firstAttribute="leading" secondItem="leQ-1C-x6P" secondAttribute="leadingMargin" constant="-8" id="CRK-hx-yfZ"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="kef-wD-aPL" secondAttribute="bottom" constant="-8" id="QHd-1L-7QC"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="kef-wD-aPL" secondAttribute="trailing" constant="-8" id="WKk-UO-qSt"/>
+                                                <constraint firstItem="kef-wD-aPL" firstAttribute="top" secondItem="leQ-1C-x6P" secondAttribute="topMargin" constant="-8" id="ade-gE-LiW"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DuangTableCellButton" rowHeight="50" id="RSy-Wc-Abl" customClass="DuangTableCellButton" customModule="Duang" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>

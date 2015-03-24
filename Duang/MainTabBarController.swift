@@ -13,8 +13,9 @@ class MainTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewControllers = [getViewController(DuangTableViewController.TableType.Feed, itemTitle: TabBarTitle.Feed, itemImageName: "TabBar_Feed", tag: 0),
-            getViewController(DuangTableViewController.TableType.Profile, itemTitle: TabBarTitle.Profile, itemImageName: "TabBar_person", tag: 1)]
+        viewControllers = [getViewController(DuangTableViewController.TableType.Feed, itemTitle: TabBarTitle.Feed, itemImageName: "TabBar_Images", tag: 0),
+            getViewController(DuangTableViewController.TableType.Users, itemTitle: TabBarTitle.Users, itemImageName: "TabBar_Users", tag: 1),
+            getViewController(DuangTableViewController.TableType.Profile, itemTitle: TabBarTitle.Profile, itemImageName: "TabBar_Person", tag: 2)]
         
 
     }
