@@ -32,14 +32,7 @@ class APIManager {
     
     // MARK: - Table User
     
-    private struct TableUser {
-        static let Avatar = "avatar"
-        static let Banner = "banner"
-        static let FirstName = "firstName"
-        static let LastName = "lastName"
-        static let Description = "description"
-    }
-    
+        
     // MARK: - User
     
     func login(userName: String, password: String, success: () -> (), failure: () -> ()) {
@@ -254,18 +247,12 @@ class APIManager {
     
     // MARK: - Table Photo
     
-    private struct TablePhoto {
-        static let ClassName = "Photo"
-        
-        static let Image = "image"
-        static let Owner = "owner"
-        static let Description = "description"
-    }
-    
     func addNewPhoto(image: UIImage, description: String, success: () -> (), failure: (error: NSError) -> ()) {
         var photo = PFObject(className:TablePhoto.ClassName)
         
         photo[TablePhoto.Description] = description
+        photo[TablePhoto.ImageWidth] = image.size.width
+        photo[TablePhoto.ImageHeight] = image.size.height
         
         let imageData = UIImagePNGRepresentation(image)
         let imageFile = PFFile(name:"image.png", data:imageData)
@@ -283,6 +270,44 @@ class APIManager {
             }
         }
     }
+    
+    func getFeed(success: ([DataPhoto]) -> (), failure: (error: NSError) -> ()) {
+        var query = PFQuery(className:TablePhoto.ClassName)
+//        query.whereKey("playerName", equalTo:"Sean Plott")
+        
+        query.limit = 10
+        query.findObjectsInBackgroundWithBlock {
+            (objects: [AnyObject]!, error: NSError!) -> Void in
+            if error == nil {
+                
+                
+                // The find succeeded.
+                println("Successfully retrieved \(objects.count) scores.")
+                // Do something with the found objects
+                if let objects = objects as? [PFObject] {
+                    success(DataPhoto.photoArray(objects))
+                    
+//                    for object in objects {
+//                        println(object.objectId)
+//                        
+//                        
+//                        if let returnValue = object["description"] as? String {
+//                            println("returnValue = \(returnValue)")
+//                        }
+//
+//                        
+//
+//                        
+//                    }
+                }
+            } else {
+                // Log details of the failure
+                println("Error: \(error) \(error.userInfo!)")
+            }
+        }
+    }
+    
+    
     
     // MARK: - Validate Email
     

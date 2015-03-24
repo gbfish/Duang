@@ -12,41 +12,17 @@ class MainTabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-//        setViewController(DuangTableViewController.TableType.Profile, systemItem: UITabBarSystemItem.MostRecent, tag: 0)
-//        setViewController(DuangTableViewController.TableType.Settings, systemItem: UITabBarSystemItem.Featured, tag: 1)
-//        setViewController(DuangTableViewController.TableType.ProfileEdit, systemItem: UITabBarSystemItem.TopRated, tag: 2)
         
-        
-        
-//        viewControllers?.append(getViewController(DuangTableViewController.TableType.Settings))
-//        viewControllers?.append(getViewController(DuangTableViewController.TableType.ProfileEdit))
-//        
-//        
-//        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
-//        viewController.tableType = DuangTableViewController.TableType.Settings
-//        viewController.tabBarItem = UITabBarItem(tabBarSystemItem: UITabBarSystemItem.Favorites, tag: 0)
-////        return UINavigationController(rootViewController: viewController)
-        
-        
-        
-        viewControllers = [getViewController(DuangTableViewController.TableType.Profile, systemItem: UITabBarSystemItem.Contacts, tag: 3), getViewController(DuangTableViewController.TableType.Profile, systemItem: UITabBarSystemItem.Contacts, tag: 3)]
+        viewControllers = [getViewController(DuangTableViewController.TableType.Feed, itemTitle: TabBarTitle.Feed, itemImageName: "TabBar_Feed", tag: 0),
+            getViewController(DuangTableViewController.TableType.Profile, itemTitle: TabBarTitle.Profile, itemImageName: "TabBar_person", tag: 1)]
         
 
     }
     
-    func getViewController(tableType: DuangTableViewController.TableType, systemItem: UITabBarSystemItem, tag: NSInteger) -> UINavigationController {
+    func getViewController(tableType: DuangTableViewController.TableType, itemTitle: String, itemImageName: String, tag: NSInteger) -> UINavigationController {
         let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
         viewController.tableType = tableType
-        viewController.tabBarItem = UITabBarItem(title: "MMEE", image: UIImage(named: "TabBar_person"), tag: 1)
+        viewController.tabBarItem = UITabBarItem(title: itemTitle, image: UIImage(named: itemImageName), tag: 1)
         return UINavigationController(rootViewController: viewController)
     }
-    
-    
-//    func setViewController(tableType: DuangTableViewController.TableType, systemItem: UITabBarSystemItem, tag: NSInteger) {
-//        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
-//        viewController.tableType = tableType
-//        viewController.tabBarItem = UITabBarItem(tabBarSystemItem: systemItem, tag: tag)
-//        viewControllers?.append(UINavigationController(rootViewController: viewController))
-//    }
 }

@@ -52,4 +52,27 @@ struct DuangGlobal {
     }
 }
 
+struct TabBarTitle {
+    static let Feed = "Feed"
+    static let Profile = "Me"
+}
 
+// MARK: - Table
+
+struct TablePhoto {
+    static let ClassName = "Photo"
+    
+    static let Image = "image"
+    static let Owner = "owner"
+    static let Description = "description"
+    static let ImageWidth = "imageWidth"
+    static let ImageHeight = "imageHeight"
+}
+
+struct TableUser {
+    static let Avatar = "avatar"
+    static let Banner = "banner"
+    static let FirstName = "firstName"
+    static let LastName = "lastName"
+    static let Description = "description"
+}

@@ -24,17 +24,18 @@ class DuangTableDataSection
     var sectionTitleForHeader: String?
     var rowArray: [DuangTableDataRow]?
     
-    class func initSection(#sectionTitleForHeader: String?, rowType: DuangTableDataRow.RowType?, textArray: [String?]?, imageFileArray: [PFFile?]?, imageArray: [UIImage?]?, colorArray: [UIColor]?, function: DuangTableDataRow.Function?) -> DuangTableDataSection {
+    class func initSection(#sectionTitleForHeader: String?, rowType: DuangTableDataRow.RowType?, cellHeight: CGFloat?, textArray: [String?]?, imageFileArray: [PFFile?]?, imageArray: [UIImage?]?, colorArray: [UIColor]?, function: DuangTableDataRow.Function?) -> DuangTableDataSection {
         let section = DuangTableDataSection()
         section.sectionTitleForHeader = sectionTitleForHeader
         section.rowArray = [DuangTableDataRow]()
-        section.addRow(rowType, textArray: textArray, imageFileArray: imageFileArray, imageArray: imageArray, colorArray: colorArray, function: function)
+        section.addRow(rowType, cellHeight: cellHeight, textArray: textArray, imageFileArray: imageFileArray, imageArray: imageArray, colorArray: colorArray, function: function)
         return section
     }
     
-    func addRow(rowType: DuangTableDataRow.RowType?, textArray: [String?]?, imageFileArray: [PFFile?]?, imageArray: [UIImage?]?, colorArray: [UIColor]?, function: DuangTableDataRow.Function?) {
+    func addRow(rowType: DuangTableDataRow.RowType?, cellHeight: CGFloat?, textArray: [String?]?, imageFileArray: [PFFile?]?, imageArray: [UIImage?]?, colorArray: [UIColor]?, function: DuangTableDataRow.Function?) {
         let row = DuangTableDataRow()
         row.rowType = rowType
+        row.cellHeight = cellHeight
         row.textArray = textArray
         row.imageFileArray = imageFileArray
         row.imageArray = imageArray
@@ -53,6 +54,7 @@ class DuangTableDataRow
     enum RowType{
         case UserBig
         case UserSmall
+        case ImageBig
         case ImageSmall
         case Input
         case TextField
@@ -73,6 +75,7 @@ class DuangTableDataRow
     
     // Get Item at Index
     
+    var cellHeight: CGFloat?
     var imageFileArray: [PFFile?]?
     var textArray: [String?]?
     var imageArray: [UIImage?]?
