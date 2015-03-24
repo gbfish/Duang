@@ -53,11 +53,20 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             case TableType.Feed:// MARK: Feed
                 titleString = TabBarTitle.Feed
                 
+                
+                
+                
+                APIManager.sharedInstance.getFeed({ (objectArray) -> () in
+                    self.setDuangTableData(objectArray)
+                }, failure: { (error) -> () in
+                    println("error = \(error)")
+                })
+                /*
                 APIManager.sharedInstance.getFeed({ (dataPhotoArray) -> () in
                     self.setDuangTableData(dataPhotoArray)
                 }, failure: { (error) -> () in
                     println("error = \(error)")
-                })
+                })*/
                 
             case TableType.Profile:// MARK: Profile
                 titleString = TabBarTitle.Profile
@@ -678,7 +687,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     // MARK: - TableView Data
     
     var duangTableData = DuangTableData()
-    
+    /*
     func setDuangTableData(dataPhotoArray: [DataPhoto]) {
         duangTableData = DuangTableData()
         var section = DuangTableDataSection()
@@ -696,6 +705,32 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             section.addRow(DuangTableDataRow.RowType.UserSmall,
                 cellHeight: nil,
                 textArray: nil,
+                imageFileArray: nil,
+                imageArray: nil,
+                colorArray: nil,
+                function: nil)
+            duangTableData.sectionArray.append(section)
+        }
+        tableView.reloadData()
+    }*/
+    
+    func setDuangTableData(objectArray: [PFObject]) {
+        duangTableData = DuangTableData()
+        var section = DuangTableDataSection()
+        
+        for object in objectArray {
+            section = DuangTableDataSection.initSection(sectionTitleForHeader: "",
+                rowType: DuangTableDataRow.RowType.ImageBig,
+                cellHeight: APIManager.getHeight(object, keyWidth: TablePhoto.ImageWidth, keyHeight: TablePhoto.ImageHeight),
+                textArray: [APIManager.getStringFromObject(object, key: TablePhoto.Description)],
+                imageFileArray: [APIManager.getFileFromObject(object, key: TablePhoto.Image)],
+                imageArray: nil,
+                colorArray: nil,
+                function: nil)
+            
+            section.addRow(DuangTableDataRow.RowType.UserSmall,
+                cellHeight: nil,
+                textArray: [APIManager.getStringFromUser(APIManager.getUserFromObject(object, key: TablePhoto.Owner), key: TableUser.FirstName)],
                 imageFileArray: nil,
                 imageArray: nil,
                 colorArray: nil,

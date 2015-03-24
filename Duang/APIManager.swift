@@ -30,8 +30,57 @@ class APIManager {
         return errorString
     }
     
-    // MARK: - Table User
+    // MARK: - PFObject
     
+    class func getStringFromObject(object: PFObject, key: String) -> String? {
+        if let returnValue = object[key] as? String {
+            return returnValue
+        }
+        return nil
+    }
+    
+    class func getFloatFromObject(object: PFObject, key: String) -> CGFloat? {
+        if let returnValue = object[key] as? CGFloat {
+            return returnValue
+        }
+        return nil
+    }
+    
+    class func getFileFromObject(object: PFObject, key: String) -> PFFile? {
+        if let returnValue = object[key] as? PFFile {
+            return returnValue
+        }
+        return nil
+    }
+    
+    class func getUserFromObject(object: PFObject?, key: String) -> PFUser? {
+        if object != nil {
+            if let returnValue = object![key] as? PFUser {
+                return returnValue
+            }
+        }
+        return nil
+    }
+    
+    class func getHeight(object: PFObject, keyWidth: String, keyHeight: String) -> CGFloat? {
+        if let width = object[keyWidth] as? CGFloat {
+            if let height = object[keyHeight] as? CGFloat {
+                return DuangGlobal.screenWidth * height / width
+            }
+        }
+        return nil
+    }
+    
+    // MARK: - PFUser
+    
+    class func getStringFromUser(user: PFUser?, key: String) -> String? {
+        if user != nil {
+            if let returnValue = user![key] as? String {
+                return returnValue
+            }
+        }
+        return nil
+    }
         
     // MARK: - User
     
@@ -261,7 +310,6 @@ class APIManager {
                 
         photo[TablePhoto.Owner] = PFUser.currentUser()
         
-        
         photo.saveInBackgroundWithBlock { (ifSuccess, error) -> Void in
             if (ifSuccess) {
                 success()
@@ -270,7 +318,7 @@ class APIManager {
             }
         }
     }
-    
+    /*
     func getFeed(success: ([DataPhoto]) -> (), failure: (error: NSError) -> ()) {
         var query = PFQuery(className:TablePhoto.ClassName)
 //        query.whereKey("playerName", equalTo:"Sean Plott")
@@ -305,9 +353,24 @@ class APIManager {
                 println("Error: \(error) \(error.userInfo!)")
             }
         }
+    }*/
+    
+    func getFeed(success: ([PFObject]) -> (), failure: (NSError) -> ()) {
+        var query = PFQuery(className:TablePhoto.ClassName)
+        //        query.whereKey("playerName", equalTo:"Sean Plott")
+        
+        query.limit = 10
+        query.findObjectsInBackgroundWithBlock {
+            (objects: [AnyObject]!, error: NSError!) -> Void in
+            if error == nil {
+                if let objects = objects as? [PFObject] {
+                    success(objects)
+                }
+            } else {
+                failure(error)
+            }
+        }
     }
-    
-    
     
     // MARK: - Validate Email
     
