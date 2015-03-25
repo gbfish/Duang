@@ -54,11 +54,18 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             case TableType.Feed:// MARK: Feed
                 titleString = TabBarTitle.Feed
                 
+                APIManager.sharedInstance.getPostArray({ (objectArray) -> () in
+                    self.setDuangTableDataFromPost(objectArray)
+                }, failure: { (error) -> () in
+                    println("error = \(error)")
+                })
+                
+                /*
                 APIManager.sharedInstance.getFeed({ (objectArray) -> () in
                     self.setDuangTableDataFromPhoto(objectArray)
                 }, failure: { (error) -> () in
                     println("error = \(error)")
-                })
+                })*/
                 
             case TableType.Users:// MARK: Users
                 titleString = TabBarTitle.Users
@@ -355,11 +362,27 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
             presentViewController(deleteAlert, animated: true, completion: nil)
         } else {
+            
+            var photoArray = [NSMutableDictionary]()
+            var photoDictionary = NSMutableDictionary()
+            photoDictionary.setValue(APIManager.Placeholder.Image, forKey: "photo")
+            photoDictionary.setValue("photo 1 description", forKey: "description")
+            photoArray.append(photoDictionary)
+            
+            
+            APIManager.sharedInstance.addPost("post title", description: "post description", photoArray: photoArray, success: { () -> () in
+                println("ok")
+            }, failure: { (error) -> () in
+                println("not ok")
+            })
+            
+            
+            /*
             APIManager.sharedInstance.addNewPhoto(temImage!, description: temText!, success: { () -> () in
                 println("ok")
             }, failure: { (error) -> () in
                 
-            })
+            })*/
         }
     }
     
@@ -689,6 +712,35 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     
     var duangTableData = DuangTableData()
     
+    func setDuangTableDataFromPost(objectArray: [PFObject]) {
+        duangTableData = DuangTableData()
+        var section = DuangTableDataSection()
+        
+        for object in objectArray {
+            
+            section = DuangTableDataSection.initSection(sectionTitleForHeader: nil,
+                rowType: DuangTableDataRow.RowType.ImageMutable,
+                cellHeight: nil,
+                textArray: nil,
+                imageFileArray: APIManager.getFileArrayFromObject(object, key: TablePost.PhotoArray),
+                imageArray: nil,
+                colorArray: nil,
+                function: nil)
+            
+//            let user = APIManager.getUserFromObject(object, key: TablePhoto.Owner)
+//            
+//            section.addRow(DuangTableDataRow.RowType.UserSmall,
+//                cellHeight: nil,
+//                textArray: [APIManager.getNameFromUser(user)],
+//                imageFileArray: [APIManager.getFileFromUser(user, key: TableUser.Avatar)],
+//                imageArray: [APIManager.Placeholder.Avatar],
+//                colorArray: nil,
+//                function: nil)
+            duangTableData.sectionArray.append(section)
+        }
+        tableView.reloadData()
+    }
+    
     func setDuangTableDataFromPhoto(objectArray: [PFObject]) {
         duangTableData = DuangTableData()
         var section = DuangTableDataSection()
@@ -766,6 +818,8 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     return UIScreen.mainScreen().bounds.size.width
                 case DuangTableDataRow.RowType.UserSmall:
                     return 50.0
+                case DuangTableDataRow.RowType.ImageMutable:
+                    return UIScreen.mainScreen().bounds.size.width
                 case DuangTableDataRow.RowType.ImageBig:
                     return duangTableDataRow.cellHeight ?? 0.0
                 case DuangTableDataRow.RowType.ImageSmall:
@@ -786,6 +840,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     
     private struct CellIdentifier {
         static let UserBig = "DuangTableCellUserBig"
+        static let ImageMutable = "DuangTableCellImageMutable"
         static let ImageBig = "DuangTableCellImageBig"
         static let ImageSmall = "DuangTableCellImageSmall"
         static let Input = "DuangTableCellInput"
@@ -808,6 +863,11 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.ImageSmall, forIndexPath: indexPath) as DuangTableCellImageSmall
                     cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                     cell.isRound = true
+                    cell.duangTableDataRow = duangTableDataRow
+                    return cell
+                    
+                case DuangTableDataRow.RowType.ImageMutable:
+                    let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.ImageMutable, forIndexPath: indexPath) as DuangTableCellImageMutable
                     cell.duangTableDataRow = duangTableDataRow
                     return cell
                     

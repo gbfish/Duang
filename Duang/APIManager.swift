@@ -46,6 +46,44 @@ class APIManager {
         return nil
     }
     
+    class func getFileArrayFromObject(object: PFObject, key: String) -> [PFFile]? {
+        if let array = object[key] as? NSArray {
+            var returnValue = [PFFile]()
+            for objectInArray in array {
+                
+//                if objectInArray != nil {
+//                    objectInArray![TablePhoto.Image]
+//                }
+                
+                if let photo = objectInArray as? PFObject {
+                    
+                    println("--photo = \(photo)")
+                    
+//                    returnValue.append(photo[TablePhoto.Image]!)
+                    
+                    let imageFile = photo[TablePhoto.Image] as PFFile
+                    
+                    println("--imageFile = \(imageFile)")
+                    
+                    returnValue.append(imageFile)
+                    
+//                    if let imageFile = photo[TablePhoto.Image] as? PFFile {
+//                        returnValue.append(imageFile)
+//                        
+//                    } else {
+//                        println("else ")
+//                    }
+                    
+                    
+                }
+            }
+            if returnValue.count > 0 {
+                return returnValue
+            }
+        }
+        return nil
+    }
+    
     class func getFileFromObject(object: PFObject, key: String) -> PFFile? {
         if let returnValue = object[key] as? PFFile {
             return returnValue
@@ -315,6 +353,104 @@ class APIManager {
     func setCurrentUserDescription(lastName: String) {
         currentUser[TableUser.Description] = lastName
         currentUser.saveInBackground()
+    }
+    
+    // MARK: - Table Post
+    
+    func addPost(title: String, description: String, photoArray: NSArray, success: () -> (), failure: (NSError) -> ()) {
+        var post = PFObject(className:TablePost.ClassName)
+        post[TablePost.Title] = title
+        post[TablePost.Description] = description
+        post[TablePost.Owner] = PFUser.currentUser()
+        
+        post.save()
+        
+        var photos = post.relationForKey(TablePost.Photos)
+        
+//        var postPhotoArray = [PFObject]()
+        for photoData in photoArray {
+            if let photoDictionary = photoData as? NSDictionary {
+                if let photoImage = photoDictionary.objectForKey("photo") as? UIImage {
+                    if let photoDescriptionData = photoDictionary.objectForKey("description") as? String {
+                        var photo = PFObject(className:TablePhoto.ClassName)
+                        photo[TablePhoto.Description] = photoDescriptionData
+                        photo[TablePhoto.ImageWidth] = photoImage.size.width
+                        photo[TablePhoto.ImageHeight] = photoImage.size.height
+                        
+                        let imageData = UIImagePNGRepresentation(photoImage)
+                        let imageFile = PFFile(name:"image.png", data:imageData)
+                        photo[TablePhoto.Image] = imageFile
+                        photo[TablePhoto.Owner] = PFUser.currentUser()
+//                        photo.saveInBackground()
+                        
+//                        postPhotoArray.append(photo)
+                        
+                        photo.save()
+                        
+                        photos.addObject(photo)
+                    }
+                }
+            }
+        }
+//        post[TablePost.PhotoArray] = postPhotoArray
+
+        post.saveInBackgroundWithBlock { (ifSuccess, error) -> Void in
+            if error == nil {
+                success()
+            } else {
+                failure(error)
+            }
+        }
+    }
+    
+    func addPhotoForPost(post: PFObject, photoArray: NSArray, success: () -> (), failure: (NSError) -> ()) {
+        
+        var photos = post.relationForKey(TablePost.Photos)
+        
+        for photoData in photoArray {
+            if let photoDictionary = photoData as? NSDictionary {
+                if let photoImage = photoDictionary.objectForKey("photo") as? UIImage {
+                    if let photoDescriptionData = photoDictionary.objectForKey("description") as? String {
+                        var photo = PFObject(className:TablePhoto.ClassName)
+                        photo[TablePhoto.Description] = photoDescriptionData
+                        photo[TablePhoto.ImageWidth] = photoImage.size.width
+                        photo[TablePhoto.ImageHeight] = photoImage.size.height
+                        
+                        let imageData = UIImagePNGRepresentation(photoImage)
+                        let imageFile = PFFile(name:"image.png", data:imageData)
+                        photo[TablePhoto.Image] = imageFile
+                        photo[TablePhoto.Owner] = PFUser.currentUser()
+                        
+                        
+                        photos.addObject(photo)
+                    }
+                }
+            }
+        }
+        
+        post.saveInBackgroundWithBlock({ (ifSuccess, error) -> Void in
+            if error == nil {
+                success()
+            } else {
+                failure(error)
+            }
+        })
+
+    }
+    
+    func getPostArray(success: ([PFObject]) -> (), failure: (NSError) -> ()) {
+        var query = PFQuery(className:TablePost.ClassName)
+        query.limit = 20
+        query.findObjectsInBackgroundWithBlock {
+            (objects: [AnyObject]!, error: NSError!) -> Void in
+            if error == nil {
+                if let objects = objects as? [PFObject] {
+                    success(objects)
+                }
+            } else {
+                failure(error)
+            }
+        }
     }
     
     // MARK: - Table Photo

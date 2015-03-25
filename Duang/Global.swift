@@ -60,6 +60,16 @@ struct TabBarTitle {
 
 // MARK: - Table
 
+struct TablePost {
+    static let ClassName = "Post"
+    
+    static let Title = "title"
+    static let Description = "description"
+    static let Owner = "owner"
+    static let PhotoArray = "photoArray"
+    static let Photos = "photos"
+}
+
 struct TablePhoto {
     static let ClassName = "Photo"
     

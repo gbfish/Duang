@@ -54,6 +54,7 @@ class DuangTableDataRow
     enum RowType{
         case UserBig
         case UserSmall
+        case ImageMutable
         case ImageBig
         case ImageSmall
         case Input
