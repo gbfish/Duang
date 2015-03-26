@@ -46,7 +46,27 @@ class APIManager {
         return nil
     }
     
-    class func getFileArrayFromObject(object: PFObject, key: String) -> [PFFile]? {
+    class func getFileArrayFromPost(object: PFObject, success: ([PFFile]) -> (), failure: (error: NSError) -> ()) {
+        
+        if let relation = object[TablePost.Photos] as? PFRelation {            
+            relation.query().findObjectsInBackgroundWithBlock {
+                (objects: [AnyObject]!, error: NSError!) -> Void in
+                if error != nil {
+                    // There was an error
+                } else {
+                    var returnValue = [PFFile]()
+                    for object in objects {
+                        if let file = object[TablePhoto.Image] as? PFFile {
+                            returnValue.append(file)
+                        }
+                    }
+                    success(returnValue)
+                }
+            }
+        }
+//        return nil
+        
+        /*
         if let array = object[key] as? NSArray {
             var returnValue = [PFFile]()
             for objectInArray in array {
@@ -82,6 +102,7 @@ class APIManager {
             }
         }
         return nil
+*/
     }
     
     class func getFileFromObject(object: PFObject, key: String) -> PFFile? {

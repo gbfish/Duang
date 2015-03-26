@@ -9,10 +9,8 @@
 /* Begin PBXBuildFile section */
 		56404DED1ABCE5680030D3E4 /* DuangTableCellImageSmall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56404DEC1ABCE5680030D3E4 /* DuangTableCellImageSmall.swift */; };
 		565F08941AC0888200FDBA4A /* DuangTableCellImageBig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565F08931AC0888200FDBA4A /* DuangTableCellImageBig.swift */; };
-		565F089A1AC0990200FDBA4A /* DataPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565F08991AC0990200FDBA4A /* DataPhoto.swift */; };
 		566AC3E61AB39430001B87D1 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AC3E51AB39430001B87D1 /* LoginViewController.swift */; };
 		566AC3E81AB39E99001B87D1 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AC3E71AB39E99001B87D1 /* SignupViewController.swift */; };
-		567E2DE81AC0E3EE001AC549 /* DataUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567E2DE71AC0E3EE001AC549 /* DataUser.swift */; };
 		5687C6411AB0E53000ED0005 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5687C6401AB0E53000ED0005 /* Parse.framework */; };
 		5687C6431AB0E63500ED0005 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5687C6421AB0E63500ED0005 /* Bolts.framework */; };
 		5687C6451AB0E6C400ED0005 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5687C6441AB0E6C400ED0005 /* AudioToolbox.framework */; };
@@ -60,10 +58,8 @@
 /* Begin PBXFileReference section */
 		56404DEC1ABCE5680030D3E4 /* DuangTableCellImageSmall.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableCellImageSmall.swift; sourceTree = "<group>"; };
 		565F08931AC0888200FDBA4A /* DuangTableCellImageBig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableCellImageBig.swift; sourceTree = "<group>"; };
-		565F08991AC0990200FDBA4A /* DataPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataPhoto.swift; sourceTree = "<group>"; };
 		566AC3E51AB39430001B87D1 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		566AC3E71AB39E99001B87D1 /* SignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
-		567E2DE71AC0E3EE001AC549 /* DataUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataUser.swift; sourceTree = "<group>"; };
 		5687C6401AB0E53000ED0005 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		5687C6421AB0E63500ED0005 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		5687C6441AB0E6C400ED0005 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -249,8 +245,6 @@
 			isa = PBXGroup;
 			children = (
 				5687C6601AB118A800ED0005 /* APIManager.swift */,
-				567E2DE71AC0E3EE001AC549 /* DataUser.swift */,
-				565F08991AC0990200FDBA4A /* DataPhoto.swift */,
 			);
 			name = API;
 			sourceTree = "<group>";
@@ -373,12 +367,10 @@
 				569E7A791AB0DADF009BF47B /* ViewController.swift in Sources */,
 				5687C6611AB118A800ED0005 /* APIManager.swift in Sources */,
 				568A5CB61AB8A49100EF43F4 /* DuangTableViewController.swift in Sources */,
-				565F089A1AC0990200FDBA4A /* DataPhoto.swift in Sources */,
 				E8E416CA1ABEA74F00D7727C /* DuangTableViewControllerNavigationController.swift in Sources */,
 				568A5CB91AB8A5A200EF43F4 /* DuangTableData.swift in Sources */,
 				E8E416C71ABEA52500D7727C /* MainTabBarController.swift in Sources */,
 				568A5CBB1AB8AAA600EF43F4 /* DuangTableCellButton.swift in Sources */,
-				567E2DE81AC0E3EE001AC549 /* DataUser.swift in Sources */,
 				56404DED1ABCE5680030D3E4 /* DuangTableCellImageSmall.swift in Sources */,
 				56C6EFE81AC3472A00F91AF4 /* DuangTableCellImageMutable.swift in Sources */,
 				5687C6631AB11D1F00ED0005 /* Extension.swift in Sources */,

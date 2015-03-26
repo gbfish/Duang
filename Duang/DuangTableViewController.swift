@@ -22,14 +22,10 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         if tableType == nil {
             tableType = TableType.Profile
         }
-        
-        
         checkTableType()
         
         title = titleString
     }
-    
-    
     
     var titleString = ""
     
@@ -705,7 +701,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         temImageArray.append(image)
         temTextArray.append(description)
         
-        if duangTableData.sectionArray.count == 3 {
+        if duangTableData.sectionArray.count == 4 {
             let section = DuangTableDataSection.initSection(sectionTitleForHeader: nil,
                 rowType: DuangTableDataRow.RowType.ImageSmall,
                 cellHeight: nil,
@@ -716,7 +712,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                 function: nil)
             duangTableData.sectionArray.insert(section, atIndex: 2)
             tableView.reloadData()
-        } else if duangTableData.sectionArray.count == 4 {
+        } else if duangTableData.sectionArray.count == 5 {
             duangTableData.sectionArray[2].addRow(DuangTableDataRow.RowType.ImageSmall,
                 cellHeight: nil,
                 textArray: [description],
@@ -901,7 +897,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                 rowType: DuangTableDataRow.RowType.ImageMutable,
                 cellHeight: nil,
                 textArray: nil,
-                imageFileArray: nil,///////////////
+                imageFileArray: APIManager.getFileArrayFromObject(object, key: TablePost.Photos),///////////////
                 imageArray: nil,
                 colorArray: nil,
                 function: nil)
