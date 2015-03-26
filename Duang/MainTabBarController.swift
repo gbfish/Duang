@@ -15,7 +15,8 @@ class MainTabBarController: UITabBarController {
         
         viewControllers = [getViewController(DuangTableViewController.TableType.Feed, itemTitle: TabBarTitle.Feed, itemImageName: "TabBar_Images", tag: 0),
             getViewController(DuangTableViewController.TableType.Users, itemTitle: TabBarTitle.Users, itemImageName: "TabBar_Users", tag: 1),
-            getViewController(DuangTableViewController.TableType.Profile, itemTitle: TabBarTitle.Profile, itemImageName: "TabBar_Person", tag: 2)]
+            getViewController(DuangTableViewController.TableType.AddPost, itemTitle: TabBarTitle.AddPost, itemImageName: "TabBar_Add", tag: 2),
+            getViewController(DuangTableViewController.TableType.Profile, itemTitle: TabBarTitle.Profile, itemImageName: "TabBar_Person", tag: 3)]
         
 
     }

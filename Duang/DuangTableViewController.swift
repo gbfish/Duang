@@ -10,7 +10,8 @@ import UIKit
 import MobileCoreServices
 
 protocol DuangTableViewControllerProtocol {
-    func duangTableViewControllerInput(inputString: NSString)
+    func duangTableViewControllerInput(inputString: String)
+    func duangTableViewControllerAddPhoto(image: UIImage, description: String)
 }
 
 class DuangTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, DuangTableViewControllerProtocol, DuangTableCellInputProtocol , DuangTableCellTextFieldProtocol{
@@ -43,6 +44,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         case ChangePassword
         case Input
         case AddPhoto
+        case AddPost
     }
     
     var tableType: TableType?
@@ -291,6 +293,52 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     function: DuangTableDataRow.Function.Function1(changePasswordDone))
                 duangTableData.sectionArray.append(section)
 
+            case TableType.AddPost:// MARK: AddPost
+                titleString = TabBarTitle.AddPost
+                
+                // Title
+                section = DuangTableDataSection.initSection(sectionTitleForHeader: TitleName.AddPostTitle,
+                    rowType: DuangTableDataRow.RowType.DefaultRightDetail,
+                    cellHeight: nil,
+                    textArray: [""],
+                    imageFileArray: nil,
+                    imageArray: nil,
+                    colorArray: nil,
+                    function: DuangTableDataRow.Function.Function1(showInput))
+                duangTableData.sectionArray.append(section)
+                
+                // Description
+                section = DuangTableDataSection.initSection(sectionTitleForHeader: TitleName.AddPostDescription,
+                    rowType: DuangTableDataRow.RowType.DefaultRightDetail,
+                    cellHeight: nil,
+                    textArray: [""],
+                    imageFileArray: nil,
+                    imageArray: nil,
+                    colorArray: nil,
+                    function: DuangTableDataRow.Function.Function1(showInput))
+                duangTableData.sectionArray.append(section)
+                
+                // Add a Photo
+                section = DuangTableDataSection.initSection(sectionTitleForHeader: "",
+                    rowType: DuangTableDataRow.RowType.Button,
+                    cellHeight: nil,
+                    textArray: ["Add a Photo"],
+                    imageFileArray: nil,
+                    imageArray: nil,
+                    colorArray: [DuangColor.ButtonNormal, DuangColor.ButtonNormalBackground],
+                    function: DuangTableDataRow.Function.Function1(showAddPhoto))
+                duangTableData.sectionArray.append(section)
+                
+                // Done
+                section = DuangTableDataSection.initSection(sectionTitleForHeader: nil,
+                    rowType: DuangTableDataRow.RowType.Button,
+                    cellHeight: nil,
+                    textArray: ["Done"],
+                    imageFileArray: nil,
+                    imageArray: nil,
+                    colorArray: nil,
+                    function: DuangTableDataRow.Function.Function1(doneAddPost))
+                duangTableData.sectionArray.append(section)
                 
             case TableType.AddPhoto:// MARK: AddPhoto
                 titleString = "Add a Photo"
@@ -325,7 +373,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     imageFileArray: nil,
                     imageArray: nil,
                     colorArray: nil,
-                    function: DuangTableDataRow.Function.Function1(addPhotoDone))
+                    function: DuangTableDataRow.Function.Function1(doneAddPhoto))
                 duangTableData.sectionArray.append(section)
             }
         }
@@ -348,43 +396,12 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func showAddPhoto() {
         let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
+        viewController.delegate = self
         viewController.tableType = TableType.AddPhoto
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func addPhotoDone() {
-        if temImage == nil {
-            var deleteAlert = UIAlertController(title: "Sorry", message: "The photo is empty.", preferredStyle: UIAlertControllerStyle.Alert)
-            deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
-            presentViewController(deleteAlert, animated: true, completion: nil)
-        } else if temText == nil {
-            var deleteAlert = UIAlertController(title: "Sorry", message: "The description is empty.", preferredStyle: UIAlertControllerStyle.Alert)
-            deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
-            presentViewController(deleteAlert, animated: true, completion: nil)
-        } else {
-            
-            var photoArray = [NSMutableDictionary]()
-            var photoDictionary = NSMutableDictionary()
-            photoDictionary.setValue(APIManager.Placeholder.Image, forKey: "photo")
-            photoDictionary.setValue("photo 1 description", forKey: "description")
-            photoArray.append(photoDictionary)
-            
-            
-            APIManager.sharedInstance.addPost("post title", description: "post description", photoArray: photoArray, success: { () -> () in
-                println("ok")
-            }, failure: { (error) -> () in
-                println("not ok")
-            })
-            
-            
-            /*
-            APIManager.sharedInstance.addNewPhoto(temImage!, description: temText!, success: { () -> () in
-                println("ok")
-            }, failure: { (error) -> () in
-                
-            })*/
-        }
-    }
+    
     
     func showChangePassword() {
         let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
@@ -444,6 +461,134 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         println("tapAction2")
     }
     
+    // MARK: Done
+    
+    func doneAddPost() {
+        var ifShowAlert = true
+        var messageString = "Something is wrong"
+        
+        if let titleString = duangTableData.getString(0, rowIndex: 0, textArrayIndex: 0) {
+            if titleString == "" {
+                messageString = "The title is empty."
+            } else {
+                if let descriptionString = duangTableData.getString(1, rowIndex: 0, textArrayIndex: 0) {
+                    if descriptionString == "" {
+                        messageString = "The description is empty."
+                    } else {
+                        if temImageArray.count > 0 {
+                            
+                            ifShowAlert = false
+                            
+                            var photoArray = [NSMutableDictionary]()
+                            
+                            for var index = 0; index < temImageArray.count; ++index {
+                                var photoDictionary = NSMutableDictionary()
+                                photoDictionary.setValue(temImageArray[index], forKey: "photo")
+                                photoDictionary.setValue(temTextArray[index], forKey: "description")
+                                photoArray.append(photoDictionary)
+                            }
+                            
+                            APIManager.sharedInstance.addPost(titleString, description: descriptionString, photoArray: photoArray, success: { () -> () in
+                                println("ok")
+                                }, failure: { (error) -> () in
+                                    println("not ok")
+                            })
+                        } else  {
+                            messageString = "The photo is empty."
+                        }
+                    }
+                }
+            }
+        }
+        if ifShowAlert {
+            var deleteAlert = UIAlertController(title: "Sorry", message: messageString, preferredStyle: UIAlertControllerStyle.Alert)
+            deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
+            presentViewController(deleteAlert, animated: true, completion: nil)
+        }
+    }
+    
+            
+            
+            
+//            if let descriptionString = duangTableData.getString(1, rowIndex: 0, textArrayIndex: 0) {
+//                if temImageArray.count > 0 {
+//                    
+//                    var photoArray = [NSMutableDictionary]()
+//                    
+//                    for var index = 0; index < temImageArray.count; ++index {
+//                        var photoDictionary = NSMutableDictionary()
+//                        photoDictionary.setValue(temImageArray[index], forKey: "photo")
+//                        photoDictionary.setValue(temTextArray[index], forKey: "description")
+//                        photoArray.append(photoDictionary)
+//                    }
+//                    
+//                    APIManager.sharedInstance.addPost(titleString, description: descriptionString, photoArray: photoArray, success: { () -> () in
+//                        println("ok")
+//                    }, failure: { (error) -> () in
+//                        println("not ok")
+//                    })
+//                } else  {
+//                    var deleteAlert = UIAlertController(title: "Sorry", message: "The photo is empty.", preferredStyle: UIAlertControllerStyle.Alert)
+//                    deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
+//                    presentViewController(deleteAlert, animated: true, completion: nil)
+//                }
+//            } else {
+//                var deleteAlert = UIAlertController(title: "Sorry", message: "The description is empty.", preferredStyle: UIAlertControllerStyle.Alert)
+//                deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
+//                presentViewController(deleteAlert, animated: true, completion: nil)
+//            }
+//        } else {
+//            var deleteAlert = UIAlertController(title: "Sorry", message: "The title is empty.", preferredStyle: UIAlertControllerStyle.Alert)
+//            deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
+//            presentViewController(deleteAlert, animated: true, completion: nil)
+//        }
+//    }
+    
+    func doneAddPhoto() {
+        if temImage == nil {
+            var deleteAlert = UIAlertController(title: "Sorry", message: "The photo is empty.", preferredStyle: UIAlertControllerStyle.Alert)
+            deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
+            presentViewController(deleteAlert, animated: true, completion: nil)
+        } else if temText == nil {
+            var deleteAlert = UIAlertController(title: "Sorry", message: "The description is empty.", preferredStyle: UIAlertControllerStyle.Alert)
+            deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
+            presentViewController(deleteAlert, animated: true, completion: nil)
+        } else {
+            delegate?.duangTableViewControllerAddPhoto(temImage!, description: temText!)
+            navigationController?.popViewControllerAnimated(true)
+            
+            
+            /*
+            var photoArray = [NSMutableDictionary]()
+            var photoDictionary = NSMutableDictionary()
+            photoDictionary.setValue(APIManager.Placeholder.Image, forKey: "photo")
+            photoDictionary.setValue("photo 1 description", forKey: "description")
+            photoArray.append(photoDictionary)
+            
+            
+            APIManager.sharedInstance.addPost("post title", description: "post description", photoArray: photoArray, success: { () -> () in
+            println("ok")
+            }, failure: { (error) -> () in
+            println("not ok")
+            })
+            */
+            
+            /*
+            APIManager.sharedInstance.addNewPhoto(temImage!, description: temText!, success: { () -> () in
+            println("ok")
+            }, failure: { (error) -> () in
+            
+            })*/
+        }
+    }
+    
+    func doneInput() {
+        if let inputString = duangTableCellInput.inputTextView.text {
+            delegate?.duangTableViewControllerInput(inputString)
+        }
+        navigationController?.popViewControllerAnimated(true)
+    }
+    
     // MARK: Log out
     
     func logout() {
@@ -475,12 +620,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func doneInput() {
-        if let inputString = duangTableCellInput.inputTextView.text {
-            delegate?.duangTableViewControllerInput(inputString)
-        }
-        navigationController?.popViewControllerAnimated(true)
-    }
+    
     
     // MARK: DuangTableCellInputProtocol
     
@@ -488,11 +628,11 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         doneInput()
     }
     
-    // MARK: DuangTableViewControllerProtocol
+    // MARK: - DuangTableViewControllerProtocol
     
     var delegate: DuangTableViewControllerProtocol?
     
-    func duangTableViewControllerInput(inputString: NSString) {
+    func duangTableViewControllerInput(inputString: String) {
         if let sectionNumber = selectedIndexPath?.section {
             if let inputName = duangTableData.sectionArray[sectionNumber].sectionTitleForHeader {
                 if let type = tableType {
@@ -531,6 +671,8 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                             temText = inputString
                             setSelectedInputText(inputString)
                         }
+                    case TableType.AddPost:
+                        setSelectedInputText(inputString)
                     default:
                         break
                     }
@@ -554,6 +696,36 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                 }
             }
         }
+    }
+    
+    func duangTableViewControllerAddPhoto(image: UIImage, description: String) {
+
+        // Add Post
+        
+        temImageArray.append(image)
+        temTextArray.append(description)
+        
+        if duangTableData.sectionArray.count == 3 {
+            let section = DuangTableDataSection.initSection(sectionTitleForHeader: nil,
+                rowType: DuangTableDataRow.RowType.ImageSmall,
+                cellHeight: nil,
+                textArray: [description],
+                imageFileArray: nil,
+                imageArray: [image],
+                colorArray: nil,
+                function: nil)
+            duangTableData.sectionArray.insert(section, atIndex: 2)
+            tableView.reloadData()
+        } else if duangTableData.sectionArray.count == 4 {
+            duangTableData.sectionArray[2].addRow(DuangTableDataRow.RowType.ImageSmall,
+                cellHeight: nil,
+                textArray: [description],
+                imageFileArray: nil,
+                imageArray: [image],
+                colorArray: nil, function: nil)
+            tableView.reloadData()
+        }
+        
     }
     
     // MARK: - Camera
@@ -696,6 +868,9 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     var temImage: UIImage?
     var temText: String?
     
+    var temImageArray = [UIImage]()
+    var temTextArray = [String]()
+    
     private struct TitleName {
         static let InputFirstName = "First Name"
         static let InputLastName = "Last Name"
@@ -706,6 +881,10 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         
         static let ImageProfilePicture = "Profile Picture"
         static let ImageBannerPicture = "Banner Picture"
+        
+        static let AddPostTitle = "Title"
+        static let AddPostDescription = "Description"
+        
     }
     
     // MARK: - TableView Data
@@ -722,7 +901,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                 rowType: DuangTableDataRow.RowType.ImageMutable,
                 cellHeight: nil,
                 textArray: nil,
-                imageFileArray: APIManager.getFileArrayFromObject(object, key: TablePost.PhotoArray),
+                imageFileArray: nil,///////////////
                 imageArray: nil,
                 colorArray: nil,
                 function: nil)

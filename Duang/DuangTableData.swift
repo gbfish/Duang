@@ -13,6 +13,21 @@ import Parse
 class DuangTableData
 {
     var sectionArray = [DuangTableDataSection]()
+    
+    func getString(sectionIndex: NSInteger, rowIndex: NSInteger, textArrayIndex: NSInteger) -> String? {
+        if sectionIndex < sectionArray.count {
+            if let rowArray = sectionArray[sectionIndex].rowArray {
+                if rowIndex < rowArray.count {
+                    if let textArray = rowArray[rowIndex].textArray {
+                        if textArrayIndex < textArray.count {
+                            return textArray[textArrayIndex]
+                        }
+                    }
+                }
+            }
+        }
+        return nil
+    }
 }
 
 // MARK: - Father Data Array
@@ -43,6 +58,8 @@ class DuangTableDataSection
         row.function = function
         rowArray?.append(row)
     }
+    
+    
 }
 
 // MARK: - Father Data Item
