@@ -1027,6 +1027,9 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         if let duangTableDataRow = duangTableData.sectionArray[indexPath.section].rowArray?[indexPath.row] {
+            
+            duangTableDataRow.someFunc()
+            
             if let rowType = duangTableDataRow.rowType {
                 switch rowType {
                 case DuangTableDataRow.RowType.UserBig:

@@ -66,12 +66,22 @@ class DuangTableDataSection
 
 class DuangTableDataRow
 {
-    class func initUserBig() -> DuangTableDataRow {
-        var duangTableDataRow = DuangTableDataRow()
-        
-        
-        return duangTableDataRow
+    enum DataRowType{
+        case UserBig(name: String, description: String, avatar: PFFile, banner: PFFile, action: () -> ())
+        case UserSmall
     }
+    
+//    let data = DataRowType.UserBig(name: "My name", description: "my description")
+//    
+//    
+//    func someFunc() {
+//        switch data {
+//        case DataRowType.UserBig(let name, let description):
+//            println("name = \(name) - description = \(description)")
+//        default:
+//            break
+//        }
+//    }
     
     
     // MARK: - RowType
