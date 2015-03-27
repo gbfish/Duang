@@ -66,6 +66,14 @@ class DuangTableDataSection
 
 class DuangTableDataRow
 {
+    class func initUserBig() -> DuangTableDataRow {
+        var duangTableDataRow = DuangTableDataRow()
+        
+        
+        return duangTableDataRow
+    }
+    
+    
     // MARK: - RowType
     
     enum RowType{
@@ -129,6 +137,10 @@ class DuangTableDataRow
     }
     
     func getColorArray(index: NSInteger) -> UIColor? {
+        
+        
+        
+        
         if let array = colorArray {
             if index < array.count {
                 return array[index]
@@ -137,3 +149,11 @@ class DuangTableDataRow
         return nil
     }
 }
+
+struct DataUserBig {
+    var name: String
+    var description: String
+    var avatar: PFFile
+    var banner: PFFile
+}
+

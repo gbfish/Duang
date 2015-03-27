@@ -897,7 +897,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                 rowType: DuangTableDataRow.RowType.ImageMutable,
                 cellHeight: nil,
                 textArray: nil,
-                imageFileArray: APIManager.getFileArrayFromObject(object, key: TablePost.Photos),///////////////
+                imageFileArray: nil,//APIManager.getFileArrayFromObject(object, key: TablePost.Photos),///////////////
                 imageArray: nil,
                 colorArray: nil,
                 function: nil)
