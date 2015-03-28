@@ -990,86 +990,6 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         default:
             break
         }
-        
-        
-//        case UserBig(name: String, description: String, avatar: PFFile?, banner: PFFile?, action: () -> ())
-//        case ImageMutable
-//        case ImageBig(cellHeight: CGFloat, imagePlaceholder: UIImage, imageFile: PFFile?, action: () -> ())
-//        case ImageSmall(title: String, imagePlaceholder: UIImage, imageFile: PFFile?, isRound: Bool, action: () -> ())
-//        case TextView
-//        case TextField(placeholder: String)
-//        case Button(title: String, textColor: UIColor, backgroundColor: UIColor, action: () -> ())
-//        case DefaultRightDetail(title: String, detail: String, action: () -> ())
-        
-        /*
-        if let duangTableDataRow = duangTableData.sectionArray[indexPath.section].rowArray?[indexPath.row] {
-            
-            
-            
-            if let rowType = duangTableDataRow.rowType {
-                switch rowType {
-                case DuangTableDataRow.RowType.UserBig:
-                    let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.UserBig, forIndexPath: indexPath) as DuangTableCellUserBig
-                    cell.duangTableDataRow = duangTableDataRow
-                    return cell
-                    
-                case DuangTableDataRow.RowType.UserSmall:
-                    let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.ImageSmall, forIndexPath: indexPath) as DuangTableCellImageSmall
-                    cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-                    cell.isRound = true
-                    cell.duangTableDataRow = duangTableDataRow
-                    return cell
-                    
-                case DuangTableDataRow.RowType.ImageMutable:
-                    let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.ImageMutable, forIndexPath: indexPath) as DuangTableCellImageMutable
-                    cell.duangTableDataRow = duangTableDataRow
-                    return cell
-                    
-                case DuangTableDataRow.RowType.ImageBig:
-                    let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.ImageBig, forIndexPath: indexPath) as DuangTableCellImageBig
-                    cell.duangTableDataRow = duangTableDataRow
-                    return cell
-                    
-                case DuangTableDataRow.RowType.ImageSmall:
-                    let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.ImageSmall, forIndexPath: indexPath) as DuangTableCellImageSmall
-                    cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-                    cell.duangTableDataRow = duangTableDataRow
-                    return cell
-                    
-                case DuangTableDataRow.RowType.Input:
-                    duangTableCellInput = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.Input, forIndexPath: indexPath) as DuangTableCellInput
-                    duangTableCellInput.delegate = self
-                    if let text = inputText {
-                        duangTableCellInput.inputTextView.text = text
-                    }
-                    return duangTableCellInput
-                    
-                case DuangTableDataRow.RowType.TextField:
-                    let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.TextField, forIndexPath: indexPath) as DuangTableCellTextField
-                    cell.delegate = self
-                    cell.duangTableDataRow = duangTableDataRow
-                    addDuangTableCellTextField(cell)
-                    return cell
-                    
-                case DuangTableDataRow.RowType.Button:
-                    let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.Button, forIndexPath: indexPath) as DuangTableCellButton
-                    cell.duangTableDataRow = duangTableDataRow
-                    return cell
-                    
-                case DuangTableDataRow.RowType.DefaultRightDetail:
-                    var cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: CellIdentifier.DefaultCell)
-                    cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-                    cell.textLabel?.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
-                    if let text = duangTableDataRow.getTextArray(0) {
-                        cell.textLabel?.text = text
-                    }
-                    if let text = duangTableDataRow.getTextArray(1) {
-                        cell.detailTextLabel?.text = text
-                    }
-                    return cell
-                }
-            }
-        }*/
         return UITableViewCell()
     }
     
@@ -1077,22 +997,8 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.cellForRowAtIndexPath(indexPath)?.selected = false
-        
         selectedIndexPath = indexPath
-        
         duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row].tapAction()
-        
-        /*
-        if let didSelectFunc = duangTableData.sectionArray[indexPath.section].rowArray?[indexPath.row].function {
-            switch didSelectFunc {
-            case DuangTableDataRow.Function.Nothing:
-                println("Nothing")
-            case let DuangTableDataRow.Function.Function1(didSelectFuncAction):
-                didSelectFuncAction()
-            default:
-                break
-            }
-        }*/
     }
     
     // MARK: - DuangTableCellTextFieldProtocol
