@@ -37,32 +37,4 @@ class DuangTableCellImageSmall: UITableViewCell
             }
         }
     }
-    /*
-    var duangTableDataRow: DuangTableDataRow? {
-        didSet {
-            if let row = duangTableDataRow {
-                if isRound {
-                    cellImageView.layer.cornerRadius = cellImageView.frame.size.height / 2.0
-                }
-                
-                if let text = row.getTextArray(0) {
-                    cellTitleLabel.text = text
-                }
-                
-                if let image = row.getImageArray(0) {
-                    cellImageView.image = image
-                }
-                
-                if let imageFile = row.getImageFileArray(0) {
-                    imageFile.getDataInBackgroundWithBlock { (imageData, error) -> Void in
-                        if error == nil {
-                            if let image = UIImage(data:imageData) {
-                                self.cellImageView.image = image
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }*/
 }

@@ -27,25 +27,4 @@ class DuangTableCellImageBig: UITableViewCell {
             }
         }
     }
-    
-    /*
-    var duangTableDataRow: DuangTableDataRow? {
-        didSet {
-            if let row = duangTableDataRow {
-                if let image = row.getImageArray(0) {
-                    cellImageView.image = image
-                }
-                if let imageFile = row.getImageFileArray(0) {
-                    imageFile.getDataInBackgroundWithBlock { (imageData, error) -> Void in
-                        if error == nil {
-                            if let image = UIImage(data:imageData) {
-                                self.cellImageView.image = image
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }*/
-
 }

@@ -28,17 +28,6 @@ class DuangTableCellTextField: UITableViewCell, UITextFieldDelegate
         textField.placeholder = placeholder
     }
     
-    /*
-    var duangTableDataRow: DuangTableDataRow? {
-        didSet {
-            if let row = duangTableDataRow {
-                if let text = row.getTextArray(0) {
-                    textField.placeholder = text
-                }
-            }
-        }
-    }*/
-    
     // MARK: - UITextFieldDelegate
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
