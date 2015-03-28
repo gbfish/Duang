@@ -1262,7 +1262,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             cell.reloadView()
             addDuangTableCellTextField(cell)///
             return cell
-        case .Button(let buttonText, let buttonTextColor, let buttonBackgroundColor, _)
+        case .Button(let buttonText, let buttonTextColor, let buttonBackgroundColor, _):
             let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellButton
             cell.buttonText = buttonText
             cell.buttonTextColor = buttonTextColor
