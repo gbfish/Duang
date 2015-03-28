@@ -761,6 +761,14 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
 
     // MARK: - Data
     
+    // MARK:
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        segue.
+    }
+    
+    // MARK:
+    
     var temImage: UIImage?
     var temText: String?
     
