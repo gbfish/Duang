@@ -9,6 +9,11 @@
 import Foundation
 import UIKit
 
+struct ImagePlaceholder {
+    static let Avatar = UIImage(named: "placeholder_user")!
+    static let Image = UIImage(named: "placeholder_image")!
+}
+
 struct DuangColor {
     
     static let Navigation = UIColor(red: 230.0/255.0, green: 179.0/255.0, blue: 61.0/255.0, alpha: 1.0)

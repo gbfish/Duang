@@ -15,14 +15,20 @@ protocol DuangTableCellTextFieldProtocol
 
 class DuangTableCellTextField: UITableViewCell, UITextFieldDelegate
 {
-    var delegate: DuangTableCellTextFieldProtocol?
-
     @IBOutlet weak var textField: UITextField! {
         didSet {
             textField.delegate = self
         }
     }
     
+    var delegate: DuangTableCellTextFieldProtocol?
+    var placeholder = ""
+    
+    func reloadView() {
+        textField.placeholder = placeholder
+    }
+    
+    /*
     var duangTableDataRow: DuangTableDataRow? {
         didSet {
             if let row = duangTableDataRow {
@@ -31,7 +37,7 @@ class DuangTableCellTextField: UITableViewCell, UITextFieldDelegate
                 }
             }
         }
-    }
+    }*/
     
     // MARK: - UITextFieldDelegate
     

@@ -294,10 +294,7 @@ class APIManager {
     
     // MARK: Avatar
     
-    struct Placeholder {
-        static let Avatar = UIImage(named: "placeholder_user")
-        static let Image = UIImage(named: "placeholder_image")
-    }
+    
 
     
 //    let imagePlaceholderAvatar = UIImage(named: "placeholder_user")

@@ -9,7 +9,7 @@
 import UIKit
 
 class DuangTableCellImageMutable: UITableViewCell {
-
+/*
     var duangTableDataRow: DuangTableDataRow? {
         didSet {
             if let row = duangTableDataRow {
@@ -51,5 +51,5 @@ class DuangTableCellImageMutable: UITableViewCell {
 //                }
             }
         }
-    }
+    }*/
 }

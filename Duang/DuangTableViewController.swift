@@ -14,7 +14,7 @@ protocol DuangTableViewControllerProtocol {
     func duangTableViewControllerAddPhoto(image: UIImage, description: String)
 }
 
-class DuangTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, DuangTableViewControllerProtocol, DuangTableCellInputProtocol , DuangTableCellTextFieldProtocol{
+class DuangTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, DuangTableViewControllerProtocol, DuangTableCellTextViewProtocol, DuangTableCellTextFieldProtocol{
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +46,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     var tableType: TableType?
     
     func checkTableType() {
+        
         if let type = tableType {
             var section = DuangTableDataSection()
             switch type {
@@ -78,6 +79,14 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                 titleString = TabBarTitle.Profile
                 
                 // Profile Picture
+                
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = ""
+                
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.UserBig(userName: "\(APIManager.sharedInstance.getCurrentUserFirstName()) \(APIManager.sharedInstance.getCurrentUserLastName())", userDescription: APIManager.sharedInstance.getCurrentUserDescription(), userAvatarPlaceholder: ImagePlaceholder.Avatar, userAvatarFile: APIManager.sharedInstance.getCurrentUserAvatarFile(), userBannerPlaceholder: ImagePlaceholder.Image, userBannerFile: APIManager.sharedInstance.getCurrentUserBannerFile(), tapAction: showEditUser))
+                duangTableData.sectionArray.append(section)
+                
+                /*
                 section = DuangTableDataSection.initSection(sectionTitleForHeader: "",
                     rowType: DuangTableDataRow.RowType.UserBig,
                     cellHeight: nil,
@@ -87,8 +96,17 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     colorArray: nil,
                     function: DuangTableDataRow.Function.Function1(showEditUser))
                 duangTableData.sectionArray.append(section)
+                */
                 
                 // Add a Photo
+                
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = ""
+                
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.Button(buttonText: "Add a Photo", buttonTextColor: DuangColor.ButtonNormal, buttonBackgroundColor: DuangColor.ButtonNormalBackground, action: showAddPhoto))
+                duangTableData.sectionArray.append(section)
+                
+                /*
                 section = DuangTableDataSection.initSection(sectionTitleForHeader: "",
                     rowType: DuangTableDataRow.RowType.Button,
                     cellHeight: nil,
@@ -98,8 +116,17 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     colorArray: [DuangColor.ButtonNormal, DuangColor.ButtonNormalBackground],
                     function: DuangTableDataRow.Function.Function1(showAddPhoto))
                 duangTableData.sectionArray.append(section)
+                */
                 
                 // Setting
+                
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = ""
+                
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.Button(buttonText: "Settings", buttonTextColor: DuangColor.ButtonNormal, buttonBackgroundColor: DuangColor.ButtonNormalBackground, action: showSettings))
+                duangTableData.sectionArray.append(section)
+                
+                /*
                 section = DuangTableDataSection.initSection(sectionTitleForHeader: "",
                     rowType: DuangTableDataRow.RowType.DefaultRightDetail,
                     cellHeight: nil,
@@ -109,11 +136,20 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     colorArray: nil,
                     function: DuangTableDataRow.Function.Function1(showSettings))
                 duangTableData.sectionArray.append(section)
+                */
                 
             case TableType.ProfileEdit:// MARK: ProfileEdit
                 titleString = "Edit Profile"
                 
                 // Profile Picture
+                
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = ""
+                
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.ImageSmall(imageTitle: TitleName.ImageProfilePicture, imagePlaceholder: ImagePlaceholder.Avatar, imageFile: APIManager.sharedInstance.getCurrentUserAvatarFile(), isRound: true, action: selectImage))
+                duangTableData.sectionArray.append(section)
+                
+                /*
                 section = DuangTableDataSection.initSection(sectionTitleForHeader: nil,
                     rowType: DuangTableDataRow.RowType.UserSmall,
                     cellHeight: nil,
@@ -123,8 +159,17 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     colorArray: nil,
                     function: DuangTableDataRow.Function.Function1(selectImage))
                 duangTableData.sectionArray.append(section)
+                */
                 
                 // Banner Picture
+                
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = ""
+                
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.ImageSmall(imageTitle: TitleName.ImageBannerPicture, imagePlaceholder: ImagePlaceholder.Image, imageFile: APIManager.sharedInstance.getCurrentUserBannerFile(), isRound: false, action: selectImage))
+                duangTableData.sectionArray.append(section)
+                
+                /*
                 section = DuangTableDataSection.initSection(sectionTitleForHeader: nil,
                     rowType: DuangTableDataRow.RowType.UserSmall,
                     cellHeight: nil,
@@ -134,8 +179,16 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     colorArray: nil,
                     function: DuangTableDataRow.Function.Function1(selectImage))
                 duangTableData.sectionArray.append(section)
+                */
                 
                 // First Name
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = TitleName.InputFirstName
+                
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.DefaultRightDetail(title: APIManager.sharedInstance.getCurrentUserFirstName(), detail: "", action: showInput))
+                duangTableData.sectionArray.append(section)
+                
+                /*
                 section = DuangTableDataSection.initSection(sectionTitleForHeader: TitleName.InputFirstName,
                     rowType: DuangTableDataRow.RowType.DefaultRightDetail,
                     cellHeight: nil,
@@ -145,8 +198,16 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     colorArray: nil,
                     function: DuangTableDataRow.Function.Function1(showInput))
                 duangTableData.sectionArray.append(section)
+                */
                 
                 // Last Name
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = TitleName.InputLastName
+                
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.DefaultRightDetail(title: APIManager.sharedInstance.getCurrentUserLastName(), detail: "", action: showInput))
+                duangTableData.sectionArray.append(section)
+                
+                /*
                 section = DuangTableDataSection.initSection(sectionTitleForHeader: TitleName.InputLastName,
                     rowType: DuangTableDataRow.RowType.DefaultRightDetail,
                     cellHeight: nil,
@@ -156,8 +217,14 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     colorArray: nil,
                     function: DuangTableDataRow.Function.Function1(showInput))
                 duangTableData.sectionArray.append(section)
-                
+                */
                 // Description
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = TitleName.InputAboutYou
+                
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.DefaultRightDetail(title: APIManager.sharedInstance.getCurrentUserDescription(), detail: "", action: showInput))
+                duangTableData.sectionArray.append(section)
+                /*
                 section = DuangTableDataSection.initSection(sectionTitleForHeader: TitleName.InputAboutYou,
                     rowType: DuangTableDataRow.RowType.DefaultRightDetail,
                     cellHeight: nil,
@@ -167,13 +234,20 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     colorArray: nil,
                     function: DuangTableDataRow.Function.Function1(showInput))
                 duangTableData.sectionArray.append(section)
-                
+                */
             case TableType.Input:// MARK: Input
                 if let text = inputTitle {
                     titleString = text
                 }
                 
                 // TextField
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = ""
+                
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.TextView(placeholder: ""))
+                duangTableData.sectionArray.append(section)
+                
+                /*
                 section = DuangTableDataSection.initSection(sectionTitleForHeader: nil,
                     rowType: DuangTableDataRow.RowType.Input,
                     cellHeight: nil,
@@ -183,8 +257,14 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     colorArray: nil,
                     function: nil)
                 duangTableData.sectionArray.append(section)
-                
+                */
                 // Done
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = ""
+                
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.Button(buttonText: "Done", buttonTextColor: DuangColor.ButtonNormal, buttonBackgroundColor: DuangColor.ButtonNormalBackground, action: doneInput))
+                duangTableData.sectionArray.append(section)
+                /*
                 section = DuangTableDataSection.initSection(sectionTitleForHeader: nil,
                     rowType: DuangTableDataRow.RowType.Button,
                     cellHeight: nil,
@@ -194,11 +274,17 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     colorArray: [DuangColor.ButtonNormal, DuangColor.ButtonNormalBackground],
                     function: DuangTableDataRow.Function.Function1(doneInput))
                 duangTableData.sectionArray.append(section)
-                
+                */
             case TableType.Settings:// MARK: Settings
                 titleString = "Settings"
                 
                 // Username
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = TitleName.InputUsername
+                
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.DefaultRightDetail(title: APIManager.sharedInstance.getCurrentUserUsername(), detail: "", action: showInput))
+                duangTableData.sectionArray.append(section)
+                /*
                 section = DuangTableDataSection.initSection(sectionTitleForHeader: TitleName.InputUsername,
                     rowType: DuangTableDataRow.RowType.DefaultRightDetail,
                     cellHeight: nil,
@@ -208,19 +294,16 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     colorArray: nil,
                     function: DuangTableDataRow.Function.Function1(showInput))
                 duangTableData.sectionArray.append(section)
-                
-                // Password
-                section = DuangTableDataSection.initSection(sectionTitleForHeader: "Password",
-                    rowType: DuangTableDataRow.RowType.DefaultRightDetail,
-                    cellHeight: nil,
-                    textArray: ["Change Password"],
-                    imageFileArray: nil,
-                    imageArray: nil,
-                    colorArray: nil,
-                    function: DuangTableDataRow.Function.Function1(showChangePassword))
-                duangTableData.sectionArray.append(section)
+                */
                 
                 // Email
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = TitleName.InputEmail
+                
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.DefaultRightDetail(title: APIManager.sharedInstance.getCurrentUserEmail(), detail: "", action: showInput))
+                duangTableData.sectionArray.append(section)
+                
+                /*
                 section = DuangTableDataSection.initSection(sectionTitleForHeader: TitleName.InputEmail,
                     rowType: DuangTableDataRow.RowType.DefaultRightDetail,
                     cellHeight: nil,
@@ -230,8 +313,36 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     colorArray: nil,
                     function: DuangTableDataRow.Function.Function1(showInput))
                 duangTableData.sectionArray.append(section)
+                */
+                
+                // Password
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = "Password"
+                
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.DefaultRightDetail(title: "Change Password", detail: "", action: showChangePassword))
+                duangTableData.sectionArray.append(section)
+                
+                /*
+                section = DuangTableDataSection.initSection(sectionTitleForHeader: "Password",
+                    rowType: DuangTableDataRow.RowType.DefaultRightDetail,
+                    cellHeight: nil,
+                    textArray: ["Change Password"],
+                    imageFileArray: nil,
+                    imageArray: nil,
+                    colorArray: nil,
+                    function: DuangTableDataRow.Function.Function1(showChangePassword))
+                duangTableData.sectionArray.append(section)
+                */
+                
                 
                 // Log out
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = ""
+                
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.Button(buttonText: "Log out", buttonTextColor: DuangColor.ButtonNormal, buttonBackgroundColor: DuangColor.ButtonNormalBackground, action: logout))
+                duangTableData.sectionArray.append(section)
+                
+                /*
                 section = DuangTableDataSection.initSection(sectionTitleForHeader: nil,
                     rowType: DuangTableDataRow.RowType.Button,
                     cellHeight: nil,
@@ -241,11 +352,18 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     colorArray: [DuangColor.ButtonNormal, DuangColor.ButtonNormalBackground],
                     function: DuangTableDataRow.Function.Function1(logout))
                 duangTableData.sectionArray.append(section)
-                
+                */
             case TableType.ChangePassword:// MARK: ChangePassword
                 titleString = "Change Password"
                 
                 // Old Password
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = "Old Password"
+                
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.TextField(placeholder: "password"))
+                duangTableData.sectionArray.append(section)
+                
+                /*
                 section = DuangTableDataSection.initSection(sectionTitleForHeader: "Old Password",
                     rowType: DuangTableDataRow.RowType.TextField,
                     cellHeight: nil,
@@ -255,8 +373,15 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     colorArray: nil,
                     function: nil)
                 duangTableData.sectionArray.append(section)
-                
+                */
                 // New Password
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = "New Password"
+                
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.TextField(placeholder: "password"))
+                duangTableData.sectionArray.append(section)
+                
+                /*
                 section = DuangTableDataSection.initSection(sectionTitleForHeader: "New Password",
                     rowType: DuangTableDataRow.RowType.TextField,
                     cellHeight: nil,
@@ -266,8 +391,14 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     colorArray: nil,
                     function: nil)
                 duangTableData.sectionArray.append(section)
-                
+                */
                 // Retype Password
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = "Retype Password"
+                
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.TextField(placeholder: "password"))
+                duangTableData.sectionArray.append(section)
+                /*
                 section = DuangTableDataSection.initSection(sectionTitleForHeader: "Retype Password",
                     rowType: DuangTableDataRow.RowType.TextField,
                     cellHeight: nil,
@@ -277,8 +408,15 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     colorArray: nil,
                     function: nil)
                 duangTableData.sectionArray.append(section)
-                
+                */
                 // Done
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = ""
+                
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.Button(buttonText: "Done", buttonTextColor: DuangColor.ButtonNormal, buttonBackgroundColor: DuangColor.ButtonNormalBackground, action: changePasswordDone))
+                duangTableData.sectionArray.append(section)
+                
+                /*
                 section = DuangTableDataSection.initSection(sectionTitleForHeader: nil,
                     rowType: DuangTableDataRow.RowType.Button,
                     cellHeight: nil,
@@ -288,11 +426,18 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     colorArray: nil,
                     function: DuangTableDataRow.Function.Function1(changePasswordDone))
                 duangTableData.sectionArray.append(section)
-
+*/
             case TableType.AddPost:// MARK: AddPost
                 titleString = TabBarTitle.AddPost
                 
                 // Title
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = TitleName.AddPostTitle
+                
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.DefaultRightDetail(title: "", detail: "", action: showInput))
+                duangTableData.sectionArray.append(section)
+                
+                /*
                 section = DuangTableDataSection.initSection(sectionTitleForHeader: TitleName.AddPostTitle,
                     rowType: DuangTableDataRow.RowType.DefaultRightDetail,
                     cellHeight: nil,
@@ -302,8 +447,16 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     colorArray: nil,
                     function: DuangTableDataRow.Function.Function1(showInput))
                 duangTableData.sectionArray.append(section)
+                */
                 
                 // Description
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = TitleName.AddPostDescription
+                
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.DefaultRightDetail(title: "", detail: "", action: showInput))
+                duangTableData.sectionArray.append(section)
+                
+                /*
                 section = DuangTableDataSection.initSection(sectionTitleForHeader: TitleName.AddPostDescription,
                     rowType: DuangTableDataRow.RowType.DefaultRightDetail,
                     cellHeight: nil,
@@ -313,8 +466,15 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     colorArray: nil,
                     function: DuangTableDataRow.Function.Function1(showInput))
                 duangTableData.sectionArray.append(section)
-                
+                */
                 // Add a Photo
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = ""
+                
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.Button(buttonText: "Add a Photo", buttonTextColor: DuangColor.ButtonNormal, buttonBackgroundColor: DuangColor.ButtonNormalBackground, action: showAddPhoto))
+                duangTableData.sectionArray.append(section)
+                
+                /*
                 section = DuangTableDataSection.initSection(sectionTitleForHeader: "",
                     rowType: DuangTableDataRow.RowType.Button,
                     cellHeight: nil,
@@ -324,8 +484,16 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     colorArray: [DuangColor.ButtonNormal, DuangColor.ButtonNormalBackground],
                     function: DuangTableDataRow.Function.Function1(showAddPhoto))
                 duangTableData.sectionArray.append(section)
+                */
                 
                 // Done
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = ""
+                
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.Button(buttonText: "Done", buttonTextColor: DuangColor.ButtonNormal, buttonBackgroundColor: DuangColor.ButtonNormalBackground, action: doneAddPost))
+                duangTableData.sectionArray.append(section)
+                
+                /*
                 section = DuangTableDataSection.initSection(sectionTitleForHeader: nil,
                     rowType: DuangTableDataRow.RowType.Button,
                     cellHeight: nil,
@@ -335,11 +503,17 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     colorArray: nil,
                     function: DuangTableDataRow.Function.Function1(doneAddPost))
                 duangTableData.sectionArray.append(section)
-                
+                */
             case TableType.AddPhoto:// MARK: AddPhoto
                 titleString = "Add a Photo"
                 
                 // Photo
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = ""
+                
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.ImageSmall(imageTitle: "Photo", imagePlaceholder: ImagePlaceholder.Image, imageFile: nil, isRound: false, action: selectImage))
+                duangTableData.sectionArray.append(section)
+                /*
                 section = DuangTableDataSection.initSection(sectionTitleForHeader: nil,
                     rowType: DuangTableDataRow.RowType.ImageSmall,
                     cellHeight: nil,
@@ -349,8 +523,14 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     colorArray: nil,
                     function: DuangTableDataRow.Function.Function1(selectImage))
                 duangTableData.sectionArray.append(section)
-                
+                */
                 // Description
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = TitleName.InputPhotoDescription
+                
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.DefaultRightDetail(title: "", detail: "", action: showInput))
+                duangTableData.sectionArray.append(section)
+                /*
                 section = DuangTableDataSection.initSection(sectionTitleForHeader: TitleName.InputPhotoDescription,
                     rowType: DuangTableDataRow.RowType.DefaultRightDetail,
                     cellHeight: nil,
@@ -360,8 +540,15 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     colorArray: nil,
                     function: DuangTableDataRow.Function.Function1(showInput))
                 duangTableData.sectionArray.append(section)
-                
+                */
                 // Done
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = ""
+                
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.Button(buttonText: "Done", buttonTextColor: DuangColor.ButtonNormal, buttonBackgroundColor: DuangColor.ButtonNormalBackground, action: doneAddPhoto))
+                duangTableData.sectionArray.append(section)
+                
+                /*
                 section = DuangTableDataSection.initSection(sectionTitleForHeader: nil,
                     rowType: DuangTableDataRow.RowType.Button,
                     cellHeight: nil,
@@ -371,6 +558,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     colorArray: nil,
                     function: DuangTableDataRow.Function.Function1(doneAddPhoto))
                 duangTableData.sectionArray.append(section)
+*/
             }
         }
         
@@ -462,7 +650,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     func doneAddPost() {
         var ifShowAlert = true
         var messageString = "Something is wrong"
-        
+        /*
         if let titleString = duangTableData.getString(0, rowIndex: 0, textArrayIndex: 0) {
             if titleString == "" {
                 messageString = "The title is empty."
@@ -495,7 +683,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     }
                 }
             }
-        }
+        }*/
         if ifShowAlert {
             var deleteAlert = UIAlertController(title: "Sorry", message: messageString, preferredStyle: UIAlertControllerStyle.Alert)
             deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
@@ -604,13 +792,14 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         viewController.delegate = self
         viewController.tableType = TableType.Input
         
-        if let sectionNumber = selectedIndexPath?.section {
+        if let sectionNumber = selectedIndexPath?.section {/*
             if let text = duangTableData.sectionArray[sectionNumber].sectionTitleForHeader {
                 viewController.inputTitle = text
             }
+            
             if let text = duangTableData.sectionArray[sectionNumber].rowArray?[0].getTextArray(0) {
                 viewController.inputText = text
-            }
+            }*/
             
         }
         self.navigationController?.pushViewController(viewController, animated: true)
@@ -628,7 +817,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     
     var delegate: DuangTableViewControllerProtocol?
     
-    func duangTableViewControllerInput(inputString: String) {
+    func duangTableViewControllerInput(inputString: String) {/*
         if let sectionNumber = selectedIndexPath?.section {
             if let inputName = duangTableData.sectionArray[sectionNumber].sectionTitleForHeader {
                 if let type = tableType {
@@ -674,10 +863,10 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     }
                 }
             }
-        }
+        }*/
     }
     
-    func setSelectedInputText(inputText: String) {
+    func setSelectedInputText(inputText: String) {/*
         if let theSection = selectedIndexPath?.section {
             if let theRow = selectedIndexPath?.row {
                 if let theRowArray = duangTableData.sectionArray[theSection].rowArray {
@@ -691,7 +880,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     }
                 }
             }
-        }
+        }*/
     }
     
     func duangTableViewControllerAddPhoto(image: UIImage, description: String) {
@@ -700,7 +889,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         
         temImageArray.append(image)
         temTextArray.append(description)
-        
+        /*
         if duangTableData.sectionArray.count == 4 {
             let section = DuangTableDataSection.initSection(sectionTitleForHeader: nil,
                 rowType: DuangTableDataRow.RowType.ImageSmall,
@@ -720,7 +909,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                 imageArray: [image],
                 colorArray: nil, function: nil)
             tableView.reloadData()
-        }
+        }*/
         
     }
     
@@ -824,7 +1013,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // MARK: Handle Image
     
-    func handleImage (image: UIImage) {
+    func handleImage (image: UIImage) {/*
         if let theSection = selectedIndexPath?.section {
             if let theRow = selectedIndexPath?.row {
                 if let theRowArray = duangTableData.sectionArray[theSection].rowArray {
@@ -856,7 +1045,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     }
                 }
             }
-        }
+        }*/
     }
 
     // MARK: - Data
@@ -892,7 +1081,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         var section = DuangTableDataSection()
         
         for object in objectArray {
-            
+            /*
             section = DuangTableDataSection.initSection(sectionTitleForHeader: nil,
                 rowType: DuangTableDataRow.RowType.ImageMutable,
                 cellHeight: nil,
@@ -901,7 +1090,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                 imageArray: nil,
                 colorArray: nil,
                 function: nil)
-            
+            */
 //            let user = APIManager.getUserFromObject(object, key: TablePhoto.Owner)
 //            
 //            section.addRow(DuangTableDataRow.RowType.UserSmall,
@@ -919,7 +1108,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     func setDuangTableDataFromPhoto(objectArray: [PFObject]) {
         duangTableData = DuangTableData()
         var section = DuangTableDataSection()
-        
+        /*
         for object in objectArray {
             section = DuangTableDataSection.initSection(sectionTitleForHeader: "",
                 rowType: DuangTableDataRow.RowType.ImageBig,
@@ -940,7 +1129,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                 colorArray: nil,
                 function: nil)
             duangTableData.sectionArray.append(section)
-        }
+        }*/
         tableView.reloadData()
     }
     
@@ -948,7 +1137,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         duangTableData = DuangTableData()
         var section = DuangTableDataSection()
         
-        for user in objectArray {
+        for user in objectArray {/*
             section = DuangTableDataSection.initSection(sectionTitleForHeader: "",
                 rowType: DuangTableDataRow.RowType.UserBig,
                 cellHeight: nil,
@@ -957,7 +1146,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                 imageArray: nil,
                 colorArray: nil,
                 function: nil)
-            duangTableData.sectionArray.append(section)
+            duangTableData.sectionArray.append(section)*/
         }
         tableView.reloadData()
     }
@@ -971,7 +1160,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return duangTableData.sectionArray[section].rowArray?.count ?? 0
+        return duangTableData.sectionArray[section].rowArray.count
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -986,33 +1175,39 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row].cellHeight()
+        
+        /*
         if let duangTableDataRow = duangTableData.sectionArray[indexPath.section].rowArray?[indexPath.row] {
-            if let rowType = duangTableDataRow.rowType {
-                switch rowType {
-                case DuangTableDataRow.RowType.UserBig:
-                    return UIScreen.mainScreen().bounds.size.width
-                case DuangTableDataRow.RowType.UserSmall:
-                    return 50.0
-                case DuangTableDataRow.RowType.ImageMutable:
-                    return UIScreen.mainScreen().bounds.size.width
-                case DuangTableDataRow.RowType.ImageBig:
-                    return duangTableDataRow.cellHeight ?? 0.0
-                case DuangTableDataRow.RowType.ImageSmall:
-                    return 50.0
-                case DuangTableDataRow.RowType.Input:
-                    return 200.0
-                case DuangTableDataRow.RowType.TextField:
-                    return 50.0
-                case DuangTableDataRow.RowType.Button:
-                    return 50.0
-                case DuangTableDataRow.RowType.DefaultRightDetail:
-                    return 50.0
-                }
-            }
-        }
+            
+            return duangTableDataRow.cellHeight()
+            
+//            if let rowType = duangTableDataRow.rowType {
+//                switch rowType {
+//                case DuangTableDataRow.RowType.UserBig:
+//                    return UIScreen.mainScreen().bounds.size.width
+//                case DuangTableDataRow.RowType.UserSmall:
+//                    return 50.0
+//                case DuangTableDataRow.RowType.ImageMutable:
+//                    return UIScreen.mainScreen().bounds.size.width
+//                case DuangTableDataRow.RowType.ImageBig:
+//                    return duangTableDataRow.cellHeight ?? 0.0
+//                case DuangTableDataRow.RowType.ImageSmall:
+//                    return 50.0
+//                case DuangTableDataRow.RowType.Input:
+//                    return 200.0
+//                case DuangTableDataRow.RowType.TextField:
+//                    return 50.0
+//                case DuangTableDataRow.RowType.Button:
+//                    return 50.0
+//                case DuangTableDataRow.RowType.DefaultRightDetail:
+//                    return 50.0
+//                }
+//            }
+        }*/
         return 0.0
     }
-    
+    /*
     private struct CellIdentifier {
         static let UserBig = "DuangTableCellUserBig"
         static let ImageMutable = "DuangTableCellImageMutable"
@@ -1022,13 +1217,75 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         static let Button = "DuangTableCellButton"
         static let TextField = "DuangTableCellTextField"
         static let DefaultCell = "DefaultCell"
-    }
+    }*/
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
+        let row = duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row]
+        switch row {
+        case .UserBig(let userName, let userDescription, let userAvatarPlaceholder, let userAvatarFile, let userBannerPlaceholder, let userBannerFile, _):
+            let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellUserBig
+            cell.userName = userName
+            cell.userDescription = userDescription
+            cell.userAvatarPlaceholder = userAvatarPlaceholder
+            cell.userAvatarFile = userAvatarFile
+            cell.userBannerPlaceholder = userBannerPlaceholder
+            cell.userBannerFile = userBannerFile
+            cell.reloadView()
+            return cell
+        case .ImageBig(_, let imagePlaceholder, let imageFile, _):
+            let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellImageBig
+            cell.imagePlaceholder = imagePlaceholder
+            cell.imageFile = imageFile
+            cell.reloadView()
+            return cell
+        case .ImageSmall(let imageTitle, let imagePlaceholder, let imageFile, let isRound, _):
+            let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellImageSmall
+            cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+            cell.imageTitle = imageTitle
+            cell.imagePlaceholder = imagePlaceholder
+            cell.imageFile = imageFile
+            cell.isRound = true
+            cell.reloadView()
+            return cell
+        case .TextView(let placeholder):
+            let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellTextView
+            cell.delegate = self
+            cell.placeholder = placeholder
+            cell.reloadView()
+            ////add
+            return cell
+        case .TextField(let placeholder):
+            let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellTextField
+            cell.delegate = self
+            cell.placeholder = placeholder
+            cell.reloadView()
+            addDuangTableCellTextField(cell)///
+            return cell
+        case .Button(let buttonText, let buttonTextColor, let buttonBackgroundColor, _)
+            let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellButton
+            cell.buttonText = buttonText
+            cell.buttonTextColor = buttonTextColor
+            cell.buttonBackgroundColor = buttonBackgroundColor
+            cell.reloadView()
+            return cell
+        default:
+            break
+        }
+        
+        
+//        case UserBig(name: String, description: String, avatar: PFFile?, banner: PFFile?, action: () -> ())
+//        case ImageMutable
+//        case ImageBig(cellHeight: CGFloat, imagePlaceholder: UIImage, imageFile: PFFile?, action: () -> ())
+//        case ImageSmall(title: String, imagePlaceholder: UIImage, imageFile: PFFile?, isRound: Bool, action: () -> ())
+//        case TextView
+//        case TextField(placeholder: String)
+//        case Button(title: String, textColor: UIColor, backgroundColor: UIColor, action: () -> ())
+        case DefaultRightDetail(title: String, detail: String, action: () -> ())
+        
         if let duangTableDataRow = duangTableData.sectionArray[indexPath.section].rowArray?[indexPath.row] {
             
-            duangTableDataRow.someFunc()
+            
             
             if let rowType = duangTableDataRow.rowType {
                 switch rowType {

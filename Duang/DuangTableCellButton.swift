@@ -12,6 +12,17 @@ class DuangTableCellButton: UITableViewCell
 {
     @IBOutlet weak var buttonLabel: UILabel!
     
+    var buttonText = ""
+    var buttonTextColor = UIColor()
+    var buttonBackgroundColor = UIColor()
+    
+    func reloadView() {
+        buttonLabel.text = buttonText
+        buttonLabel.textColor = buttonTextColor
+        buttonLabel.backgroundColor = buttonBackgroundColor
+    }
+    
+    /*
     var duangTableDataRow: DuangTableDataRow? {
         didSet {
             if let row = duangTableDataRow {
@@ -28,5 +39,5 @@ class DuangTableCellButton: UITableViewCell
                 }
             }
         }
-    }
+    }*/
 }

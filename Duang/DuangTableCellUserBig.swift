@@ -17,6 +17,41 @@ class DuangTableCellUserBig: UITableViewCell
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var userDescriptionLabel: UILabel!
     
+    var userName = ""
+    var userDescription = ""
+    var userAvatarPlaceholder = UIImage()
+    var userAvatarFile: PFFile?
+    var userBannerPlaceholder = UIImage()
+    var userBannerFile: PFFile?
+    
+    func reloadView() {
+        userNameLabel.text = userName
+        userDescriptionLabel.text = userDescription
+        
+        userAvatarImageView.image = userAvatarPlaceholder
+        if let file = userAvatarFile {
+            file.getDataInBackgroundWithBlock { (imageData, error) -> Void in
+                if error == nil {
+                    if let image = UIImage(data:imageData) {
+                        self.userAvatarImageView.image = image
+                    }
+                }
+            }
+        }
+        
+        userBannerImageView.image = userBannerPlaceholder
+        if let file = userBannerFile {
+            file.getDataInBackgroundWithBlock { (imageData, error) -> Void in
+                if error == nil {
+                    if let image = UIImage(data:imageData) {
+                        self.userBannerImageView.image = image
+                    }
+                }
+            }
+        }
+    }
+    
+    /*
     var duangTableDataRow: DuangTableDataRow? {
         didSet {
             if let row = duangTableDataRow {
@@ -51,5 +86,5 @@ class DuangTableCellUserBig: UITableViewCell
                 }
             }
         }
-    }
+    }*/
 }
