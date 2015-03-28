@@ -41,12 +41,12 @@ class DuangTableDataSection
     enum DuangTableDataRow {
         case UserBig(userName: String, userDescription: String, userAvatarPlaceholder: UIImage, userAvatarFile: PFFile?, userBannerPlaceholder: UIImage, userBannerFile: PFFile?, tapAction: () -> ())
         case ImageMutable
-        case ImageBig(cellHeight: CGFloat, imagePlaceholder: UIImage, imageFile: PFFile?, action: () -> ())
-        case ImageSmall(imageTitle: String, imagePlaceholder: UIImage, imageFile: PFFile?, isRound: Bool, action: () -> ())
+        case ImageBig(cellHeight: CGFloat, imagePlaceholder: UIImage, imageFile: PFFile?, tapAction: () -> ())
+        case ImageSmall(imageTitle: String, imagePlaceholder: UIImage, imageFile: PFFile?, isRound: Bool, tapAction: () -> ())
         case TextView(placeholder: String)
         case TextField(placeholder: String)
-        case Button(buttonText: String, buttonTextColor: UIColor, buttonBackgroundColor: UIColor, action: () -> ())
-        case DefaultRightDetail(title: String, detail: String, action: () -> ())
+        case Button(buttonText: String, buttonTextColor: UIColor, buttonBackgroundColor: UIColor, tapAction: () -> ())
+        case DefaultRightDetail(titleText: String, detailText: String, tapAction: () -> ())
         
         func cellHeight() -> CGFloat {
             switch self {
@@ -87,6 +87,23 @@ class DuangTableDataSection
                 return "DuangTableCellButton"
             case .DefaultRightDetail(_):
                 return "DefaultCell"
+            }
+        }
+        
+        func tapAction() {
+            switch self {
+            case .UserBig(_, _, _, _, _, _, let tapAction):
+                tapAction()
+            case .ImageBig(_, _, _, let tapAction):
+                tapAction()
+            case .ImageSmall(_, _, _, _, let tapAction):
+                tapAction()
+            case .Button(_, _, _, let tapAction):
+                tapAction()
+            case .DefaultRightDetail(_, _, let tapAction):
+                tapAction()
+            default:
+                break
             }
         }
     }
