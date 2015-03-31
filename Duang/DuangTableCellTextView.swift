@@ -10,7 +10,7 @@ import UIKit
 
 protocol DuangTableCellTextViewProtocol
 {
-    func duangTableCellInputDoneAction()
+    func duangTableCellTextViewDoneAction()
 }
 
 class DuangTableCellTextView: UITableViewCell, UITextViewDelegate
@@ -34,11 +34,10 @@ class DuangTableCellTextView: UITableViewCell, UITextViewDelegate
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
-            delegate?.duangTableCellInputDoneAction()
+            delegate?.duangTableCellTextViewDoneAction()
             return false
         } else {
             return true
         }
     }
-
 }
