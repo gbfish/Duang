@@ -245,10 +245,13 @@ class APIManager {
     }
     
     func setCurrentUserUsername(username: String) -> String? {
+        let oldUsername = currentUser.username
         currentUser.username = username
         var error: NSError? = nil
         currentUser.save(&error)
         if let theError = error {
+            currentUser.username = oldUsername
+            currentUser.save()
             return APIManager.errorMessage(theError)
         } else {
             saveUsername(username)
@@ -265,6 +268,8 @@ class APIManager {
                 var error: NSError? = nil
                 currentUser.save(&error)
                 if let theError = error {
+                    currentUser.password = oldPassword
+                    currentUser.save()
                     return APIManager.errorMessage(theError)
                 } else {
                     savePassowrd(newPassword)
