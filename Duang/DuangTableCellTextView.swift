@@ -23,7 +23,6 @@ class DuangTableCellTextView: UITableViewCell, UITextViewDelegate
         textView.text = placeholder
     }
     
-    
     @IBOutlet weak var textView: UITextView! {
         didSet {
             textView.delegate = self

@@ -11,18 +11,14 @@ import MobileCoreServices
 
 protocol DuangTableViewControllerProtocol {
     func handleDuangTableDataDeliverer(dataDeliverer: DuangTableViewController.DuangTableDataDeliverer)
-    
-//    func duangTableViewControllerInput(inputString: String)
-//    func duangTableViewControllerAddPhoto(image: UIImage, description: String)
 }
 
-class DuangTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, DuangTableViewControllerProtocol, DuangTableCellTextViewProtocol, DuangTableCellTextFieldProtocol{
-
+class DuangTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, DuangTableViewControllerProtocol, DuangTableCellTextViewProtocol, DuangTableCellTextFieldProtocol
+{
     override func viewDidLoad() {
         super.viewDidLoad()
 
         checkTableType()
-        
         title = titleString
     }
     
@@ -784,25 +780,12 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         var section = DuangTableDataSection()
         
         for object in objectArray {
-            /*
-            section = DuangTableDataSection.initSection(sectionTitleForHeader: nil,
-                rowType: DuangTableDataRow.RowType.ImageMutable,
-                cellHeight: nil,
-                textArray: nil,
-                imageFileArray: nil,//APIManager.getFileArrayFromObject(object, key: TablePost.Photos),///////////////
-                imageArray: nil,
-                colorArray: nil,
-                function: nil)
-            */
-//            let user = APIManager.getUserFromObject(object, key: TablePhoto.Owner)
-//            
-//            section.addRow(DuangTableDataRow.RowType.UserSmall,
-//                cellHeight: nil,
-//                textArray: [APIManager.getNameFromUser(user)],
-//                imageFileArray: [APIManager.getFileFromUser(user, key: TableUser.Avatar)],
-//                imageArray: [APIManager.Placeholder.Avatar],
-//                colorArray: nil,
-//                function: nil)
+            section = DuangTableDataSection()
+            section.sectionTitleForHeader = ""
+            
+            let photos = object.relationForKey(TablePost.Photos)
+            
+            section.rowArray.append(DuangTableDataSection.DuangTableDataRow.ImageMutable(photos: photos, tapAction: showChangePassword))
             duangTableData.sectionArray.append(section)
         }
         tableView.reloadData()
@@ -894,6 +877,10 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             cell.userBannerPlaceholder = userBannerPlaceholder
             cell.userBannerFile = userBannerFile
             cell.reloadView()
+            return cell
+        case .ImageMutable(let photos, _):
+            let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellImageMutable
+            cell.photos = photos
             return cell
         case .ImageBig(_, let imagePlaceholder, let imageFile, _):
             let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellImageBig

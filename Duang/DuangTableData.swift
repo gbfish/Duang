@@ -24,7 +24,7 @@ class DuangTableDataSection
     
     enum DuangTableDataRow {
         case UserBig(userName: String, userDescription: String, userAvatarPlaceholder: UIImage, userAvatarFile: PFFile?, userBannerPlaceholder: UIImage, userBannerFile: PFFile?, tapAction: () -> ())
-        case ImageMutable
+        case ImageMutable(photos: PFRelation, tapAction: () -> ())
         case ImageBig(cellHeight: CGFloat, imagePlaceholder: UIImage, imageFile: PFFile?, tapAction: () -> ())
         case ImageSmall(imageTitle: String, imagePlaceholder: UIImage, imageFile: PFFile?, isRound: Bool, tapAction: () -> ())
         case TextView(placeholder: String)

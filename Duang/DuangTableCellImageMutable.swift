@@ -9,6 +9,26 @@
 import UIKit
 
 class DuangTableCellImageMutable: UITableViewCell {
+    var photos: PFRelation? {
+        didSet {
+            if let relation = photos {
+                relation.query().findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
+                    if error == nil {
+                        println("objects = \(objects.count)")
+                        
+                        
+                    } else {
+                        
+                    }
+                })
+            }
+            
+            
+
+        }
+    }
+    
+    
 /*
     var duangTableDataRow: DuangTableDataRow? {
         didSet {
