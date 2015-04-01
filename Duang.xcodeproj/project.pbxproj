@@ -12,6 +12,7 @@
 		565F08941AC0888200FDBA4A /* DuangTableCellImageBig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565F08931AC0888200FDBA4A /* DuangTableCellImageBig.swift */; };
 		566AC3E61AB39430001B87D1 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AC3E51AB39430001B87D1 /* LoginViewController.swift */; };
 		566AC3E81AB39E99001B87D1 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AC3E71AB39E99001B87D1 /* SignupViewController.swift */; };
+		5671448D1ACC682800EB03F8 /* DuangTableCellLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5671448C1ACC682800EB03F8 /* DuangTableCellLabel.swift */; };
 		5687C6411AB0E53000ED0005 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5687C6401AB0E53000ED0005 /* Parse.framework */; };
 		5687C6431AB0E63500ED0005 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5687C6421AB0E63500ED0005 /* Bolts.framework */; };
 		5687C6451AB0E6C400ED0005 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5687C6441AB0E6C400ED0005 /* AudioToolbox.framework */; };
@@ -61,6 +62,7 @@
 		565F08931AC0888200FDBA4A /* DuangTableCellImageBig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableCellImageBig.swift; sourceTree = "<group>"; };
 		566AC3E51AB39430001B87D1 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		566AC3E71AB39E99001B87D1 /* SignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
+		5671448C1ACC682800EB03F8 /* DuangTableCellLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableCellLabel.swift; sourceTree = "<group>"; };
 		5687C6401AB0E53000ED0005 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		5687C6421AB0E63500ED0005 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		5687C6441AB0E6C400ED0005 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -162,6 +164,7 @@
 				56404DEC1ABCE5680030D3E4 /* DuangTableCellImageSmall.swift */,
 				5601C5EC1AC6194C00BE4F1B /* DuangTableCellTextView.swift */,
 				56E946A21ABB464700634F5B /* DuangTableCellTextField.swift */,
+				5671448C1ACC682800EB03F8 /* DuangTableCellLabel.swift */,
 				568A5CBA1AB8AAA500EF43F4 /* DuangTableCellButton.swift */,
 			);
 			name = DuangTable;
@@ -377,6 +380,7 @@
 				5687C65C1AB0F32900ED0005 /* LandingViewController.swift in Sources */,
 				5601C5ED1AC6194C00BE4F1B /* DuangTableCellTextView.swift in Sources */,
 				569E7A771AB0DADF009BF47B /* AppDelegate.swift in Sources */,
+				5671448D1ACC682800EB03F8 /* DuangTableCellLabel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

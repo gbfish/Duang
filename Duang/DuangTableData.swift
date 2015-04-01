@@ -29,6 +29,7 @@ class DuangTableDataSection
         case ImageSmall(imageTitle: String, imagePlaceholder: UIImage, imageFile: PFFile?, isRound: Bool, tapAction: () -> ())
         case TextView(placeholder: String)
         case TextField(placeholder: String)
+        case Label(cellHeight: CGFloat, text: String, font: UIFont)
         case Button(buttonText: String, buttonTextColor: UIColor, buttonBackgroundColor: UIColor, tapAction: () -> ())
         case DefaultRightDetail(titleText: String, detailText: String, tapAction: () -> ())
         
@@ -46,6 +47,8 @@ class DuangTableDataSection
                 return 200.0
             case .TextField(_):
                 return 50.0
+            case .Label(let cellHeight, _, _):
+                return cellHeight
             case .Button(_):
                 return 50.0
             case .DefaultRightDetail(_):
@@ -67,6 +70,8 @@ class DuangTableDataSection
                 return "DuangTableCellTextView"
             case .TextField(_):
                 return "DuangTableCellTextField"
+            case .Label(_):
+                return "DuangTableCellLabel"
             case .Button(_):
                 return "DuangTableCellButton"
             case .DefaultRightDetail(_):

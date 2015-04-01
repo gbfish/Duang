@@ -57,7 +57,7 @@ class SignupViewController: UIViewController {
             deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             }))
             presentViewController(deleteAlert, animated: true, completion: nil)
-        } else if !APIManager.sharedInstance.validateEmail(email) {
+        } else if !APIManager.validateEmail(email) {
             var deleteAlert = UIAlertController(title: "Sorry", message: "That email address is not valid.", preferredStyle: UIAlertControllerStyle.Alert)
             deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             }))

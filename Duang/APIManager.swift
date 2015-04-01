@@ -150,18 +150,18 @@ class APIManager {
         return nil
     }
     
-    class func getNameFromUser(user: PFUser?) -> String? {
+    class func getNameFromUser(user: PFUser?) -> String {
+        var returnValue = ""
         if user != nil {
-            var returnValue = ""
             if let firstName = APIManager.getStringFromUser(user, key: TableUser.FirstName) {
                 returnValue = "\(firstName) "
             }
             if let lastName = APIManager.getStringFromUser(user, key: TableUser.LastName) {
                 returnValue = "\(returnValue)\(lastName)"
             }
-            return returnValue
+            
         }
-        return nil
+        return returnValue
     }
         
     // MARK: - User
@@ -532,9 +532,9 @@ class APIManager {
         }
     }
     
-    // MARK: - Validate Email
+    // MARK: - Class Function
     
-    func validateEmail(email: NSString) -> Bool {
+    class func validateEmail(email: NSString) -> Bool {
         if (email.rangeOfString("@").length != 0) && (email.rangeOfString(".").length != 0) {
             let tmpInvalidCharSet = NSCharacterSet.alphanumericCharacterSet().invertedSet as NSCharacterSet
             let tmpInvalidMutableCharSet = tmpInvalidCharSet.mutableCopy() as NSMutableCharacterSet
@@ -562,6 +562,17 @@ class APIManager {
             return true
         } else {
             return false
+        }
+    }
+    
+    class func sizeForString(string: NSString, font: UIFont, width: CGFloat, height: CGFloat) -> CGSize {
+        if string == "" {
+            return CGSizeZero
+        } else {
+            let attributesDictionary = NSDictionary(object: font, forKey: NSFontAttributeName)
+            let attributedString = NSMutableAttributedString(string: string, attributes: attributesDictionary)
+            let rect = attributedString.boundingRectWithSize(CGSize(width: width, height: height), options: NSStringDrawingOptions.UsesLineFragmentOrigin, context: nil)
+            return rect.size
         }
     }
 }

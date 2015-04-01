@@ -40,24 +40,16 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     
     var tableType = TableType.Profile
     
+    
+    
     func checkTableType() {
         var section = DuangTableDataSection()
         switch tableType {
         case .Feed:// MARK: Feed
             titleString = TabBarTitle.Feed
             
-            APIManager.sharedInstance.getPostArray({ (objectArray) -> () in
-                self.setDuangTableDataFromPost(objectArray)
-                }, failure: { (error) -> () in
-                    println("error = \(error)")
-            })
-            
-            /*
-            APIManager.sharedInstance.getFeed({ (objectArray) -> () in
-            self.setDuangTableDataFromPhoto(objectArray)
-            }, failure: { (error) -> () in
-            println("error = \(error)")
-            })*/
+            addRefreshControl()
+            beginRefreshing()
             
         case .Users:// MARK: Users
             titleString = TabBarTitle.Users
@@ -459,80 +451,9 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                     println("not ok")
             })
         }
-        
-        /*
-        if let titleString = duangTableData.getString(0, rowIndex: 0, textArrayIndex: 0) {
-            if titleString == "" {
-                messageString = "The title is empty."
-            } else {
-                if let descriptionString = duangTableData.getString(1, rowIndex: 0, textArrayIndex: 0) {
-                    if descriptionString == "" {
-                        messageString = "The description is empty."
-                    } else {
-                        if temImageArray.count > 0 {
-                            
-                            ifShowAlert = false
-                            
-                            var photoArray = [NSMutableDictionary]()
-                            
-                            for var index = 0; index < temImageArray.count; ++index {
-                                var photoDictionary = NSMutableDictionary()
-                                photoDictionary.setValue(temImageArray[index], forKey: "photo")
-                                photoDictionary.setValue(temTextArray[index], forKey: "description")
-                                photoArray.append(photoDictionary)
-                            }
-                            
-                            APIManager.sharedInstance.addPost(titleString, description: descriptionString, photoArray: photoArray, success: { () -> () in
-                                println("ok")
-                                }, failure: { (error) -> () in
-                                    println("not ok")
-                            })
-                        } else  {
-                            messageString = "The photo is empty."
-                        }
-                    }
-                }
-            }
-        }*/
-        
     }
     
-            
-            
-            
-//            if let descriptionString = duangTableData.getString(1, rowIndex: 0, textArrayIndex: 0) {
-//                if temImageArray.count > 0 {
-//                    
-//                    var photoArray = [NSMutableDictionary]()
-//                    
-//                    for var index = 0; index < temImageArray.count; ++index {
-//                        var photoDictionary = NSMutableDictionary()
-//                        photoDictionary.setValue(temImageArray[index], forKey: "photo")
-//                        photoDictionary.setValue(temTextArray[index], forKey: "description")
-//                        photoArray.append(photoDictionary)
-//                    }
-//                    
-//                    APIManager.sharedInstance.addPost(titleString, description: descriptionString, photoArray: photoArray, success: { () -> () in
-//                        println("ok")
-//                    }, failure: { (error) -> () in
-//                        println("not ok")
-//                    })
-//                } else  {
-//                    var deleteAlert = UIAlertController(title: "Sorry", message: "The photo is empty.", preferredStyle: UIAlertControllerStyle.Alert)
-//                    deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
-//                    presentViewController(deleteAlert, animated: true, completion: nil)
-//                }
-//            } else {
-//                var deleteAlert = UIAlertController(title: "Sorry", message: "The description is empty.", preferredStyle: UIAlertControllerStyle.Alert)
-//                deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
-//                presentViewController(deleteAlert, animated: true, completion: nil)
-//            }
-//        } else {
-//            var deleteAlert = UIAlertController(title: "Sorry", message: "The title is empty.", preferredStyle: UIAlertControllerStyle.Alert)
-//            deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
-//            presentViewController(deleteAlert, animated: true, completion: nil)
-//        }
-//    }
+    
     
     
     
@@ -550,210 +471,10 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     
-    // MARK: - DuangTableViewControllerProtocol
-    
-    enum DuangTableDataDeliverer {
-        case Input(inputText: String)
-        case AddPhoto(imageSelected: UIImage, descriptionText: String)
-    }
-    
-    var delegate: DuangTableViewControllerProtocol?
-    
-    func handleDuangTableDataDeliverer(dataDeliverer: DuangTableViewController.DuangTableDataDeliverer) {
-        switch dataDeliverer {
-        case .Input(let inputText):
-            var ifChangeText = true
-            switch tableType {
-            case .ProfileEdit:
-                switch duangTableData.sectionArray[selectedIndexPath.section].sectionTitleForHeader {
-                case TitleName.InputFirstName:
-                    APIManager.sharedInstance.setCurrentUserFirstName(inputText)
-                case TitleName.InputLastName:
-                    APIManager.sharedInstance.setCurrentUserLastName(inputText)
-                case TitleName.InputAboutYou:
-                    APIManager.sharedInstance.setCurrentUserDescription(inputText)
-                default:
-                    break
-                }
-            case .Settings:
-                switch duangTableData.sectionArray[selectedIndexPath.section].sectionTitleForHeader {
-                case TitleName.InputUsername:
-                    if let errorString = APIManager.sharedInstance.setCurrentUserUsername(inputText) {
-                        var deleteAlert = UIAlertController(title: "Sorry", message: errorString, preferredStyle: UIAlertControllerStyle.Alert)
-                        deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
-                        presentViewController(deleteAlert, animated: true, completion: nil)
-                        ifChangeText = false
-                    }
-                case TitleName.InputEmail:
-                    if let errorString = APIManager.sharedInstance.setCurrentUserEmail(inputText) {
-                        var deleteAlert = UIAlertController(title: "Sorry", message: errorString, preferredStyle: UIAlertControllerStyle.Alert)
-                        deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
-                        presentViewController(deleteAlert, animated: true, completion: nil)
-                        ifChangeText = false
-                    }
-                default:
-                    break
-                }
-            default:
-                break
-            }
-            if ifChangeText {
-                duangTableData.sectionArray[selectedIndexPath.section].rowArray[selectedIndexPath.row] = DuangTableDataSection.DuangTableDataRow.DefaultRightDetail(titleText: inputText, detailText: "", tapAction: showInput)
-                tableView.reloadData()
-            }
-        case .AddPhoto(let imageSelected, let descriptionText):
-            println("descriptionText = \(descriptionText)")
-            
-            let sectionCount = duangTableData.sectionArray.count
-            
-            var section = DuangTableDataSection()
-            section.rowArray.append(DuangTableDataSection.DuangTableDataRow.ImageSmall(imageTitle: descriptionText, imagePlaceholder: imageSelected, imageFile: nil, isRound: false, tapAction: showAddPhoto))
-            duangTableData.sectionArray.insert(section, atIndex: duangTableData.sectionArray.count - 2)
-            tableView.reloadData()
-            
-            /*
-            if duangTableData.sectionArray.count == 4 {
-                let section = DuangTableDataSection.initSection(sectionTitleForHeader: nil,
-                    rowType: DuangTableDataRow.RowType.ImageSmall,
-                    cellHeight: nil,
-                    textArray: [description],
-                    imageFileArray: nil,
-                    imageArray: [image],
-                    colorArray: nil,
-                    function: nil)
-                duangTableData.sectionArray.insert(section, atIndex: 2)
-                tableView.reloadData()
-            } else if duangTableData.sectionArray.count == 5 {
-                duangTableData.sectionArray[2].addRow(DuangTableDataRow.RowType.ImageSmall,
-                    cellHeight: nil,
-                    textArray: [description],
-                    imageFileArray: nil,
-                    imageArray: [image],
-                    colorArray: nil, function: nil)
-                tableView.reloadData()
-            }*/
-        }
-    }
-    
-    
-    
-    func duangTableViewControllerInput(inputString: String) {/*
-        if let sectionNumber = selectedIndexPath?.section {
-            if let inputName = duangTableData.sectionArray[sectionNumber].sectionTitleForHeader {
-                if let type = tableType {
-                    switch type {
-                    case TableType.ProfileEdit:
-                        if inputName == TitleName.InputFirstName {
-                            APIManager.sharedInstance.setCurrentUserFirstName(inputString)
-                            setSelectedInputText(inputString)
-                        } else if inputName == TitleName.InputLastName {
-                            APIManager.sharedInstance.setCurrentUserLastName(inputString)
-                            setSelectedInputText(inputString)
-                        } else if inputName == TitleName.InputAboutYou {
-                            APIManager.sharedInstance.setCurrentUserDescription(inputString)
-                            setSelectedInputText(inputString)
-                        }
-                    case TableType.Settings:
-                        if inputName == TitleName.InputUsername {
-                            if let errorString = APIManager.sharedInstance.setCurrentUserUsername(inputString) {
-                                var deleteAlert = UIAlertController(title: "Sorry", message: errorString, preferredStyle: UIAlertControllerStyle.Alert)
-                                deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
-                                presentViewController(deleteAlert, animated: true, completion: nil)
-                            } else {
-                                setSelectedInputText(inputString)
-                            }
-                        } else if inputName == TitleName.InputEmail {
-                            if let errorString = APIManager.sharedInstance.setCurrentUserEmail(inputString) {
-                                var deleteAlert = UIAlertController(title: "Sorry", message: errorString, preferredStyle: UIAlertControllerStyle.Alert)
-                                deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
-                                presentViewController(deleteAlert, animated: true, completion: nil)
-                            } else {
-                                setSelectedInputText(inputString)
-                            }
-                        }
-                    case TableType.AddPhoto:
-                        if inputName == TitleName.InputPhotoDescription {
-                            temText = inputString
-                            setSelectedInputText(inputString)
-                        }
-                    case TableType.AddPost:
-                        setSelectedInputText(inputString)
-                    default:
-                        break
-                    }
-                }
-            }
-        }*/
-    }
-    
-    func setSelectedInputText(inputText: String) {/*
-        if let theSection = selectedIndexPath?.section {
-            if let theRow = selectedIndexPath?.row {
-                if let theRowArray = duangTableData.sectionArray[theSection].rowArray {
-                    if theRowArray.count > 0 {
-                        if let theTextArray = theRowArray[0].textArray {
-                            if theTextArray.count > 0 {
-                                duangTableData.sectionArray[theSection].rowArray![theRow].textArray![0] = inputText
-                                tableView.reloadData()
-                            }
-                        }
-                    }
-                }
-            }
-        }*/
-    }
-    
-    func duangTableViewControllerAddPhoto(image: UIImage, description: String) {
-
-        // Add Post
-        
-        temImageArray.append(image)
-        temTextArray.append(description)
-        /*
-        if duangTableData.sectionArray.count == 4 {
-            let section = DuangTableDataSection.initSection(sectionTitleForHeader: nil,
-                rowType: DuangTableDataRow.RowType.ImageSmall,
-                cellHeight: nil,
-                textArray: [description],
-                imageFileArray: nil,
-                imageArray: [image],
-                colorArray: nil,
-                function: nil)
-            duangTableData.sectionArray.insert(section, atIndex: 2)
-            tableView.reloadData()
-        } else if duangTableData.sectionArray.count == 5 {
-            duangTableData.sectionArray[2].addRow(DuangTableDataRow.RowType.ImageSmall,
-                cellHeight: nil,
-                textArray: [description],
-                imageFileArray: nil,
-                imageArray: [image],
-                colorArray: nil, function: nil)
-            tableView.reloadData()
-        }*/
-        
-    }
-    
-    // MARK: - DuangTableCellTextViewProtocol
-    
-    func duangTableCellTextViewDoneAction() {
-        doneInput()
-    }
-    
     
 
     // MARK: - Data
     
-    // MARK:
-    
-    
-    
-    // MARK:
-    
-    var temImage: UIImage?
-    var temText: String?
-    
-    var temImageArray = [UIImage]()
-    var temTextArray = [String]()
     
     private struct TitleName {
         static let InputFirstName = "First Name"
@@ -783,9 +504,22 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             section = DuangTableDataSection()
             section.sectionTitleForHeader = ""
             
-            let photos = object.relationForKey(TablePost.Photos)
+            let owner: PFUser = object[TablePhoto.Owner] as PFUser
+            section.rowArray.append(DuangTableDataSection.DuangTableDataRow.ImageSmall(imageTitle: APIManager.getNameFromUser(owner), imagePlaceholder: ImagePlaceholder.Avatar, imageFile: APIManager.getFileFromUser(owner, key: TableUser.Avatar), isRound: true, tapAction: selectImage))
             
+            if let postTitle = APIManager.getStringFromObject(object, key: TablePost.Title) {
+                let size = APIManager.sizeForString(postTitle, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: DuangGlobal.screenWidth - 20.0, height: CGFloat.max)
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.Label(cellHeight: size.height, text: postTitle, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)))
+            }
+            
+            if let postDescription = APIManager.getStringFromObject(object, key: TablePost.Description) {
+                let size = APIManager.sizeForString(postDescription, font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody), width: DuangGlobal.screenWidth - 20.0, height: CGFloat.max)
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.Label(cellHeight: size.height, text: postDescription, font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody)))
+            }
+            
+            let photos = object.relationForKey(TablePost.Photos)
             section.rowArray.append(DuangTableDataSection.DuangTableDataRow.ImageMutable(photos: photos, tapAction: showChangePassword))
+            
             duangTableData.sectionArray.append(section)
         }
         tableView.reloadData()
@@ -911,6 +645,12 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             cell.reloadView()
             addDuangTableCellTextField(cell)///
             return cell
+        case .Label(_, let text, let font):
+            let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellLabel
+            cell.theLabelText = text
+            cell.theLabelFont = font
+            cell.reloadView()
+            return cell
         case .Button(let buttonText, let buttonTextColor, let buttonBackgroundColor, _):
             let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellButton
             cell.buttonText = buttonText
@@ -939,9 +679,103 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row].tapAction()
     }
     
+    // MARK: - UIRefreshControl
+    
+    var refreshControl: UIRefreshControl!
+    
+    func addRefreshControl() {
+        refreshControl = UIRefreshControl()
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: "beginRefreshing", forControlEvents: UIControlEvents.ValueChanged)
+        tableView.addSubview(refreshControl)
+    }
+    
+    func beginRefreshing()
+    {
+        APIManager.sharedInstance.getPostArray({ (objectArray) -> () in
+            self.setDuangTableDataFromPost(objectArray)
+            self.endRefreshing()
+        }, failure: { (error) -> () in
+            self.endRefreshing()
+        })
+    }
+    
+    func endRefreshing() {
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.refreshControl.endRefreshing()
+        })
+    }
+    
+    // MARK: - DuangTableViewControllerProtocol
+    
+    enum DuangTableDataDeliverer {
+        case Input(inputText: String)
+        case AddPhoto(imageSelected: UIImage, descriptionText: String)
+    }
+    
+    var delegate: DuangTableViewControllerProtocol?
+    
+    func handleDuangTableDataDeliverer(dataDeliverer: DuangTableViewController.DuangTableDataDeliverer) {
+        switch dataDeliverer {
+        case .Input(let inputText):
+            var ifChangeText = true
+            switch tableType {
+            case .ProfileEdit:
+                switch duangTableData.sectionArray[selectedIndexPath.section].sectionTitleForHeader {
+                case TitleName.InputFirstName:
+                    APIManager.sharedInstance.setCurrentUserFirstName(inputText)
+                case TitleName.InputLastName:
+                    APIManager.sharedInstance.setCurrentUserLastName(inputText)
+                case TitleName.InputAboutYou:
+                    APIManager.sharedInstance.setCurrentUserDescription(inputText)
+                default:
+                    break
+                }
+            case .Settings:
+                switch duangTableData.sectionArray[selectedIndexPath.section].sectionTitleForHeader {
+                case TitleName.InputUsername:
+                    if let errorString = APIManager.sharedInstance.setCurrentUserUsername(inputText) {
+                        var deleteAlert = UIAlertController(title: "Sorry", message: errorString, preferredStyle: UIAlertControllerStyle.Alert)
+                        deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
+                        presentViewController(deleteAlert, animated: true, completion: nil)
+                        ifChangeText = false
+                    }
+                case TitleName.InputEmail:
+                    if let errorString = APIManager.sharedInstance.setCurrentUserEmail(inputText) {
+                        var deleteAlert = UIAlertController(title: "Sorry", message: errorString, preferredStyle: UIAlertControllerStyle.Alert)
+                        deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
+                        presentViewController(deleteAlert, animated: true, completion: nil)
+                        ifChangeText = false
+                    }
+                default:
+                    break
+                }
+            default:
+                break
+            }
+            if ifChangeText {
+                duangTableData.sectionArray[selectedIndexPath.section].rowArray[selectedIndexPath.row] = DuangTableDataSection.DuangTableDataRow.DefaultRightDetail(titleText: inputText, detailText: "", tapAction: showInput)
+                tableView.reloadData()
+            }
+        case .AddPhoto(let imageSelected, let descriptionText):
+            let sectionCount = duangTableData.sectionArray.count
+            
+            var section = DuangTableDataSection()
+            section.rowArray.append(DuangTableDataSection.DuangTableDataRow.ImageSmall(imageTitle: descriptionText, imagePlaceholder: imageSelected, imageFile: nil, isRound: false, tapAction: showAddPhoto))
+            duangTableData.sectionArray.insert(section, atIndex: duangTableData.sectionArray.count - 2)
+            tableView.reloadData()
+        }
+    }
+
     // MARK: - DuangTableCellTextView
     
     var duangTableCellTextView: DuangTableCellTextView?
+    
+    // MARK: DuangTableCellTextViewProtocol
+    
+    func duangTableCellTextViewDoneAction() {
+        doneInput()
+    }
     
     // MARK: - DuangTableCellTextFieldProtocol
     
