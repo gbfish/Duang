@@ -17,57 +17,24 @@ class DuangTableCellImageMutable: UITableViewCell
     var imageView4 = UIImageView()
     var imageView5 = UIImageView()
     
-    var imageFile1: PFFile? {
-        didSet {
-            imageFile1?.getDataInBackgroundWithBlock({ (imageData, error) -> Void in
-                if error == nil {
-                    self.imageView1.image = UIImage(data: imageData)
-//                    if let image = UIImage(data: imageData) {
-//                        self.imageView1.image = image
-//                    }
-                }
-            })
-        }
-    }
-    
-    
-    
-    func loadImages(objects: [PFObject]) {
-        var imageViewArray = [imageView1, imageView2, imageView3, imageView4, imageView5]
-        
-        for var index = 0; index < objects.count; ++index {
-            let photo: PFObject = objects[index] as PFObject
-            let imageFile: PFFile = photo[TablePhoto.Image] as PFFile
-            imageFile.getDataInBackgroundWithBlock({ (imageData, error) -> Void in
-                if error == nil {
-                    self.imageView1.image = UIImage(data: imageData)
-                }
-            })
-        }
-
-    }
-    
     var hasAddImageViews = false
     
     func addImageViews() {
         if !hasAddImageViews {
-            imageView1.contentMode = UIViewContentMode.ScaleAspectFill
-            imageView2.contentMode = UIViewContentMode.ScaleAspectFill
-            imageView3.contentMode = UIViewContentMode.ScaleAspectFill
-            imageView4.contentMode = UIViewContentMode.ScaleAspectFill
-            imageView5.contentMode = UIViewContentMode.ScaleAspectFill
-            imageView1.clipsToBounds = true
-            imageView2.clipsToBounds = true
-            imageView3.clipsToBounds = true
-            imageView4.clipsToBounds = true
-            imageView5.clipsToBounds = true
-            addSubview(imageView1)
-            addSubview(imageView2)
-            addSubview(imageView3)
-            addSubview(imageView4)
-            addSubview(imageView5)
+            prepareForImageView(imageView1)
+            prepareForImageView(imageView2)
+            prepareForImageView(imageView3)
+            prepareForImageView(imageView4)
+            prepareForImageView(imageView5)
+            
             hasAddImageViews = true
         }
+    }
+    
+    func prepareForImageView(imageView: UIImageView) {
+        imageView.contentMode = UIViewContentMode.ScaleAspectFill
+        imageView.clipsToBounds = true
+        addSubview(imageView)
     }
     
     
@@ -133,17 +100,11 @@ class DuangTableCellImageMutable: UITableViewCell
                         default:
                             break
                         }
-                        println("objects = \(objects.count)")
-                        
-                        
                     } else {
                         
                     }
                 })
             }
-            
-            
-
         }
     }
     
