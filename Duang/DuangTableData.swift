@@ -33,6 +33,9 @@ class DuangTableDataSection
         case Button(buttonText: String, buttonTextColor: UIColor, buttonBackgroundColor: UIColor, tapAction: () -> ())
         case DefaultRightDetail(titleText: String, detailText: String, tapAction: () -> ())
         
+        case Buttons(index: NSInteger, buttonArray: [DuangTableDataRow])
+        case ButtonItem(buttonText: String, buttonTextColor: UIColor, buttonBackgroundColor: UIColor, buttonImage: UIImage, tapAction: () -> ())
+        
         func cellHeight() -> CGFloat {
             switch self {
             case .UserBig(_):
@@ -53,6 +56,10 @@ class DuangTableDataSection
                 return 50.0
             case .DefaultRightDetail(_):
                 return 50.0
+            case .Buttons(_):
+                return 50.0
+            default:
+                return 0.0
             }
         }
         
@@ -75,6 +82,10 @@ class DuangTableDataSection
             case .Button(_):
                 return "DuangTableCellButton"
             case .DefaultRightDetail(_):
+                return "DefaultCell"
+            case .Buttons(_):
+                return "DuangTableCellButtons"
+            default:
                 return "DefaultCell"
             }
         }

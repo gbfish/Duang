@@ -13,7 +13,7 @@ protocol DuangTableViewControllerProtocol {
     func handleDuangTableDataDeliverer(dataDeliverer: DuangTableViewController.DuangTableDataDeliverer)
 }
 
-class DuangTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, DuangTableViewControllerProtocol, DuangTableCellTextViewProtocol, DuangTableCellTextFieldProtocol
+class DuangTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, DuangTableViewControllerProtocol, DuangTableCellButtonsProtocol, DuangTableCellTextViewProtocol, DuangTableCellTextFieldProtocol
 {
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -500,7 +500,9 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         duangTableData = DuangTableData()
         var section = DuangTableDataSection()
         
-        for object in objectArray {
+        for var index = 0; index < objectArray.count; ++index {
+            let object = objectArray[index]
+            
             section = DuangTableDataSection()
             section.sectionTitleForHeader = ""
             
@@ -520,7 +522,42 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             let photos = object.relationForKey(TablePost.Photos)
             section.rowArray.append(DuangTableDataSection.DuangTableDataRow.ImageMutable(photos: photos, tapAction: showChangePassword))
             
+            let buttonShare = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "share 0", buttonTextColor: DuangColor.ButtonNormal, buttonBackgroundColor: DuangColor.ButtonNormalBackground, buttonImage: ImagePlaceholder.Avatar, tapAction: showChangePassword)
+            let buttonComment = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "comment 0", buttonTextColor: DuangColor.ButtonNormal, buttonBackgroundColor: DuangColor.ButtonNormalBackground, buttonImage: ImagePlaceholder.Image, tapAction: showChangePassword)
+            let buttonLike = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "like 0", buttonTextColor: DuangColor.ButtonNormal, buttonBackgroundColor: DuangColor.ButtonNormalBackground, buttonImage: ImagePlaceholder.Image, tapAction: showChangePassword)
+            let buttonArray = [buttonShare, buttonComment, buttonLike]
+            section.rowArray.append(DuangTableDataSection.DuangTableDataRow.Buttons(index: index, buttonArray: buttonArray))
+            
             duangTableData.sectionArray.append(section)
+        }
+        
+        for object in objectArray {
+//            section = DuangTableDataSection()
+//            section.sectionTitleForHeader = ""
+//            
+//            let owner: PFUser = object[TablePhoto.Owner] as PFUser
+//            section.rowArray.append(DuangTableDataSection.DuangTableDataRow.ImageSmall(imageTitle: APIManager.getNameFromUser(owner), imagePlaceholder: ImagePlaceholder.Avatar, imageFile: APIManager.getFileFromUser(owner, key: TableUser.Avatar), isRound: true, tapAction: selectImage))
+//            
+//            if let postTitle = APIManager.getStringFromObject(object, key: TablePost.Title) {
+//                let size = APIManager.sizeForString(postTitle, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: DuangGlobal.screenWidth - 20.0, height: CGFloat.max)
+//                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.Label(cellHeight: size.height, text: postTitle, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)))
+//            }
+//            
+//            if let postDescription = APIManager.getStringFromObject(object, key: TablePost.Description) {
+//                let size = APIManager.sizeForString(postDescription, font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody), width: DuangGlobal.screenWidth - 20.0, height: CGFloat.max)
+//                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.Label(cellHeight: size.height, text: postDescription, font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody)))
+//            }
+//            
+//            let photos = object.relationForKey(TablePost.Photos)
+//            section.rowArray.append(DuangTableDataSection.DuangTableDataRow.ImageMutable(photos: photos, tapAction: showChangePassword))
+//            
+//            let buttonShare = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "share 0", buttonTextColor: DuangColor.ButtonNormal, buttonBackgroundColor: DuangColor.ButtonNormalBackground, buttonImage: ImagePlaceholder.Avatar, tapAction: showChangePassword)
+//            let buttonComment = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "comment 0", buttonTextColor: DuangColor.ButtonNormal, buttonBackgroundColor: DuangColor.ButtonNormalBackground, buttonImage: ImagePlaceholder.Image, tapAction: showChangePassword)
+//            let buttonLike = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "like 0", buttonTextColor: DuangColor.ButtonNormal, buttonBackgroundColor: DuangColor.ButtonNormalBackground, buttonImage: ImagePlaceholder.Image, tapAction: showChangePassword)
+//            let buttonArray = [buttonShare, buttonComment, buttonLike]
+//            section.rowArray.append(DuangTableDataSection.DuangTableDataRow.Buttons(index: <#NSInteger#>, buttonArray: buttonArray))
+//            
+//            duangTableData.sectionArray.append(section)
         }
         tableView.reloadData()
     }
@@ -665,6 +702,14 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             cell.textLabel?.text = titleText
             cell.detailTextLabel?.text = detailText
             return cell
+            
+        case .Buttons(let index, let buttonArray):
+            let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellButtons
+            cell.delegate = self
+            cell.index = index
+            cell.buttonArray = buttonArray
+            cell.reloadView()
+            return cell
         default:
             break
         }
@@ -767,6 +812,12 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         }
     }
 
+    // MARK: - DuangTableCellButtonsProtocol
+    
+    func duangTableCellButtonsAction(index: NSInteger, buttonIndex: NSInteger) {
+        println("index = \(index) -- buttonIndex = \(buttonIndex)")
+    }
+    
     // MARK: - DuangTableCellTextView
     
     var duangTableCellTextView: DuangTableCellTextView?
