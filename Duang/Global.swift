@@ -14,6 +14,12 @@ struct ImagePlaceholder {
     static let Image = UIImage(named: "placeholder_image")!
 }
 
+struct DuangImage {
+    static let Share = UIImage(named: "Action_Share")!
+    static let Comment = UIImage(named: "Action_Comment")!
+    static let Like = UIImage(named: "Action_Like")!
+}
+
 struct DuangColor {
     
     static let Navigation = UIColor(red: 230.0/255.0, green: 179.0/255.0, blue: 61.0/255.0, alpha: 1.0)
@@ -30,11 +36,13 @@ struct DuangColor {
     static let ButtonUnselected = UIColor(red: 39.0/255.0, green: 72.0/255.0, blue: 98.0/255.0, alpha: 1.0)
     static let ButtonUnselectedBackground = UIColor(red: 217.0/255.0, green: 104.0/255.0, blue: 49.0/255.0, alpha: 1.0)
     
-//    let darkBlue = UIColor(red: 23.0/255.0, green: 44.0/255.0, blue: 60.0/255.0, alpha: 1.0)
-//    let blue = UIColor(red: 39.0/255.0, green: 72.0/255.0, blue: 98.0/255.0, alpha: 1.0)
-//    let red = UIColor(red: 153.0/255.0, green: 80.0/255.0, blue: 84.0/255.0, alpha: 1.0)
-//    let orange = UIColor(red: 217.0/255.0, green: 104.0/255.0, blue: 49.0/255.0, alpha: 1.0)
-//    let yellow = UIColor(red: 230.0/255.0, green: 179.0/255.0, blue: 61.0/255.0, alpha: 1.0)
+    static let Black = UIColor.blackColor()
+    static let White = UIColor.whiteColor()
+    static let DarkBlue = UIColor(red: 23.0/255.0, green: 44.0/255.0, blue: 60.0/255.0, alpha: 1.0)
+    static let Blue = UIColor(red: 39.0/255.0, green: 72.0/255.0, blue: 98.0/255.0, alpha: 1.0)
+    static let Red = UIColor(red: 153.0/255.0, green: 80.0/255.0, blue: 84.0/255.0, alpha: 1.0)
+    static let Orange = UIColor(red: 217.0/255.0, green: 104.0/255.0, blue: 49.0/255.0, alpha: 1.0)
+    static let Yellow = UIColor(red: 230.0/255.0, green: 179.0/255.0, blue: 61.0/255.0, alpha: 1.0)
 }
 
 struct DuangGlobal {
@@ -73,6 +81,9 @@ struct TablePost {
     static let Description = "description"
     static let Owner = "owner"
     static let Photos = "photos"
+    static let Like = "like"
+    static let LikeCount = "likeCount"
+    static let Share = "share"
 }
 
 struct TablePhoto {
@@ -88,6 +99,7 @@ struct TablePhoto {
 struct TableUser {
     static let ClassName = "_User"
     
+    static let Id = "objectId"
     static let Avatar = "avatar"
     static let Banner = "banner"
     static let FirstName = "firstName"

@@ -33,8 +33,9 @@ class DuangTableDataSection
         case Button(buttonText: String, buttonTextColor: UIColor, buttonBackgroundColor: UIColor, tapAction: () -> ())
         case DefaultRightDetail(titleText: String, detailText: String, tapAction: () -> ())
         
-        case Buttons(index: NSInteger, buttonArray: [DuangTableDataRow])
-        case ButtonItem(buttonText: String, buttonTextColor: UIColor, buttonBackgroundColor: UIColor, buttonImage: UIImage, tapAction: () -> ())
+        case Buttons(indexPath: NSIndexPath, buttonArray: [DuangTableDataRow], post: PFObject?)
+        case ButtonItem(buttonText: String, buttonTextColor: UIColor, buttonBackgroundColor: UIColor, borderColor: UIColor, buttonImage: UIImage, tapAction: () -> ())
+//        case ButtonItem(buttonText: String, buttonTextColor: UIColor, buttonBackgroundColor: UIColor, borderColor: UIColor, buttonImage: UIImage, hasLikeButton: Bool, post: PFObject?, tapAction: () -> ())
         
         func cellHeight() -> CGFloat {
             switch self {

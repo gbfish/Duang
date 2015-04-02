@@ -476,6 +476,29 @@ class APIManager {
         }
     }
     
+    func hasLikedPost(post: PFObject, hasLiked: (Bool) -> ()) {
+        var likeQuery = post.relationForKey(TablePost.Like).query()
+        likeQuery.whereKey(TableUser.Id, equalTo: PFUser.currentUser().objectId)
+        likeQuery.countObjectsInBackgroundWithBlock { (likeCount, error) -> Void in
+            if likeCount == 1 {
+                hasLiked(true)
+            } else {
+                hasLiked(false)
+            }
+        }
+    }
+    
+    func likePost(post: PFObject) {
+        var like = post.relationForKey(TablePost.Like)
+        like.addObject(PFUser.currentUser())
+        post.saveInBackgroundWithBlock { (objects, error) -> Void in
+            like.query().countObjectsInBackgroundWithBlock({ (count, error) -> Void in
+                post[TablePost.LikeCount] = NSInteger(count)
+                post.saveInBackground()
+            })
+        }
+    }
+    
     // MARK: - Table Photo
     
     func addNewPhoto(image: UIImage, description: String, success: () -> (), failure: (error: NSError) -> ()) {

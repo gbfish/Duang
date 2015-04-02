@@ -10,14 +10,18 @@ import UIKit
 
 protocol DuangTableCellButtonsProtocol
 {
-    func duangTableCellButtonsAction(index: NSInteger, buttonIndex: NSInteger)
+    func duangTableCellButtonsAction(indexPath: NSIndexPath, buttonIndex: NSInteger)
 }
 
 class DuangTableCellButtons: UITableViewCell
 {
-    var index: NSInteger = 0
+    var indexPath: NSIndexPath =  NSIndexPath(forRow: 0, inSection: 0)
     var buttonArray: [DuangTableDataSection.DuangTableDataRow]?
     var delegate: DuangTableCellButtonsProtocol?
+    
+//    var post: PFObject?
+    var likeButton: UIButton?
+//    var hasLikeButton = false
     
     func reloadView() {
         if let theButtonArray = buttonArray {
@@ -32,10 +36,9 @@ class DuangTableCellButtons: UITableViewCell
                 let button = UIButton(frame: buttonRect)
                 
                 switch theButtonArray[index] {
-                case .ButtonItem(let buttonText, let buttonTextColor, let buttonBackgroundColor, let buttonImage, let tapAction):
-                    
+                case .ButtonItem(let buttonText, let buttonTextColor, let buttonBackgroundColor, let borderColor, let buttonImage, let tapAction):
                     let imageAndTitleSpacing: CGFloat = 6.0
-                    let imageSize = CGSizeMake(30.0, 30.0)
+                    let imageSize = CGSizeMake(20.0, 20.0)
                     let titleSize = APIManager.sizeForString(buttonText, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
                     
                     let buttonImageView = UIImageView()
@@ -54,39 +57,38 @@ class DuangTableCellButtons: UITableViewCell
                     buttonTitleLabel.frame = CGRectMake(buttonTitleLabelX, buttonTitleLabelY, titleSize.width, titleSize.height)
                     button.addSubview(buttonTitleLabel)
                     
-                    
-                    
-//                    button.setImage(buttonImage, forState: UIControlState.Normal)
-                    
-//                    button.imageEdgeInsets = UIEdgeInsetsMake(0.0, -imageSize.width, -(imageSize.height + spacing), 0.0)
-//                    
-//                    button.imageView?.frame.size = imageSize
-//                    button.imageView?.clipsToBounds = true
-//                    
-//                    
-//                    let titleSize = APIManager.sizeForString(buttonText, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
-//                    button.setTitle(buttonText, forState: UIControlState.Normal)
-//                    button.titleEdgeInsets = UIEdgeInsetsMake( -(titleSize.height + spacing), 0.0, 0.0, -titleSize.width)
-                    
-//                    button.setTitleColor(buttonTextColor, forState: UIControlState.Normal)
                     button.backgroundColor = buttonBackgroundColor
+                    button.layer.borderColor = borderColor.CGColor
+                    button.layer.borderWidth = 2.0
+                    button.layer.masksToBounds = true
+                    button.layer.cornerRadius = 5.0
                     button.tag = index
                     button.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
                     
                     addSubview(button)
                     
+//                    if hasLikeButton && index == 2 {
+//                        likeButton = button
+//                        if let thePost = post {
+//                            APIManager.sharedInstance.hasLikedPost(thePost, hasLiked: { (hasLiked) -> () in
+//                                if hasLiked {
+//                                    self.likeButton?.backgroundColor = DuangColor.Red
+//                                } else {
+//                                    self.likeButton?.backgroundColor = DuangColor.White
+//                                }
+//                            })
+//                        }
+//                    }
+                    
                 default:
                     break
                 }
-                
-                
-                
             }
         }
     }
     
     func buttonAction(sender: UIButton) {
-        delegate?.duangTableCellButtonsAction(index, buttonIndex: sender.tag)
+        delegate?.duangTableCellButtonsAction(indexPath, buttonIndex: sender.tag)
     }
 
 }
