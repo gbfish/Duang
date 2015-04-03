@@ -10,12 +10,11 @@ import UIKit
 
 protocol DuangTableCellButtonsProtocol
 {
-    func duangTableCellButtonsAction(indexPath: NSIndexPath, buttonIndex: NSInteger)
+    func duangTableCellButtonsAction(duangTableDataRow: DuangTableDataSection.DuangTableDataRow)
 }
 
 class DuangTableCellButtons: UITableViewCell
 {
-    var indexPath: NSIndexPath =  NSIndexPath(forRow: 0, inSection: 0)
     var buttonArray: [DuangTableDataSection.DuangTableDataRow]?
     var delegate: DuangTableCellButtonsProtocol?
     
@@ -36,7 +35,7 @@ class DuangTableCellButtons: UITableViewCell
                 let button = UIButton(frame: buttonRect)
                 
                 switch theButtonArray[index] {
-                case .ButtonItem(let buttonText, let buttonTextColor, let buttonBackgroundColor, let borderColor, let buttonImage, let tapAction):
+                case .ButtonItem(let buttonText, let buttonTextColor, let buttonBackgroundColor, let borderColor, let buttonImage, let post, let tapAction):
                     let imageAndTitleSpacing: CGFloat = 6.0
                     let imageSize = CGSizeMake(20.0, 20.0)
                     let titleSize = APIManager.sizeForString(buttonText, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
@@ -70,14 +69,14 @@ class DuangTableCellButtons: UITableViewCell
                 default:
                     break
                 }
-                
                 buttons.append(button)
             }
         }
     }
     
     func buttonAction(sender: UIButton) {
-        delegate?.duangTableCellButtonsAction(indexPath, buttonIndex: sender.tag)
+        if let theButtonArray = buttonArray {
+            delegate?.duangTableCellButtonsAction(theButtonArray[sender.tag])
+        }
     }
-
 }

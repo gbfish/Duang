@@ -453,25 +453,12 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         }
     }
     
-    
-    
-    
-    
     // MARK: Log out
     
     func logout() {
         APIManager.sharedInstance.logout()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
     // MARK: - Data
     
@@ -529,45 +516,17 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             section.rowArray.append(DuangTableDataSection.DuangTableDataRow.ImageMutable(photos: photos, tapAction: showChangePassword))
             ++buttonsRow
             
-            let buttonShare = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "share 0", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Share, tapAction: showChangePassword)
-            let buttonComment = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "comment 0", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Comment, tapAction: showChangePassword)
-            let buttonLike = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(object[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, tapAction: showChangePassword)
+            let buttonShare = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "share 0", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Share, post: object, tapAction: likePost)
+            let buttonComment = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "comment 0", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Comment, post: object, tapAction: commentPost)
+            let buttonLike = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(object[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, post: object, tapAction: unlikePost)
             
             let buttonArray = [buttonShare, buttonComment, buttonLike]
             
-            section.rowArray.append(DuangTableDataSection.DuangTableDataRow.Buttons(indexPath: NSIndexPath(forRow: buttonsRow, inSection: index), buttonArray: buttonArray, post: object))
+            section.rowArray.append(DuangTableDataSection.DuangTableDataRow.Buttons(buttonArray: buttonArray, post: object))
 
             duangTableData.sectionArray.append(section)
         }
         
-        for object in objectArray {
-//            section = DuangTableDataSection()
-//            section.sectionTitleForHeader = ""
-//            
-//            let owner: PFUser = object[TablePhoto.Owner] as PFUser
-//            section.rowArray.append(DuangTableDataSection.DuangTableDataRow.ImageSmall(imageTitle: APIManager.getNameFromUser(owner), imagePlaceholder: ImagePlaceholder.Avatar, imageFile: APIManager.getFileFromUser(owner, key: TableUser.Avatar), isRound: true, tapAction: selectImage))
-//            
-//            if let postTitle = APIManager.getStringFromObject(object, key: TablePost.Title) {
-//                let size = APIManager.sizeForString(postTitle, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: DuangGlobal.screenWidth - 20.0, height: CGFloat.max)
-//                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.Label(cellHeight: size.height, text: postTitle, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)))
-//            }
-//            
-//            if let postDescription = APIManager.getStringFromObject(object, key: TablePost.Description) {
-//                let size = APIManager.sizeForString(postDescription, font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody), width: DuangGlobal.screenWidth - 20.0, height: CGFloat.max)
-//                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.Label(cellHeight: size.height, text: postDescription, font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody)))
-//            }
-//            
-//            let photos = object.relationForKey(TablePost.Photos)
-//            section.rowArray.append(DuangTableDataSection.DuangTableDataRow.ImageMutable(photos: photos, tapAction: showChangePassword))
-//            
-//            let buttonShare = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "share 0", buttonTextColor: DuangColor.ButtonNormal, buttonBackgroundColor: DuangColor.ButtonNormalBackground, buttonImage: ImagePlaceholder.Avatar, tapAction: showChangePassword)
-//            let buttonComment = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "comment 0", buttonTextColor: DuangColor.ButtonNormal, buttonBackgroundColor: DuangColor.ButtonNormalBackground, buttonImage: ImagePlaceholder.Image, tapAction: showChangePassword)
-//            let buttonLike = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "like 0", buttonTextColor: DuangColor.ButtonNormal, buttonBackgroundColor: DuangColor.ButtonNormalBackground, buttonImage: ImagePlaceholder.Image, tapAction: showChangePassword)
-//            let buttonArray = [buttonShare, buttonComment, buttonLike]
-//            section.rowArray.append(DuangTableDataSection.DuangTableDataRow.Buttons(index: <#NSInteger#>, buttonArray: buttonArray))
-//            
-//            duangTableData.sectionArray.append(section)
-        }
         tableView.reloadData()
     }
     
@@ -658,16 +617,19 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             cell.userBannerFile = userBannerFile
             cell.reloadView()
             return cell
+            
         case .ImageMutable(let photos, _):
             let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellImageMutable
             cell.photos = photos
             return cell
+            
         case .ImageBig(_, let imagePlaceholder, let imageFile, _):
             let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellImageBig
             cell.imagePlaceholder = imagePlaceholder
             cell.imageFile = imageFile
             cell.reloadView()
             return cell
+            
         case .ImageSmall(let imageTitle, let imagePlaceholder, let imageFile, let isRound, _):
             let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellImageSmall
             cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
@@ -677,6 +639,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             cell.isRound = isRound
             cell.reloadView()
             return cell
+            
         case .TextView(let placeholder):
             let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellTextView
             cell.delegate = self
@@ -684,6 +647,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             cell.reloadView()
             duangTableCellTextView = cell
             return cell
+            
         case .TextField(let placeholder):
             let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellTextField
             cell.delegate = self
@@ -691,12 +655,14 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             cell.reloadView()
             addDuangTableCellTextField(cell)///
             return cell
+            
         case .Label(_, let text, let font):
             let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellLabel
             cell.theLabelText = text
             cell.theLabelFont = font
             cell.reloadView()
             return cell
+            
         case .Button(let buttonText, let buttonTextColor, let buttonBackgroundColor, _):
             let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellButton
             cell.buttonText = buttonText
@@ -704,6 +670,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             cell.buttonBackgroundColor = buttonBackgroundColor
             cell.reloadView()
             return cell
+            
         case .DefaultRightDetail(let titleText, let detailText, _):
             let cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: row.cellIdentifier())
             cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
@@ -712,35 +679,35 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             cell.detailTextLabel?.text = detailText
             return cell
             
-        case .Buttons(let index, let buttonArray, let post):
+        case .Buttons(let buttonArray, let post):
             let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellButtons
             cell.delegate = self
-            cell.indexPath = indexPath
-            
-            
+
             if let thePost = post {
                 APIManager.sharedInstance.hasLikedPost(thePost, hasLiked: { (hasLiked) -> () in
-                    let buttonShare = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "share 0", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Share, tapAction: self.showChangePassword)
-                    let buttonComment = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "comment 0", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Comment, tapAction: self.showChangePassword)
-                    
-                    var buttonLike: DuangTableDataSection.DuangTableDataRow
-                    
-                    if hasLiked {
-                        buttonLike = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, tapAction: self.showChangePassword)
-                    } else {
-                        buttonLike = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.White, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, tapAction: self.showChangePassword)
+                    switch self.duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row] {
+                    case .Buttons(var buttonArray, let post):
+                        if hasLiked {
+                            buttonArray[2] = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, post: thePost, tapAction: self.unlikePost)
+                        } else {
+                            buttonArray[2] = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.White, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, post: thePost, tapAction: self.likePost)
+                        }
+                        self.duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row] = DuangTableDataSection.DuangTableDataRow.Buttons(buttonArray: buttonArray, post: post)
+                    default:
+                        break
                     }
                     
-                    let buttonArray = [buttonShare, buttonComment, buttonLike]
-                    cell.buttonArray = buttonArray
-                    cell.reloadView()
+                    switch self.duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row] {
+                    case .Buttons(var buttonArray, _):
+                        cell.buttonArray = buttonArray
+                        cell.reloadView()
+                    default:
+                        break
+                    }
                 })
             }
-            
-//            cell.buttonArray = buttonArray
-//            cell.reloadView()
-            
             return cell
+            
         default:
             break
         }
@@ -845,107 +812,34 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
 
     // MARK: - DuangTableCellButtonsProtocol
     
-    func duangTableCellButtonsAction(indexPath: NSIndexPath, buttonIndex: NSInteger) {
-        if let posts = postArray {
-            
-            switch buttonIndex {
-            case 0:
-                println("share")
-            case 1:
-                println("comment")
-            case 2:
-                APIManager.sharedInstance.hasLikedPost(posts[indexPath.section], hasLiked: { (hasLiked) -> () in
-                    if hasLiked {
-                        println("like")
-                        self.unlikePost(indexPath, post: posts[indexPath.section])
-                    } else {
-                        self.likePost(indexPath, post: posts[indexPath.section])
-                        println("unlike")
-                    }
+    func duangTableCellButtonsAction(duangTableDataRow: DuangTableDataSection.DuangTableDataRow) {
+        duangTableDataRow.tapAction()
+    }
+    
+    func likePost(post: PFObject?) {
+        if let thePost = post {
+            APIManager.sharedInstance.likePost(thePost, success: { () -> () in
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.tableView.reloadData()
                 })
-
-            default:
-                break
-            }
+            })
         }
-        
-        println("indexPath = \(indexPath) -- buttonIndex = \(buttonIndex)")
     }
     
-    func likePost(indexPath: NSIndexPath, post: PFObject) {/*
-        APIManager.sharedInstance.likePost(post)
-
-        switch duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row] {
-        case .Buttons(let indexPath, var buttonArray, let post):
-            if let thePost = post {
-                switch buttonArray[2] {
-                case .ButtonItem(let buttonText, let buttonTextColor, let buttonBackgroundColor, let borderColor, let buttonImage, let tapAction):
-                    
-                    if var likeCount = buttonText.toInt() {
-                        let newButton = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(likeCount + 1)", buttonTextColor: buttonTextColor, buttonBackgroundColor: DuangColor.Orange, borderColor: borderColor, buttonImage: buttonImage, tapAction: tapAction)
-                        buttonArray[2] = newButton
-                    }
-                    
-                    
-                    
-                default:
-                    break
-                }
-                
-//                buttonArray[2] = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, tapAction: self.showChangePassword)
-                
+    func unlikePost(post: PFObject?) {
+        if let thePost = post {
+            APIManager.sharedInstance.unlikePost(thePost, success: { () -> () in
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     self.tableView.reloadData()
                 })
-            }
-            
-        default:
-            break
-        }*/
-        
-        APIManager.sharedInstance.likePost(post, success: { () -> () in
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.tableView.reloadData()
             })
-        })
+        }
     }
     
-    func unlikePost(indexPath: NSIndexPath, post: PFObject) {/*
-        APIManager.sharedInstance.unlikePost(post)
-        
-        switch duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row] {
-        case .Buttons(let indexPath, var buttonArray, let post):
-            if let thePost = post {
-                
-                switch buttonArray[2] {
-                case .ButtonItem(let buttonText, let buttonTextColor, let buttonBackgroundColor, let borderColor, let buttonImage, let tapAction):
-                    
-                    if var likeCount = buttonText.toInt() {
-                        let newButton = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(likeCount - 1)", buttonTextColor: buttonTextColor, buttonBackgroundColor: DuangColor.White, borderColor: borderColor, buttonImage: buttonImage, tapAction: tapAction)
-                        buttonArray[2] = newButton
-                    }
-                    
-                    
-                    
-                default:
-                    break
-                }
-                
-//                buttonArray[2] = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.White, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, tapAction: self.showChangePassword)
-                
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.tableView.reloadData()
-                })
-            }
-            
-        default:
-            break
-        }*/
-        APIManager.sharedInstance.unlikePost(post, success: { () -> () in
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.tableView.reloadData()
-            })
-        })
+    func commentPost(post: PFObject?) {
+        if let thePost = post {
+            println("commentPost")
+        }
     }
     
     // MARK: - DuangTableCellTextView
