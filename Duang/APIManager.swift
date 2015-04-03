@@ -499,6 +499,18 @@ class APIManager {
         }
     }
     
+    func unlikePost(post: PFObject) {
+        var like = post.relationForKey(TablePost.Like)
+        like.removeObject(PFUser.currentUser())
+        post.saveInBackgroundWithBlock { (objects, error) -> Void in
+            like.query().countObjectsInBackgroundWithBlock({ (count, error) -> Void in
+                post[TablePost.LikeCount] = NSInteger(count)
+                post.saveInBackground()
+            })
+        }
+    }
+
+    
     // MARK: - Table Photo
     
     func addNewPhoto(image: UIImage, description: String, success: () -> (), failure: (error: NSError) -> ()) {

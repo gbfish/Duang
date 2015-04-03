@@ -19,14 +19,8 @@ class DuangTableCellButtons: UITableViewCell
     var buttonArray: [DuangTableDataSection.DuangTableDataRow]?
     var delegate: DuangTableCellButtonsProtocol?
     
-//    var post: PFObject?
-    var likeButton: UIButton?
-//    var hasLikeButton = false
-    
     func reloadView() {
         if let theButtonArray = buttonArray {
-            println("theButtonArray = \(theButtonArray.count)")
-            
             let spacing: CGFloat = 8.0
             let buttonWidth = (DuangGlobal.screenWidth - (spacing * CGFloat(theButtonArray.count + 1))) / CGFloat(theButtonArray.count)
             let buttonHeight = self.bounds.height - (spacing * 2)
@@ -66,19 +60,6 @@ class DuangTableCellButtons: UITableViewCell
                     button.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
                     
                     addSubview(button)
-                    
-//                    if hasLikeButton && index == 2 {
-//                        likeButton = button
-//                        if let thePost = post {
-//                            APIManager.sharedInstance.hasLikedPost(thePost, hasLiked: { (hasLiked) -> () in
-//                                if hasLiked {
-//                                    self.likeButton?.backgroundColor = DuangColor.Red
-//                                } else {
-//                                    self.likeButton?.backgroundColor = DuangColor.White
-//                                }
-//                            })
-//                        }
-//                    }
                     
                 default:
                     break
