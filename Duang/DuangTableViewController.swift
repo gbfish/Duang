@@ -13,7 +13,7 @@ protocol DuangTableViewControllerProtocol {
     func handleDuangTableDataDeliverer(dataDeliverer: DuangTableViewController.DuangTableDataDeliverer)
 }
 
-class DuangTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, DuangTableViewControllerProtocol, DuangTableCellButtonsProtocol, DuangTableCellTextViewProtocol, DuangTableCellTextFieldProtocol
+class DuangTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, DuangTableViewControllerProtocol, DuangTableCellButtonsProtocol, DuangTableCellTextViewProtocol, DuangTableCellTextFieldProtocol
 {
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -1093,4 +1093,15 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             break
         }
     }
+    
+    // MARK: Main Input View
+    
+    @IBOutlet weak var mainInputView: UIView!
+    @IBOutlet weak var mainInputViewTextField: UITextField! {
+        didSet {
+            mainInputViewTextField.delegate = self
+        }
+    }
+    
+    
 }
