@@ -19,10 +19,16 @@ class DuangTableCellButtons: UITableViewCell
     var buttonArray: [DuangTableDataSection.DuangTableDataRow]?
     var delegate: DuangTableCellButtonsProtocol?
     
+    var buttons = [UIButton]()
+    
     func reloadView() {
+        for button in buttons {
+            button.removeFromSuperview()
+        }
+        
         if let theButtonArray = buttonArray {
             let spacing: CGFloat = 8.0
-            let buttonWidth = (DuangGlobal.screenWidth - (spacing * CGFloat(theButtonArray.count + 1))) / CGFloat(theButtonArray.count)
+            let buttonWidth = (self.bounds.width - (spacing * CGFloat(theButtonArray.count + 1))) / CGFloat(theButtonArray.count)
             let buttonHeight = self.bounds.height - (spacing * 2)
             
             for var index = 0; index < theButtonArray.count; ++index {
@@ -64,6 +70,8 @@ class DuangTableCellButtons: UITableViewCell
                 default:
                     break
                 }
+                
+                buttons.append(button)
             }
         }
     }

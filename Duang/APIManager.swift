@@ -487,7 +487,7 @@ class APIManager {
             }
         }
     }
-    
+    /*
     func likePost(post: PFObject) {
         var like = post.relationForKey(TablePost.Like)
         like.addObject(PFUser.currentUser())
@@ -497,8 +497,21 @@ class APIManager {
                 post.saveInBackground()
             })
         }
-    }
+    }*/
     
+    func likePost(post: PFObject, success: () -> ()) {
+        var like = post.relationForKey(TablePost.Like)
+        like.addObject(PFUser.currentUser())
+        post.saveInBackgroundWithBlock { (objects, error) -> Void in
+            like.query().countObjectsInBackgroundWithBlock({ (count, error) -> Void in
+                post[TablePost.LikeCount] = NSInteger(count)
+                post.saveInBackgroundWithBlock({ (finish, error) -> Void in
+                    success()
+                })
+            })
+        }
+    }
+    /*
     func unlikePost(post: PFObject) {
         var like = post.relationForKey(TablePost.Like)
         like.removeObject(PFUser.currentUser())
@@ -506,6 +519,19 @@ class APIManager {
             like.query().countObjectsInBackgroundWithBlock({ (count, error) -> Void in
                 post[TablePost.LikeCount] = NSInteger(count)
                 post.saveInBackground()
+            })
+        }
+    }*/
+    
+    func unlikePost(post: PFObject, success: () -> ()) {
+        var like = post.relationForKey(TablePost.Like)
+        like.removeObject(PFUser.currentUser())
+        post.saveInBackgroundWithBlock { (objects, error) -> Void in
+            like.query().countObjectsInBackgroundWithBlock({ (count, error) -> Void in
+                post[TablePost.LikeCount] = NSInteger(count)
+                post.saveInBackgroundWithBlock({ (finish, error) -> Void in
+                    success()
+                })
             })
         }
     }

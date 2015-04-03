@@ -7,15 +7,16 @@
 //
 
 import UIKit
+import ParseUI
 
 class DuangTableCellImageMutable: UITableViewCell
 {
     
-    var imageView1 = UIImageView()
-    var imageView2 = UIImageView()
-    var imageView3 = UIImageView()
-    var imageView4 = UIImageView()
-    var imageView5 = UIImageView()
+    var imageView1 = PFImageView()// UIImageView()
+    var imageView2 = PFImageView()//UIImageView()
+    var imageView3 = PFImageView()//UIImageView()
+    var imageView4 = PFImageView()//UIImageView()
+    var imageView5 = PFImageView()//UIImageView()
     
     var hasAddImageViews = false
     
@@ -113,18 +114,48 @@ class DuangTableCellImageMutable: UITableViewCell
         return photo[TablePhoto.Image] as PFFile
     }
     
-    func loadImage(imageView: UIImageView, rect: CGRect, file: PFFile?) {
+    func loadImage(imageView: PFImageView, rect: CGRect, file: PFFile?) {
         imageView.hidden = false
         imageView.frame = rect
         imageView.image = ImagePlaceholder.Image
         if let theFile = file {
+            
+            imageView.file = theFile
+            imageView.loadInBackground()
+            
+            /*
             theFile.getDataInBackgroundWithBlock { (imageData, error) -> Void in
                 if error == nil {
                     if let image = UIImage(data: imageData) {
                         imageView.image = image
                     }
                 }
-            }
+            }*/
         }
+        
+//        if let urlString = file?.url {
+//            if let url = NSURL(string: urlString) {
+//                let cachedImage = PFImageCache.sharedCache
+//                
+//                UIImage *cachedImage = [[PFImageCache sharedCache] imageForURL:url];
+//                if (cachedImage) {
+//                    self.image = cachedImage;
+//                    
+//                    if (progressBlock) {
+//                        progressBlock(100);
+//                    }
+//                    if (completion) {
+//                        completion(cachedImage, nil);
+//                    }
+//                    return;
+//                }
+//            }
+//            
+//            
+//        }
+        
+        
+        
+        
     }
 }

@@ -43,6 +43,7 @@
 		56DA1AD51ACCA63A00DCF12B /* DuangTableCellButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DA1AD41ACCA63A00DCF12B /* DuangTableCellButtons.swift */; };
 		56E946A31ABB464700634F5B /* DuangTableCellTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E946A21ABB464700634F5B /* DuangTableCellTextField.swift */; };
 		56F361751AB8DC0D00D94533 /* DuangTableCellUserBig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F361741AB8DC0D00D94533 /* DuangTableCellUserBig.swift */; };
+		E8D43E041ACE618400F6DA68 /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8D43E031ACE618400F6DA68 /* ParseUI.framework */; };
 		E8E416C71ABEA52500D7727C /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E416C61ABEA52500D7727C /* MainTabBarController.swift */; };
 		E8E416CA1ABEA74F00D7727C /* DuangTableViewControllerNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E416C91ABEA74F00D7727C /* DuangTableViewControllerNavigationController.swift */; };
 /* End PBXBuildFile section */
@@ -98,6 +99,7 @@
 		56DA1AD41ACCA63A00DCF12B /* DuangTableCellButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableCellButtons.swift; sourceTree = "<group>"; };
 		56E946A21ABB464700634F5B /* DuangTableCellTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableCellTextField.swift; sourceTree = "<group>"; };
 		56F361741AB8DC0D00D94533 /* DuangTableCellUserBig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableCellUserBig.swift; sourceTree = "<group>"; };
+		E8D43E031ACE618400F6DA68 /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
 		E8E416C21ABDCAFC00D7727C /* Duang-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Duang-Bridging-Header.h"; sourceTree = "<group>"; };
 		E8E416C61ABEA52500D7727C /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		E8E416C91ABEA74F00D7727C /* DuangTableViewControllerNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableViewControllerNavigationController.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 			files = (
 				5687C6411AB0E53000ED0005 /* Parse.framework in Frameworks */,
 				5687C6431AB0E63500ED0005 /* Bolts.framework in Frameworks */,
+				E8D43E041ACE618400F6DA68 /* ParseUI.framework in Frameworks */,
 				5687C6451AB0E6C400ED0005 /* AudioToolbox.framework in Frameworks */,
 				5687C6471AB0E6D000ED0005 /* CFNetwork.framework in Frameworks */,
 				5687C6491AB0E6DD00ED0005 /* CoreGraphics.framework in Frameworks */,
@@ -212,6 +215,7 @@
 		569E7A741AB0DADF009BF47B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				E8D43E031ACE618400F6DA68 /* ParseUI.framework */,
 				569E7A751AB0DADF009BF47B /* Info.plist */,
 				5687C6401AB0E53000ED0005 /* Parse.framework */,
 				5687C6421AB0E63500ED0005 /* Bolts.framework */,

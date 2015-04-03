@@ -872,7 +872,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         println("indexPath = \(indexPath) -- buttonIndex = \(buttonIndex)")
     }
     
-    func likePost(indexPath: NSIndexPath, post: PFObject) {
+    func likePost(indexPath: NSIndexPath, post: PFObject) {/*
         APIManager.sharedInstance.likePost(post)
 
         switch duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row] {
@@ -901,10 +901,16 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             
         default:
             break
-        }
+        }*/
+        
+        APIManager.sharedInstance.likePost(post, success: { () -> () in
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.tableView.reloadData()
+            })
+        })
     }
     
-    func unlikePost(indexPath: NSIndexPath, post: PFObject) {
+    func unlikePost(indexPath: NSIndexPath, post: PFObject) {/*
         APIManager.sharedInstance.unlikePost(post)
         
         switch duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row] {
@@ -934,7 +940,12 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             
         default:
             break
-        }
+        }*/
+        APIManager.sharedInstance.unlikePost(post, success: { () -> () in
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.tableView.reloadData()
+            })
+        })
     }
     
     // MARK: - DuangTableCellTextView
