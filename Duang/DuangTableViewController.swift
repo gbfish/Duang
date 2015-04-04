@@ -22,6 +22,28 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         title = titleString
     }
     
+    override func viewDidAppear(animated: Bool) {
+        switch tableType {
+        case .Comment:
+//            mainInputViewTextField.becomeFirstResponder()
+            moveInputView()
+        default:
+            break
+        }
+    }
+    
+//    override func viewWillAppear(animated: Bool) {
+//        
+//        
+//    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        moveInputView()
+        println("--- viewDidLayoutSubviews ---")
+    }
+    
     var titleString = ""
     
     // MARK: - Table Type
@@ -36,11 +58,33 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         case Input
         case AddPhoto
         case AddPost
+        case Comment
     }
     
     var tableType = TableType.Profile
     
+    // MARK: - Table Type Comment
     
+    func showCommentPost(post: PFObject?) {
+        if let thePost = post {
+            let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
+            viewController.tableType = TableType.Comment
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
+    
+    func prepareForComment() {
+        titleString = "Comment"
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillChangeFrame:", name: UIKeyboardWillChangeFrameNotification, object: nil)
+        
+        mainInputView.hidden = false
+        mainInputViewTextField.becomeFirstResponder()
+    }
+    
+    // MARK: - 
     
     func checkTableType() {
         var section = DuangTableDataSection()
@@ -259,6 +303,9 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             
             section.rowArray.append(DuangTableDataSection.DuangTableDataRow.Button(buttonText: "Done", buttonTextColor: DuangColor.ButtonNormal, buttonBackgroundColor: DuangColor.ButtonNormalBackground, tapAction: doneAddPhoto))
             duangTableData.sectionArray.append(section)
+            
+        case .Comment:// MARK: Comment
+            prepareForComment()
         }
     }
 
@@ -516,8 +563,8 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             section.rowArray.append(DuangTableDataSection.DuangTableDataRow.ImageMutable(photos: photos, tapAction: showChangePassword))
             ++buttonsRow
             
-            let buttonShare = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "share 0", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Share, post: object, tapAction: likePost)
-            let buttonComment = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "comment 0", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Comment, post: object, tapAction: commentPost)
+            let buttonShare = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "share 0", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Share, post: object, tapAction: sharePost)
+            let buttonComment = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "comment 0", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Comment, post: object, tapAction: showCommentPost)
             let buttonLike = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(object[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, post: object, tapAction: unlikePost)
             
             let buttonArray = [buttonShare, buttonComment, buttonLike]
@@ -836,11 +883,12 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         }
     }
     
-    func commentPost(post: PFObject?) {
+    func sharePost(post: PFObject?) {
         if let thePost = post {
-            println("commentPost")
+            moveInputView()
         }
     }
+    
     
     // MARK: - DuangTableCellTextView
     
@@ -988,14 +1036,91 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         }
     }
     
-    // MARK: Main Input View
+    // MARK: - Main Input View
     
     @IBOutlet weak var mainInputView: UIView!
-    @IBOutlet weak var mainInputViewTextField: UITextField! {
+    @IBOutlet weak var mainInputViewTextField: UITextField!
+//        {
+//        didSet {
+//            mainInputViewTextField.delegate = self
+//        }
+//    }
+    
+    // MARK: - Keyboard Notification
+    
+    func keyboardWillShow(notification: NSNotification) {
+        keyboardNotificationDictionary = NSDictionary(dictionary: notification.userInfo!)
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        keyboardNotificationDictionary = NSDictionary()
+    }
+    
+    func keyboardWillChangeFrame(notification: NSNotification) {
+        keyboardNotificationDictionary = NSDictionary(dictionary: notification.userInfo!)
+    }
+    
+    var keyboardNotificationDictionary: NSDictionary = NSDictionary() {
         didSet {
-            mainInputViewTextField.delegate = self
+//            moveMainInputViewForKeyboard()
+            moveInputView()
         }
     }
     
+    func moveInputView() {
+        var duration: Double = 0.2
+        let space: CGFloat = 0.0
+        
+        if let durationForKeyboard = keyboardNotificationDictionary.objectForKey(UIKeyboardAnimationDurationUserInfoKey) as? Double {
+            duration = durationForKeyboard
+        }
+        
+        if let value: NSValue = keyboardNotificationDictionary.objectForKey(UIKeyboardFrameEndUserInfoKey) as? NSValue {
+            let keyboardSize = value.CGRectValue().size
+            let moveDistanced = DuangGlobal.screenHeight - mainInputView.frame.size.height - keyboardSize.height - space
+            UIView.animateWithDuration(duration, animations: { () -> Void in
+                
+                println("before self.mainInputView.frame = \(self.mainInputView.frame)")
+                
+                self.mainInputView.frame = CGRectMake(self.mainInputView.frame.origin.x, moveDistanced, self.mainInputView.frame.size.width, self.mainInputView.frame.size.height)
+                
+                println("after self.mainInputView.frame = \(self.mainInputView.frame)")
+            })
+        } else {
+            UIView.animateWithDuration(duration, animations: { () -> Void in
+                self.mainInputView.frame = CGRectMake(self.mainInputView.frame.origin.x, DuangGlobal.screenHeight - self.mainInputView.frame.size.height, self.mainInputView.frame.size.width, self.mainInputView.frame.size.height)
+            })
+        }
+    }
+    
+    func moveMainInputViewForKeyboard() {
+        if let value: NSValue = keyboardNotificationDictionary.objectForKey(UIKeyboardFrameEndUserInfoKey) as? NSValue {
+            let keyboardSize = value.CGRectValue().size
+//            let textFieldFirstResponderRect = view.convertRect(textFieldFirstResponder.frame, fromView: buttonsView)
+//            let moveDistanced = view.frame.height - textFieldFirstResponderRect.origin.y - textFieldFirstResponderRect.size.height - keyboardSize.height - 70
+            
+            
+//            let mainInputViewY = DuangGlobal.screenHeight - keyboardSize.height - self.mainInputView.frame.height
+            
+            println("keyboardSize = \(keyboardSize)")
+            println("self.mainInputView.frame  = \(self.mainInputView.frame)")
+            
+            println("Y = \(DuangGlobal.screenHeight - keyboardSize.height - self.mainInputView.frame.height)")
+            
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                self.mainInputView.frame = CGRectMake(self.mainInputView.frame.origin.x, DuangGlobal.screenHeight - keyboardSize.height - self.mainInputView.frame.height, self.mainInputView.frame.width, self.mainInputView.frame.height)
+            })
+        } else {
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                self.mainInputView.frame = CGRectMake(self.mainInputView.frame.origin.x, DuangGlobal.screenHeight, self.mainInputView.frame.width, self.mainInputView.frame.height)
+            })
+        }
+    }
+    
+//    var textFieldFirstResponder: UITextField = UITextField() {
+//        didSet {
+//            moveTextFieldForKeyboard()
+//        }
+//    }
     
 }
