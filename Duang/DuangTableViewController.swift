@@ -82,6 +82,10 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         
         mainInputView.hidden = false
         mainInputViewTextField.becomeFirstResponder()
+        
+        
+        var inputBar = UIView(frame: CGRectMake(0.0, DuangGlobal.screenHeight - 40.0, DuangGlobal.screenWidth, 40.0))
+        
     }
     
     // MARK: - 
