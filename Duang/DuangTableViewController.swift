@@ -65,11 +65,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     
     var tableType = TableType.Profile
     
-    func showDuangTableViewController(presentedViewTableType: DuangTableViewController.TableType) {
-        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
-        viewController.tableType = presentedViewTableType
-        self.navigationController?.pushViewController(viewController, animated: true)
-    }
+    
     
     
     // MARK: - Comment
@@ -81,11 +77,6 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             viewController.dataFromPreviousViewPost = thePost
             self.navigationController?.pushViewController(viewController, animated: true)
         }
-    }
-    
-    func prepareForComment() {
-        titleString = "Comment"
-        prepareDuangTableDataForComment()
     }
     
     // MARK: - 
@@ -308,11 +299,31 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             section.rowArray.append(DuangTableDataSection.DuangTableDataRow.Button(buttonText: "Done", buttonTextColor: DuangColor.ButtonNormal, buttonBackgroundColor: DuangColor.ButtonNormalBackground, tapAction: doneAddPhoto))
             duangTableData.sectionArray.append(section)
             
-        case .Comment:// MARK: Comment
-            prepareForComment()
+        case .Comment:
+            titleString = "Comment"
+            duangTableData = DuangTableData()
+            duangTableData.addSectionCommentHeader(dataFromPreviousViewPost, tapActionUser: changePasswordDone, tapActionImage: changePasswordDone, tapActionComment: sharePost)
+            
+        case .AddComment:
+            titleString = "Leave a comment"
+            duangTableData = DuangTableData()
+            duangTableData.addTextView(nil)
+            
         }
     }
 
+    // MARK: - Show
+    
+    func showDuangTableViewController(presentedViewTableType: DuangTableViewController.TableType) {
+        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
+        viewController.tableType = presentedViewTableType
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func showAddComment() {
+        showDuangTableViewController(DuangTableViewController.TableType.AddComment)
+    }
+    
     // MARK: - Did Select Func
     
     
@@ -512,9 +523,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     
-    func leaveComment() {
-        showDuangTableViewController(DuangTableViewController.TableType.AddComment)
-    }
+    
 
     // MARK: - Data
     
@@ -597,29 +606,6 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             duangTableData.sectionArray.append(section)*/
         }
         tableView.reloadData()
-    }
-    
-    func prepareDuangTableDataForComment() {
-        titleString = "Comment"
-        
-        duangTableData = DuangTableData()
-        
-        duangTableData.addSectionCommentHeader(dataFromPreviousViewPost, tapActionUser: changePasswordDone, tapActionImage: changePasswordDone, tapActionComment: sharePost)
-        
-//        if let section = sectionForPost(dataFromPreviousViewPost) {
-//            duangTableData.sectionArray.append(section)
-//        }
-        
-//        if let post = dataFromPreviousViewPost {
-//            if let section = sectionForPost(post) {
-//                duangTableData.sectionArray.append(section)
-//            }
-//        }
-        
-        
-        
-        
-        
     }
     
     // MARK: - DuangTableDataSection

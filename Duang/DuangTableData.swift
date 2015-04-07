@@ -41,6 +41,14 @@ class DuangTableData
             self.sectionArray.append(section)
         }
     }
+    
+    // MARK: - TextView
+    
+    func addTextView(placeholder: String?) {
+        var section = DuangTableDataSection()
+        section.addTextView(placeholder)
+        self.sectionArray.append(section)
+    }
 }
 
 class DuangTableDataSection
@@ -139,6 +147,16 @@ class DuangTableDataSection
                 break
             }
         }
+    }
+    
+    // MARK: - TextView
+    
+    func addTextView(placeholder: String?) {
+        var thePlaceholder = ""
+        if let temString = placeholder {
+            thePlaceholder = temString
+        }
+        self.rowArray.append(DuangTableDataSection.DuangTableDataRow.TextView(placeholder: thePlaceholder))
     }
     
     // MARK: - ImageMutable
