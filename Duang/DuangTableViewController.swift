@@ -639,9 +639,14 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func rowButtonsForPost(post: PFObject?) -> DuangTableDataSection.DuangTableDataRow? {
         if let thePost = post {
+            
+            let buttonShare = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "share 0", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Share, post: thePost, tapAction: DuangTableDataSection.Function1PFObject(sharePost, argument: thePost))
+            let buttonComment = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "comment 0", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Comment, post: thePost, tapAction: DuangTableDataSection.Function1PFObject(sharePost, argument: thePost))
+            let buttonLike = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, post: thePost, tapAction: DuangTableDataSection.Function1PFObject(sharePost, argument: thePost))
+            /*
             let buttonShare = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "share 0", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Share, post: thePost, tapAction: sharePost)
             let buttonComment = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "comment 0", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Comment, post: thePost, tapAction: showCommentPost)
-            let buttonLike = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, post: thePost, tapAction: unlikePost)
+            let buttonLike = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, post: thePost, tapAction: unlikePost)*/
             let buttonArray = [buttonShare, buttonComment, buttonLike]
             return DuangTableDataSection.DuangTableDataRow.Buttons(buttonArray: buttonArray, post: thePost)
         }
@@ -649,7 +654,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func rowButtonsForComment() -> DuangTableDataSection.DuangTableDataRow? {
-        let button = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "Leave a comment", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Share, post: nil, tapAction: sharePost)
+        let button = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "Leave a comment", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Share, post: nil, tapAction: DuangTableDataSection.function0(changePasswordDone))
         let buttonArray = [button]
         return DuangTableDataSection.DuangTableDataRow.Buttons(buttonArray: buttonArray, post: nil)
     }
@@ -770,9 +775,12 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                         switch self.duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row] {
                         case .Buttons(var buttonArray, let post):
                             if hasLiked {
-                                buttonArray[2] = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, post: thePost, tapAction: self.unlikePost)
+                                
+                                buttonArray[2] = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, post: thePost, tapAction: DuangTableDataSection.Function1PFObject(self.unlikePost, argument: thePost))
+                                
+//                                buttonArray[2] = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, post: thePost, tapAction: self.unlikePost)
                             } else {
-                                buttonArray[2] = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.White, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, post: thePost, tapAction: self.likePost)
+                                buttonArray[2] = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.White, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, post: thePost, tapAction: DuangTableDataSection.Function1PFObject(self.likePost, argument: thePost))
                             }
                             self.duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row] = DuangTableDataSection.DuangTableDataRow.Buttons(buttonArray: buttonArray, post: post)
                         default:

@@ -71,7 +71,8 @@ class DuangTableDataSection
         case Message(ownerAvatarFile: PFFile?, ownerName: String, time: String, message: String)
         
         case Buttons(buttonArray: [DuangTableDataRow], post: PFObject?)
-        case ButtonItem(buttonText: String, buttonTextColor: UIColor, buttonBackgroundColor: UIColor, borderColor: UIColor, buttonImage: UIImage, post: PFObject?, tapAction: (PFObject?) -> ())
+//        case ButtonItem(buttonText: String, buttonTextColor: UIColor, buttonBackgroundColor: UIColor, borderColor: UIColor, buttonImage: UIImage, post: PFObject?, tapAction: (PFObject?) -> ())
+        case ButtonItem(buttonText: String, buttonTextColor: UIColor, buttonBackgroundColor: UIColor, borderColor: UIColor, buttonImage: UIImage, post: PFObject?, tapAction: DuangTableDataRowFunction)
         
         func cellHeight() -> CGFloat {
             switch self {
@@ -142,7 +143,7 @@ class DuangTableDataSection
                 
                 
             case .ButtonItem(_, _, _, _, _, let post, let tapAction):
-                tapAction(post)
+                tapAction.functionAction()
             default:
                 break
             }
@@ -154,13 +155,13 @@ class DuangTableDataSection
     
     enum DuangTableDataRowFunction {
         case Function0(argumentCount: NSInteger, function: () -> ())
-        case Function1(argumentCount: NSInteger, function: (DuangTableDataRowArgument) -> (), argument: DuangTableDataRowArgument)
+        case Function1PFObject(argumentCount: NSInteger, function: (PFObject?) -> (), argument: PFObject?)
         
         func functionAction() {
             switch self {
             case .Function0(let argumentCount, let function):
                 function()
-            case .Function1(let argumentCount, let function, let argument):
+            case .Function1PFObject(let argumentCount, let function, let argument):
                 function(argument)
             default:
                 break
@@ -169,23 +170,12 @@ class DuangTableDataSection
         }
     }
     
-    enum DuangTableDataRowArgument {
-        case ArgumentString(argument: String)
+    class func function0(function: () -> ()) -> DuangTableDataRowFunction {
+        return DuangTableDataRowFunction.Function0(argumentCount: 0, function: function)
     }
     
-    func testDuangTableDataRowAction() {
-        
-        DuangTableDataRowFunction.Function0(argumentCount: 0, function: noArgument)
-        DuangTableDataRowFunction.Function1(argumentCount: 1, function: oneArgument, argument: DuangTableDataSection.DuangTableDataRowArgument.ArgumentString(argument: "test !"))
-        
-    }
-    
-    func noArgument() {
-        
-    }
-    
-    func oneArgument(testString: DuangTableDataRowArgument) {
-        
+    class func Function1PFObject(function: (PFObject?) -> (), argument: PFObject?) -> DuangTableDataRowFunction {
+        return DuangTableDataRowFunction.Function1PFObject(argumentCount: 1, function: function, argument: argument)
     }
     
     // MARK: - TextView
@@ -227,9 +217,9 @@ class DuangTableDataSection
     
     func addButtonsForPost(post: PFObject?, tapActionShare: (PFObject?) -> (), tapActionComment: (PFObject?) -> (), tapActionLike: (PFObject?) -> ()) {
         if let thePost = post {
-            let buttonShare = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "share 0", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Share, post: thePost, tapAction: tapActionShare)
-            let buttonComment = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "comment 0", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Comment, post: thePost, tapAction: tapActionComment)
-            let buttonLike = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, post: thePost, tapAction: tapActionLike)
+            let buttonShare = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "share 0", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Share, post: thePost, tapAction: DuangTableDataSection.Function1PFObject(tapActionShare, argument: thePost))
+            let buttonComment = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "comment 0", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Comment, post: thePost, tapAction: DuangTableDataSection.Function1PFObject(tapActionComment, argument: thePost))
+            let buttonLike = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, post: thePost, tapAction: DuangTableDataSection.Function1PFObject(tapActionLike, argument: thePost))
             let buttonArray = [buttonShare, buttonComment, buttonLike]
             self.rowArray.append(DuangTableDataSection.DuangTableDataRow.Buttons(buttonArray: buttonArray, post: thePost))
         }
@@ -237,7 +227,7 @@ class DuangTableDataSection
     
     func addButtons(post: PFObject?, tapAction: (PFObject?) -> ()) {
         if let thePost = post {
-            let buttonItem = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "Leave a comment", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, post: thePost, tapAction: tapAction)
+            let buttonItem = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "Leave a comment", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, post: thePost, tapAction: DuangTableDataSection.Function1PFObject(tapAction, argument: thePost))
             let buttonArray = [buttonItem]
             self.rowArray.append(DuangTableDataSection.DuangTableDataRow.Buttons(buttonArray: buttonArray, post: thePost))
         }
