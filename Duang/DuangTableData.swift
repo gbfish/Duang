@@ -149,6 +149,45 @@ class DuangTableDataSection
         }
     }
     
+    
+    //////
+    
+    enum DuangTableDataRowFunction {
+        case Function0(argumentCount: NSInteger, function: () -> ())
+        case Function1(argumentCount: NSInteger, function: (DuangTableDataRowArgument) -> (), argument: DuangTableDataRowArgument)
+        
+        func functionAction() {
+            switch self {
+            case .Function0(let argumentCount, let function):
+                function()
+            case .Function1(let argumentCount, let function, let argument):
+                function(argument)
+            default:
+                break
+                
+            }
+        }
+    }
+    
+    enum DuangTableDataRowArgument {
+        case ArgumentString(argument: String)
+    }
+    
+    func testDuangTableDataRowAction() {
+        
+        DuangTableDataRowFunction.Function0(argumentCount: 0, function: noArgument)
+        DuangTableDataRowFunction.Function1(argumentCount: 1, function: oneArgument, argument: DuangTableDataSection.DuangTableDataRowArgument.ArgumentString(argument: "test !"))
+        
+    }
+    
+    func noArgument() {
+        
+    }
+    
+    func oneArgument(testString: DuangTableDataRowArgument) {
+        
+    }
+    
     // MARK: - TextView
     
     func addTextView(placeholder: String?) {
