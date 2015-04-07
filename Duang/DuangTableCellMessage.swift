@@ -12,7 +12,10 @@ import ParseUI
 class DuangTableCellMessage: UITableViewCell
 {
     @IBOutlet weak var messageOwnerAvatarImageView: PFImageView!
+    @IBOutlet weak var messageOwnerNameLabel: UILabel!
     @IBOutlet weak var messageTextLabel: UILabel!
+    @IBOutlet weak var messageTimeLabel: UILabel!
+    
 
     enum MessageStyle {
         case Left

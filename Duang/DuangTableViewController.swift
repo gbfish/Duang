@@ -58,34 +58,34 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         case Input
         case AddPhoto
         case AddPost
+        
         case Comment
+        case AddComment
     }
     
     var tableType = TableType.Profile
     
-    // MARK: - Table Type Comment
+    func showDuangTableViewController(presentedViewTableType: DuangTableViewController.TableType) {
+        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
+        viewController.tableType = presentedViewTableType
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    
+    // MARK: - Comment
     
     func showCommentPost(post: PFObject?) {
         if let thePost = post {
             let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
             viewController.tableType = TableType.Comment
+            viewController.dataFromPreviousViewPost = thePost
             self.navigationController?.pushViewController(viewController, animated: true)
         }
     }
     
     func prepareForComment() {
         titleString = "Comment"
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillChangeFrame:", name: UIKeyboardWillChangeFrameNotification, object: nil)
-        
-        mainInputView.hidden = false
-        mainInputViewTextField.becomeFirstResponder()
-        
-        
-        var inputBar = UIView(frame: CGRectMake(0.0, DuangGlobal.screenHeight - 40.0, DuangGlobal.screenWidth, 40.0))
-        
+        prepareDuangTableDataForComment()
     }
     
     // MARK: - 
@@ -510,6 +510,11 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         APIManager.sharedInstance.logout()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
+    
+    
+    func leaveComment() {
+        showDuangTableViewController(DuangTableViewController.TableType.AddComment)
+    }
 
     // MARK: - Data
     
@@ -530,54 +535,21 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         
     }
     
-    // MARK: - TableView Data
+    // MARK: - Data from Previous View
+    
+    var dataFromPreviousViewPost: PFObject?
+    
+    // MARK: - TableViewData
     
     var duangTableData = DuangTableData()
-    var postArray: [PFObject]?
+//    var postArray: [PFObject]?
     
     func setDuangTableDataFromPost(objectArray: [PFObject]) {
-        postArray = objectArray
+//        postArray = objectArray
         duangTableData = DuangTableData()
-        var section = DuangTableDataSection()
-        
         for var index = 0; index < objectArray.count; ++index {
-            let object = objectArray[index]
-            var buttonsRow = 1
-            
-            section = DuangTableDataSection()
-            section.sectionTitleForHeader = ""
-            
-            let owner: PFUser = object[TablePhoto.Owner] as PFUser
-            section.rowArray.append(DuangTableDataSection.DuangTableDataRow.ImageSmall(imageTitle: APIManager.getNameFromUser(owner), imagePlaceholder: ImagePlaceholder.Avatar, imageFile: APIManager.getFileFromUser(owner, key: TableUser.Avatar), isRound: true, tapAction: selectImage))
-            ++buttonsRow
-            
-            if let postTitle = APIManager.getStringFromObject(object, key: TablePost.Title) {
-                let size = APIManager.sizeForString(postTitle, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: DuangGlobal.screenWidth - 20.0, height: CGFloat.max)
-                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.Label(cellHeight: size.height, text: postTitle, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)))
-                ++buttonsRow
-            }
-            
-            if let postDescription = APIManager.getStringFromObject(object, key: TablePost.Description) {
-                let size = APIManager.sizeForString(postDescription, font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody), width: DuangGlobal.screenWidth - 20.0, height: CGFloat.max)
-                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.Label(cellHeight: size.height, text: postDescription, font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody)))
-                ++buttonsRow
-            }
-            
-            let photos = object.relationForKey(TablePost.Photos)
-            section.rowArray.append(DuangTableDataSection.DuangTableDataRow.ImageMutable(photos: photos, tapAction: showChangePassword))
-            ++buttonsRow
-            
-            let buttonShare = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "share 0", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Share, post: object, tapAction: sharePost)
-            let buttonComment = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "comment 0", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Comment, post: object, tapAction: showCommentPost)
-            let buttonLike = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(object[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, post: object, tapAction: unlikePost)
-            
-            let buttonArray = [buttonShare, buttonComment, buttonLike]
-            
-            section.rowArray.append(DuangTableDataSection.DuangTableDataRow.Buttons(buttonArray: buttonArray, post: object))
-
-            duangTableData.sectionArray.append(section)
+            duangTableData.addSectionPost(objectArray[index], tapActionUser: showChangePassword, tapActionImage: showChangePassword, tapActionShare: sharePost, tapActionComment: showCommentPost, tapActionLike: unlikePost)
         }
-        
         tableView.reloadData()
     }
     
@@ -626,6 +598,77 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         }
         tableView.reloadData()
     }
+    
+    func prepareDuangTableDataForComment() {
+        titleString = "Comment"
+        
+        duangTableData = DuangTableData()
+        
+        duangTableData.addSectionCommentHeader(dataFromPreviousViewPost, tapActionUser: changePasswordDone, tapActionImage: changePasswordDone, tapActionComment: sharePost)
+        
+//        if let section = sectionForPost(dataFromPreviousViewPost) {
+//            duangTableData.sectionArray.append(section)
+//        }
+        
+//        if let post = dataFromPreviousViewPost {
+//            if let section = sectionForPost(post) {
+//                duangTableData.sectionArray.append(section)
+//            }
+//        }
+        
+        
+        
+        
+        
+    }
+    
+    // MARK: - DuangTableDataSection
+    
+//    func sectionForPost(post: PFObject?) -> DuangTableDataSection? {
+//        if let thePost = post {
+//            var section = DuangTableDataSection()
+//            
+//            section.addImageSmallUser(APIManager.getUserFromObject(thePost, key: TablePost.Owner), tapAction: selectImage)
+//            section.addRowLabel(APIManager.getStringFromObject(thePost, key: TablePost.Title), textFont: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline))
+//            section.addRowLabel(APIManager.getStringFromObject(thePost, key: TablePost.Description), textFont: UIFont.preferredFontForTextStyle(UIFontTextStyleBody))
+//            section.addImageMutable(thePost.relationForKey(TablePost.Photos), tapAction: showChangePassword)////
+//            section.addButtonsForPost(thePost, shareAction: sharePost, commentAction: showCommentPost, likeAction: unlikePost)
+//            
+//            /*
+//            let photos = thePost.relationForKey(TablePost.Photos)
+//            section.rowArray.append(DuangTableDataSection.DuangTableDataRow.ImageMutable(photos: photos, tapAction: showChangePassword))
+//            */
+////            if let row = rowButtonsForPost(thePost) {
+////                section.rowArray.append(row)
+////            }
+//            return section
+//            
+//            
+//            
+//        }
+//        return nil
+//    }
+    
+    // MARK: - DuangTableDataRow 
+    
+    func rowButtonsForPost(post: PFObject?) -> DuangTableDataSection.DuangTableDataRow? {
+        if let thePost = post {
+            let buttonShare = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "share 0", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Share, post: thePost, tapAction: sharePost)
+            let buttonComment = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "comment 0", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Comment, post: thePost, tapAction: showCommentPost)
+            let buttonLike = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, post: thePost, tapAction: unlikePost)
+            let buttonArray = [buttonShare, buttonComment, buttonLike]
+            return DuangTableDataSection.DuangTableDataRow.Buttons(buttonArray: buttonArray, post: thePost)
+        }
+        return nil
+    }
+    
+    func rowButtonsForComment() -> DuangTableDataSection.DuangTableDataRow? {
+        let button = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "Leave a comment", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Share, post: nil, tapAction: sharePost)
+        let buttonArray = [button]
+        return DuangTableDataSection.DuangTableDataRow.Buttons(buttonArray: buttonArray, post: nil)
+    }
+    
+    
     
     // MARK: - TableView
     
@@ -734,29 +777,39 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellButtons
             cell.delegate = self
 
-            if let thePost = post {
-                APIManager.sharedInstance.hasLikedPost(thePost, hasLiked: { (hasLiked) -> () in
-                    switch self.duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row] {
-                    case .Buttons(var buttonArray, let post):
-                        if hasLiked {
-                            buttonArray[2] = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, post: thePost, tapAction: self.unlikePost)
-                        } else {
-                            buttonArray[2] = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.White, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, post: thePost, tapAction: self.likePost)
+            switch tableType {
+            case .Feed:
+                if let thePost = post {
+                    APIManager.sharedInstance.hasLikedPost(thePost, hasLiked: { (hasLiked) -> () in
+                        switch self.duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row] {
+                        case .Buttons(var buttonArray, let post):
+                            if hasLiked {
+                                buttonArray[2] = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, post: thePost, tapAction: self.unlikePost)
+                            } else {
+                                buttonArray[2] = DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.White, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, post: thePost, tapAction: self.likePost)
+                            }
+                            self.duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row] = DuangTableDataSection.DuangTableDataRow.Buttons(buttonArray: buttonArray, post: post)
+                        default:
+                            break
                         }
-                        self.duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row] = DuangTableDataSection.DuangTableDataRow.Buttons(buttonArray: buttonArray, post: post)
-                    default:
-                        break
-                    }
-                    
-                    switch self.duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row] {
-                    case .Buttons(var buttonArray, _):
-                        cell.buttonArray = buttonArray
-                        cell.reloadView()
-                    default:
-                        break
-                    }
-                })
+                        
+                        switch self.duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row] {
+                        case .Buttons(var buttonArray, _):
+                            cell.buttonArray = buttonArray
+                            cell.reloadView()
+                        default:
+                            break
+                        }
+                    })
+                }
+            case .Comment:
+                cell.buttonArray = buttonArray
+                cell.reloadView()
+            default:
+                break
             }
+            
+            
             return cell
             
         default:
@@ -1119,6 +1172,19 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                 self.mainInputView.frame = CGRectMake(self.mainInputView.frame.origin.x, DuangGlobal.screenHeight, self.mainInputView.frame.width, self.mainInputView.frame.height)
             })
         }
+    }
+    
+    func prepareForMainInputView() {
+        /*
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillChangeFrame:", name: UIKeyboardWillChangeFrameNotification, object: nil)
+        
+        mainInputView.hidden = false
+        mainInputViewTextField.becomeFirstResponder()
+        
+        var inputBar = UIView(frame: CGRectMake(0.0, DuangGlobal.screenHeight - 40.0, DuangGlobal.screenWidth, 40.0))
+        */
     }
     
 //    var textFieldFirstResponder: UITextField = UITextField() {
