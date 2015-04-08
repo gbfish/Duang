@@ -309,7 +309,8 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             duangTableData = DuangTableData()
             duangTableData.addTextView(nil)
             duangTableData.addImageSmallSelectImage("Photo", tapAction: selectImage)
-            duangTableData.addButtons1("Save", function: selectImage)
+            duangTableData.addButtons2("Cancel", function1: selectImage, buttonText2: "Save", function2: showAddComment)
+//            duangTableData.addButtons1("Save", function: selectImage)
         }
     }
 

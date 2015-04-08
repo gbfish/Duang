@@ -168,14 +168,15 @@ class DuangTableDataSection
     }
     
     func addButtons1(buttonText: String, function: () -> ()) {
-//        var section = DuangTableDataSection()
-//        let buttonItem = DuangTableDataSection.buttonItemTitleNormal(buttonText, function: DuangTableDataSection.DuangTableDataRowFunction.Function0(argumentCount: 0, function: function))
-//        let buttonArray = [buttonItem]
-//        section.rowArray.append(DuangTableDataSection.DuangTableDataRow.Buttons(buttonArray: buttonArray, thePFObject: nil))
-//        self.sectionArray.append(section)
-        
         let buttonItem = DuangTableDataSection.buttonItemTitleNormal(buttonText, function: DuangTableDataSection.DuangTableDataRowFunction.Function0(argumentCount: 0, function: function))
         let buttonArray = [buttonItem]
+        self.rowArray.append(DuangTableDataSection.DuangTableDataRow.Buttons(buttonArray: buttonArray, thePFObject: nil))
+    }
+    
+    func addButtons2(buttonText1: String, function1: () -> (), buttonText2: String, function2: () -> ()) {
+        let buttonItem1 = DuangTableDataSection.buttonItemTitleNormal(buttonText1, function: DuangTableDataSection.DuangTableDataRowFunction.Function0(argumentCount: 0, function: function1))
+        let buttonItem2 = DuangTableDataSection.buttonItemTitleNormal(buttonText2, function: DuangTableDataSection.DuangTableDataRowFunction.Function0(argumentCount: 0, function: function2))
+        let buttonArray = [buttonItem1, buttonItem2]
         self.rowArray.append(DuangTableDataSection.DuangTableDataRow.Buttons(buttonArray: buttonArray, thePFObject: nil))
     }
     

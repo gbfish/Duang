@@ -70,12 +70,12 @@ class DuangTableData
         var section = DuangTableDataSection()
         section.addButtons1(buttonText, function: function)
         self.sectionArray.append(section)
-        
-//        var section = DuangTableDataSection()
-//        let buttonItem = DuangTableDataSection.buttonItemTitleNormal(buttonText, function: DuangTableDataSection.DuangTableDataRowFunction.Function0(argumentCount: 0, function: function))
-//        let buttonArray = [buttonItem]
-//        section.rowArray.append(DuangTableDataSection.DuangTableDataRow.Buttons(buttonArray: buttonArray, thePFObject: nil))
-//        self.sectionArray.append(section)
+    }
+    
+    func addButtons2(buttonText1: String, function1: () -> (), buttonText2: String, function2: () -> ()) {
+        var section = DuangTableDataSection()
+        section.addButtons2(buttonText1, function1: function1, buttonText2: buttonText2, function2: function2)
+        self.sectionArray.append(section)
     }
 }
 
