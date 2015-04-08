@@ -10,12 +10,12 @@ import UIKit
 
 protocol DuangTableCellButtonsProtocol
 {
-    func duangTableCellButtonsAction(duangTableDataRow: DuangTableDataSection.DuangTableDataRow)
+    func duangTableCellButtonsAction(duangTableDataRowItem: DuangTableDataSection.DuangTableDataRowItem)
 }
 
 class DuangTableCellButtons: UITableViewCell
 {
-    var buttonArray: [DuangTableDataSection.DuangTableDataRow]?
+    var buttonArray: [DuangTableDataSection.DuangTableDataRowItem]?
     var delegate: DuangTableCellButtonsProtocol?
     
     var buttons = [UIButton]()
@@ -35,7 +35,7 @@ class DuangTableCellButtons: UITableViewCell
                 let button = UIButton(frame: buttonRect)
                 
                 switch theButtonArray[index] {
-                case .ButtonItem(let buttonText, let buttonTextColor, let buttonBackgroundColor, let borderColor, let buttonImage, let post, let tapAction):
+                    case .ButtonItemTitleImage(let buttonText, let buttonTextColor, let buttonBackgroundColor, let borderColor, let buttonImage, _):
                     let imageAndTitleSpacing: CGFloat = 6.0
                     let imageSize = CGSizeMake(20.0, 20.0)
                     let titleSize = APIManager.sizeForString(buttonText, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
@@ -52,6 +52,37 @@ class DuangTableCellButtons: UITableViewCell
                     buttonTitleLabel.textColor = buttonTextColor
                     buttonTitleLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
                     let buttonTitleLabelX = buttonImageViewX + imageSize.width + imageAndTitleSpacing
+                    let buttonTitleLabelY = (buttonRect.height - titleSize.height) / 2
+                    buttonTitleLabel.frame = CGRectMake(buttonTitleLabelX, buttonTitleLabelY, titleSize.width, titleSize.height)
+                    button.addSubview(buttonTitleLabel)
+                    
+                    button.backgroundColor = buttonBackgroundColor
+                    button.layer.borderColor = borderColor.CGColor
+                    button.layer.borderWidth = 2.0
+                    button.layer.masksToBounds = true
+                    button.layer.cornerRadius = 5.0
+                    button.tag = index
+                    button.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+                    
+                    addSubview(button)
+                    
+                case .ButtonItemTitle(let buttonText, let buttonTextColor, let buttonBackgroundColor, let borderColor, _):
+//                    let imageAndTitleSpacing: CGFloat = 6.0
+//                    let imageSize = CGSizeMake(20.0, 20.0)
+                    let titleSize = APIManager.sizeForString(buttonText, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
+                    
+//                    let buttonImageView = UIImageView()
+//                    buttonImageView.image = buttonImage
+//                    let buttonImageViewX = (buttonRect.width - (imageSize.width + imageAndTitleSpacing + titleSize.width)) / 2
+//                    let buttonImageViewY = (buttonRect.height - imageSize.height) / 2
+//                    buttonImageView.frame = CGRectMake(buttonImageViewX, buttonImageViewY, imageSize.width, imageSize.height)
+//                    button.addSubview(buttonImageView)
+                    
+                    let buttonTitleLabel = UILabel()
+                    buttonTitleLabel.text = buttonText
+                    buttonTitleLabel.textColor = buttonTextColor
+                    buttonTitleLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
+                    let buttonTitleLabelX = (buttonRect.width - titleSize.width) / 2
                     let buttonTitleLabelY = (buttonRect.height - titleSize.height) / 2
                     buttonTitleLabel.frame = CGRectMake(buttonTitleLabelX, buttonTitleLabelY, titleSize.width, titleSize.height)
                     button.addSubview(buttonTitleLabel)

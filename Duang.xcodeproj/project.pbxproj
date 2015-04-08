@@ -31,6 +31,7 @@
 		5687C65E1AB110D800ED0005 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5687C65D1AB110D800ED0005 /* Global.swift */; };
 		5687C6611AB118A800ED0005 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5687C6601AB118A800ED0005 /* APIManager.swift */; };
 		5687C6631AB11D1F00ED0005 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5687C6621AB11D1F00ED0005 /* Extension.swift */; };
+		5687EFA91AD48D33008D132E /* DuangTableDataSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5687EFA81AD48D33008D132E /* DuangTableDataSection.swift */; };
 		568A5CB61AB8A49100EF43F4 /* DuangTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568A5CB51AB8A49100EF43F4 /* DuangTableViewController.swift */; };
 		568A5CB91AB8A5A200EF43F4 /* DuangTableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568A5CB81AB8A5A200EF43F4 /* DuangTableData.swift */; };
 		568A5CBB1AB8AAA600EF43F4 /* DuangTableCellButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568A5CBA1AB8AAA500EF43F4 /* DuangTableCellButton.swift */; };
@@ -84,6 +85,7 @@
 		5687C65D1AB110D800ED0005 /* Global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		5687C6601AB118A800ED0005 /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		5687C6621AB11D1F00ED0005 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		5687EFA81AD48D33008D132E /* DuangTableDataSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableDataSection.swift; sourceTree = "<group>"; };
 		568A5CB51AB8A49100EF43F4 /* DuangTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableViewController.swift; sourceTree = "<group>"; };
 		568A5CB81AB8A5A200EF43F4 /* DuangTableData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableData.swift; sourceTree = "<group>"; };
 		568A5CBA1AB8AAA500EF43F4 /* DuangTableCellButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableCellButton.swift; sourceTree = "<group>"; };
@@ -159,12 +161,21 @@
 			name = Global;
 			sourceTree = "<group>";
 		};
+		5687EFAA1AD48D3D008D132E /* DuangTableData */ = {
+			isa = PBXGroup;
+			children = (
+				568A5CB81AB8A5A200EF43F4 /* DuangTableData.swift */,
+				5687EFA81AD48D33008D132E /* DuangTableDataSection.swift */,
+			);
+			name = DuangTableData;
+			sourceTree = "<group>";
+		};
 		568A5CB71AB8A4AB00EF43F4 /* DuangTable */ = {
 			isa = PBXGroup;
 			children = (
+				5687EFAA1AD48D3D008D132E /* DuangTableData */,
 				E8E416C91ABEA74F00D7727C /* DuangTableViewControllerNavigationController.swift */,
 				568A5CB51AB8A49100EF43F4 /* DuangTableViewController.swift */,
-				568A5CB81AB8A5A200EF43F4 /* DuangTableData.swift */,
 				56F361741AB8DC0D00D94533 /* DuangTableCellUserBig.swift */,
 				56C6EFE71AC3472A00F91AF4 /* DuangTableCellImageMutable.swift */,
 				565F08931AC0888200FDBA4A /* DuangTableCellImageBig.swift */,
@@ -393,6 +404,7 @@
 				5601C5ED1AC6194C00BE4F1B /* DuangTableCellTextView.swift in Sources */,
 				569E7A771AB0DADF009BF47B /* AppDelegate.swift in Sources */,
 				5671448D1ACC682800EB03F8 /* DuangTableCellLabel.swift in Sources */,
+				5687EFA91AD48D33008D132E /* DuangTableDataSection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
