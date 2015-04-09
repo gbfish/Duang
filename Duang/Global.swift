@@ -84,6 +84,7 @@ struct TablePost {
     static let Like = "like"
     static let LikeCount = "likeCount"
     static let Share = "share"
+    static let Comments = "comments"
 }
 
 struct TablePhoto {
@@ -105,4 +106,13 @@ struct TableUser {
     static let FirstName = "firstName"
     static let LastName = "lastName"
     static let Description = "description"
+}
+
+struct TableComment {
+    static let ClassName = "Comment"
+    
+    static let Image = "image"
+    static let Owner = "owner"
+    static let Message = "message"
+    static let Comments = "comments"
 }

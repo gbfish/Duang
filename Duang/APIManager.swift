@@ -593,6 +593,33 @@ class APIManager {
         }
     }
     
+    // MARK: - Table Comment
+    
+
+    
+    func addNewComment(post: PFObject, image: UIImage, commentText: String, success: () -> (), failure: (error: NSError) -> ()) {
+        var comments = post.relationForKey(TablePost.Comments)
+        
+        var comment = PFObject(className:TableComment.ClassName)
+        
+        comment[TableComment.Message] = commentText
+        comment[TableComment.Owner] = PFUser.currentUser()
+        
+        let imageData = UIImagePNGRepresentation(image)
+        let imageFile = PFFile(name:"image.png", data:imageData)
+        comment[TableComment.Image] = imageFile
+        comment.save()
+        
+        comments.addObject(comment)
+        post.saveInBackgroundWithBlock { (ifSuccess, error) -> Void in
+            if (ifSuccess) {
+                success()
+            } else {
+                failure(error: error)
+            }
+        }
+    }
+    
     // MARK: - Class Function
     
     class func validateEmail(email: NSString) -> Bool {

@@ -309,8 +309,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             duangTableData = DuangTableData()
             duangTableData.addTextView(nil)
             duangTableData.addImageSmallSelectImage("Photo", tapAction: selectImage)
-            duangTableData.addButtons2("Cancel", function1: selectImage, buttonText2: "Save", function2: showAddComment)
-//            duangTableData.addButtons1("Save", function: selectImage)
+            duangTableData.addButtons2("Cancel", function1: cancel, buttonText2: "Save", function2: doneAddComment)
         }
     }
 
@@ -319,6 +318,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     func showDuangTableViewController(presentedViewTableType: DuangTableViewController.TableType) {
         let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
         viewController.tableType = presentedViewTableType
+        viewController.delegate = self
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -524,8 +524,63 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
+    func cancel() {
+        navigationController?.popViewControllerAnimated(true)
+    }
     
+    // MARK: Done
     
+    func doneAddComment() {
+        if let theComment = getDuangTableCellTextViewText() {
+//            let selectedImage =
+            
+            
+            if let theImage: UIImage? = getSelectedImage(NSIndexPath(forRow: 0, inSection: 1)) {
+                
+                delegate?.handleDuangTableDataDeliverer(DuangTableViewController.DuangTableDataDeliverer.ImageText(image: theImage!, text: theComment))
+            } else {
+                
+                
+                delegate?.handleDuangTableDataDeliverer(DuangTableViewController.DuangTableDataDeliverer.Text(text: theComment))
+            }
+        } else {
+            showAlart("Your comment is empty.")
+        }
+        navigationController?.popViewControllerAnimated(true)
+    }
+    
+    func getSelectedImage(indexPath: NSIndexPath) -> UIImage? {
+        var returnValue = UIImage()
+        switch duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row] {
+        case .ImageSmall(_, let imagePlaceholder, _, _, _):
+            returnValue = imagePlaceholder
+        default:
+            break
+        }
+        if returnValue == ImagePlaceholder.Image {
+            return nil
+        } else {
+            return returnValue
+        }
+    }
+    
+    func getDuangTableCellTextViewText() -> String? {
+        var returnValue = ""
+        if let inputString = duangTableCellTextView?.textView.text {
+            returnValue = inputString
+        }
+        if returnValue == "" {
+            return nil
+        } else {
+            return returnValue
+        }
+    }
+    
+    func showAlart(message: String) {
+        var deleteAlert = UIAlertController(title: "Sorry", message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
+        presentViewController(deleteAlert, animated: true, completion: nil)
+    }
 
     // MARK: - Data
     
@@ -854,11 +909,39 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     enum DuangTableDataDeliverer {
         case Input(inputText: String)
         case AddPhoto(imageSelected: UIImage, descriptionText: String)
+        
+        case ImageText(image: UIImage, text: String)
+        case Text(text: String)
     }
     
     var delegate: DuangTableViewControllerProtocol?
     
     func handleDuangTableDataDeliverer(dataDeliverer: DuangTableViewController.DuangTableDataDeliverer) {
+        
+        switch tableType {
+        case .Comment:
+            switch dataDeliverer {
+            case .ImageText(let image, let text):
+                if let post = dataFromPreviousViewPost {
+                    APIManager.sharedInstance.addNewComment(post, image: image, commentText: text, success: { () -> () in
+                        println("success")
+                        }, failure: { (error) -> () in
+                            println("failure")
+                    })
+                }
+                
+            default:
+                break
+            }
+        default:
+            break
+        }
+
+        
+        
+        
+        ///////////////////////////
+        /*
         switch dataDeliverer {
         case .Input(let inputText):
             var ifChangeText = true
@@ -907,7 +990,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             section.rowArray.append(DuangTableDataSection.DuangTableDataRow.ImageSmall(imageTitle: descriptionText, imagePlaceholder: imageSelected, imageFile: nil, isRound: false, tapAction: DuangTableDataSection.function0(selectImage)))
             duangTableData.sectionArray.insert(section, atIndex: duangTableData.sectionArray.count - 2)
             tableView.reloadData()
-        }
+        }*/
     }
 
     // MARK: - DuangTableCellButtonsProtocol
