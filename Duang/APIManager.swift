@@ -438,8 +438,8 @@ class APIManager {
     }
     
     func hasLikedPost(post: PFObject, hasLiked: (Bool) -> ()) {
-        if let likeQuery = post.relationForKey(TablePost.Like).query() {
-            likeQuery.whereKey(TableUser.Id, equalTo: PFUser.currentUser().objectId)
+        if let likeQuery = post.relationForKey(TablePost.Like).query(), theCurrentUser = PFUser.currentUser(), theCurrentUserObjectId = theCurrentUser.objectId{
+            likeQuery.whereKey(TableUser.Id, equalTo: theCurrentUserObjectId)
             likeQuery.countObjectsInBackgroundWithBlock { (likeCount, error) -> Void in
                 if likeCount == 1 {
                     hasLiked(true)
@@ -461,17 +461,17 @@ class APIManager {
         }
     }*/
     
-    func likePost(post: PFObject, success: () -> ()) {
-        var like = post.relationForKey(TablePost.Like)
-        like.addObject(PFUser.currentUser())
-        post.saveInBackgroundWithBlock { (objects, error) -> Void in
-            like.query().countObjectsInBackgroundWithBlock({ (count, error) -> Void in
-                post[TablePost.LikeCount] = NSInteger(count)
-                post.saveInBackgroundWithBlock({ (finish, error) -> Void in
-                    success()
-                })
-            })
-        }
+    func likePost(post: PFObject, success: () -> ()) {//增加like 表
+//        var like = post.relationForKey(TablePost.Like)
+//        like.addObject(PFUser.currentUser())
+//        post.saveInBackgroundWithBlock { (objects, error) -> Void in
+//            like.query().countObjectsInBackgroundWithBlock({ (count, error) -> Void in
+//                post[TablePost.LikeCount] = NSInteger(count)
+//                post.saveInBackgroundWithBlock({ (finish, error) -> Void in
+//                    success()
+//                })
+//            })
+//        }
     }
     /*
     func unlikePost(post: PFObject) {
@@ -485,17 +485,17 @@ class APIManager {
         }
     }*/
     
-    func unlikePost(post: PFObject, success: () -> ()) {
-        var like = post.relationForKey(TablePost.Like)
-        like.removeObject(PFUser.currentUser())
-        post.saveInBackgroundWithBlock { (objects, error) -> Void in
-            like.query().countObjectsInBackgroundWithBlock({ (count, error) -> Void in
-                post[TablePost.LikeCount] = NSInteger(count)
-                post.saveInBackgroundWithBlock({ (finish, error) -> Void in
-                    success()
-                })
-            })
-        }
+    func unlikePost(post: PFObject, success: () -> ()) {//增加like 表
+//        var like = post.relationForKey(TablePost.Like)
+//        like.removeObject(PFUser.currentUser())
+//        post.saveInBackgroundWithBlock { (objects, error) -> Void in
+//            like.query().countObjectsInBackgroundWithBlock({ (count, error) -> Void in
+//                post[TablePost.LikeCount] = NSInteger(count)
+//                post.saveInBackgroundWithBlock({ (finish, error) -> Void in
+//                    success()
+//                })
+//            })
+//        }
     }
 
     
@@ -560,7 +560,7 @@ class APIManager {
     
 
     
-    func addNewComment(post: PFObject, image: UIImage, commentText: String, success: () -> (), failure: (error: NSError) -> ()) {
+    func addNewComment(post: PFObject, image: UIImage, commentText: String, success: () -> (), failure: (NSError?) -> ()) {
         var comments = post.relationForKey(TablePost.Comments)
         
         var comment = PFObject(className:TableComment.ClassName)
@@ -578,7 +578,7 @@ class APIManager {
             if (ifSuccess) {
                 success()
             } else {
-                failure(error: error)
+                failure(error)
             }
         }
     }
@@ -588,7 +588,7 @@ class APIManager {
     class func validateEmail(email: NSString) -> Bool {
         if (email.rangeOfString("@").length != 0) && (email.rangeOfString(".").length != 0) {
             let tmpInvalidCharSet = NSCharacterSet.alphanumericCharacterSet().invertedSet as NSCharacterSet
-            let tmpInvalidMutableCharSet = tmpInvalidCharSet.mutableCopy() as NSMutableCharacterSet
+            let tmpInvalidMutableCharSet = tmpInvalidCharSet.mutableCopy() as! NSMutableCharacterSet
             tmpInvalidMutableCharSet.removeCharactersInString("_-")
             
             let range1 = email.rangeOfString("@", options: NSStringCompareOptions.CaseInsensitiveSearch) as NSRange
@@ -597,7 +597,7 @@ class APIManager {
             let userNameArray = userNameString.componentsSeparatedByString(".") as NSArray
             for string in userNameArray {
                 let rangeOfInavlidChars = string.rangeOfCharacterFromSet(tmpInvalidMutableCharSet) as NSRange
-                if rangeOfInavlidChars.length != 0 || string as NSString == "" {
+                if rangeOfInavlidChars.length != 0 || string as! NSString == "" {
                     return false
                 }
             }
@@ -606,7 +606,7 @@ class APIManager {
             let domainArray = domainString.componentsSeparatedByString(".") as NSArray
             for string in domainArray {
                 let rangeOfInavlidChars = string.rangeOfCharacterFromSet(tmpInvalidMutableCharSet)
-                if rangeOfInavlidChars.length != 0 || string as NSString == "" {
+                if rangeOfInavlidChars.length != 0 || string as! NSString == "" {
                     return false
                 }
             }
@@ -616,11 +616,11 @@ class APIManager {
         }
     }
     
-    class func sizeForString(string: NSString, font: UIFont, width: CGFloat, height: CGFloat) -> CGSize {
+    class func sizeForString(string: String, font: UIFont, width: CGFloat, height: CGFloat) -> CGSize {
         if string == "" {
             return CGSizeZero
         } else {
-            let attributesDictionary = NSDictionary(object: font, forKey: NSFontAttributeName)
+            let attributesDictionary = NSDictionary(object: font, forKey: NSFontAttributeName) as [NSObject : AnyObject]
             let attributedString = NSMutableAttributedString(string: string, attributes: attributesDictionary)
             let rect = attributedString.boundingRectWithSize(CGSize(width: width, height: height), options: NSStringDrawingOptions.UsesLineFragmentOrigin, context: nil)
             return rect.size

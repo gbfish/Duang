@@ -22,7 +22,7 @@ class DuangTableCellTextField: UITableViewCell, UITextFieldDelegate
     }
     
     var delegate: DuangTableCellTextFieldProtocol?
-    var placeholder = ""
+    var placeholder: String?
     
     func reloadView() {
         textField.placeholder = placeholder

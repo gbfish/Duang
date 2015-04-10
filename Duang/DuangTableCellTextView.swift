@@ -17,8 +17,7 @@ class DuangTableCellTextView: UITableViewCell, UITextViewDelegate
 {
     var delegate: DuangTableCellTextViewProtocol?
     
-    var placeholder = ""
-    
+    var placeholder: String?
     func reloadView() {
         textView.text = placeholder
     }

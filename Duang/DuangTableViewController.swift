@@ -187,18 +187,20 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             titleString = "Settings"
             
             // Username
-            section = DuangTableDataSection()
-            section.sectionTitleForHeader = TitleName.InputUsername
-            
-            section.rowArray.append(DuangTableDataSection.DuangTableDataRow.DefaultRightDetail(titleText: APIManager.sharedInstance.getCurrentUserUsername(), detailText: "", tapAction: showInput))
-            duangTableData.sectionArray.append(section)
+            if let theCurrentUserUsername = APIManager.sharedInstance.getCurrentUserUsername() {
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = TitleName.InputUsername
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.DefaultRightDetail(titleText: theCurrentUserUsername, detailText: "", tapAction: showInput))
+                duangTableData.sectionArray.append(section)
+            }
             
             // Email
-            section = DuangTableDataSection()
-            section.sectionTitleForHeader = TitleName.InputEmail
-            
-            section.rowArray.append(DuangTableDataSection.DuangTableDataRow.DefaultRightDetail(titleText: APIManager.sharedInstance.getCurrentUserEmail(), detailText: "", tapAction: showInput))
-            duangTableData.sectionArray.append(section)
+            if let theCurrentUserEmail = APIManager.sharedInstance.getCurrentUserEmail() {
+                section = DuangTableDataSection()
+                section.sectionTitleForHeader = TitleName.InputEmail
+                section.rowArray.append(DuangTableDataSection.DuangTableDataRow.DefaultRightDetail(titleText: theCurrentUserEmail, detailText: "", tapAction: showInput))
+                duangTableData.sectionArray.append(section)
+            }
             
             // Password
             section = DuangTableDataSection()
@@ -317,10 +319,11 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     // MARK: - Show
     
     func showDuangTableViewController(presentedViewTableType: DuangTableViewController.TableType) {
-        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
-        viewController.tableType = presentedViewTableType
-        viewController.delegate = self
-        self.navigationController?.pushViewController(viewController, animated: true)
+        if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as? DuangTableViewController {
+            viewController.tableType = presentedViewTableType
+            viewController.delegate = self
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
     }
     
     func showAddComment() {
@@ -329,20 +332,20 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     
     // MARK: - Did Select Func
     
-    
-    
     func showSettings() {
-        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
-        viewController.tableType = TableType.Settings
-        self.navigationController?.pushViewController(viewController, animated: true)
+        if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as? DuangTableViewController {
+            viewController.tableType = TableType.Settings
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
     }
     
     // MARK: Profile Edit
     
     func showProfileEdit() {
-        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
-        viewController.tableType = TableType.ProfileEdit
-        self.navigationController?.pushViewController(viewController, animated: true)
+        if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as? DuangTableViewController {
+            viewController.tableType = TableType.ProfileEdit
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
     }
     
     // MARK: Input
@@ -350,17 +353,18 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     var inputPlaceholderText = ""
     
     func showInput() {
-        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
-        viewController.delegate = self
-        viewController.tableType = TableType.Input
-        viewController.titleString = duangTableData.sectionArray[selectedIndexPath.section].sectionTitleForHeader
-        switch duangTableData.sectionArray[selectedIndexPath.section].rowArray[selectedIndexPath.row] {
-        case .DefaultRightDetail(let titleText, _, _):
-            viewController.inputPlaceholderText = titleText
-        default:
-            break
+        if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as? DuangTableViewController {
+            viewController.delegate = self
+            viewController.tableType = TableType.Input
+            viewController.titleString = duangTableData.sectionArray[selectedIndexPath.section].sectionTitleForHeader
+            switch duangTableData.sectionArray[selectedIndexPath.section].rowArray[selectedIndexPath.row] {
+            case .DefaultRightDetail(let titleText, _, _):
+                viewController.inputPlaceholderText = titleText
+            default:
+                break
+            }
+            self.navigationController?.pushViewController(viewController, animated: true)
         }
-        self.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func doneInput() {
@@ -373,10 +377,11 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     // MARK: Add Photo
     
     func showAddPhoto() {
-        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
-        viewController.delegate = self
-        viewController.tableType = TableType.AddPhoto
-        self.navigationController?.pushViewController(viewController, animated: true)
+        if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as? DuangTableViewController {
+            viewController.delegate = self
+            viewController.tableType = TableType.AddPhoto
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
     }
     
     func doneAddPhoto() {
@@ -414,9 +419,10 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     // MARK: Change Password
     
     func showChangePassword() {
-        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
-        viewController.tableType = TableType.ChangePassword
-        self.navigationController?.pushViewController(viewController, animated: true)
+        if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as? DuangTableViewController {
+            viewController.tableType = TableType.ChangePassword
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
     }
     
     func changePasswordDone() {
@@ -751,68 +757,76 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         let row = duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row]
         switch row {
         case .UserBig(let userName, let userDescription, let userAvatarPlaceholder, let userAvatarFile, let userBannerPlaceholder, let userBannerFile, _):
-            let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellUserBig
-            cell.userName = userName
-            cell.userDescription = userDescription
-            cell.userAvatarPlaceholder = userAvatarPlaceholder
-            cell.userAvatarFile = userAvatarFile
-            cell.userBannerPlaceholder = userBannerPlaceholder
-            cell.userBannerFile = userBannerFile
-            cell.reloadView()
-            return cell
+            if let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as? DuangTableCellUserBig {
+                cell.userName = userName
+                cell.userDescription = userDescription
+                cell.userAvatarPlaceholder = userAvatarPlaceholder
+                cell.userAvatarFile = userAvatarFile
+                cell.userBannerPlaceholder = userBannerPlaceholder
+                cell.userBannerFile = userBannerFile
+                cell.reloadView()
+                return cell
+            }
             
         case .ImageMutable(let photos, _):
-            let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellImageMutable
-            cell.photos = photos
-            return cell
+            if let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as? DuangTableCellImageMutable {
+                cell.photos = photos
+                return cell
+            }
             
         case .ImageBig(_, let imagePlaceholder, let imageFile, _):
-            let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellImageBig
-            cell.imagePlaceholder = imagePlaceholder
-            cell.imageFile = imageFile
-            cell.reloadView()
-            return cell
+            if let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as? DuangTableCellImageBig {
+                cell.imagePlaceholder = imagePlaceholder
+                cell.imageFile = imageFile
+                cell.reloadView()
+                return cell
+            }
             
         case .ImageSmall(let imageTitle, let imagePlaceholder, let imageFile, let isRound, _):
-            let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellImageSmall
-            cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-            cell.imageTitle = imageTitle
-            cell.imagePlaceholder = imagePlaceholder
-            cell.imageFile = imageFile
-            cell.isRound = isRound
-            cell.reloadView()
-            return cell
+            if let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as? DuangTableCellImageSmall {
+                cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                cell.imageTitle = imageTitle
+                cell.imagePlaceholder = imagePlaceholder
+                cell.imageFile = imageFile
+                cell.isRound = isRound
+                cell.reloadView()
+                return cell
+            }
             
         case .TextView(let placeholder):
-            let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellTextView
-            cell.delegate = self
-            cell.placeholder = placeholder
-            cell.reloadView()
-            duangTableCellTextView = cell
-            return cell
+            if let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as? DuangTableCellTextView {
+                cell.delegate = self
+                cell.placeholder = placeholder
+                cell.reloadView()
+                duangTableCellTextView = cell
+                return cell
+            }
             
         case .TextField(let placeholder):
-            let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellTextField
-            cell.delegate = self
-            cell.placeholder = placeholder
-            cell.reloadView()
-            addDuangTableCellTextField(cell)///
-            return cell
+            if let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as? DuangTableCellTextField {
+                cell.delegate = self
+                cell.placeholder = placeholder
+                cell.reloadView()
+                addDuangTableCellTextField(cell)///
+                return cell
+            }
             
         case .Label(_, let text, let font):
-            let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellLabel
-            cell.theLabelText = text
-            cell.theLabelFont = font
-            cell.reloadView()
-            return cell
+            if let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as? DuangTableCellLabel {
+                cell.theLabelText = text
+                cell.theLabelFont = font
+                cell.reloadView()
+                return cell
+            }
             
         case .Button(let buttonText, let buttonTextColor, let buttonBackgroundColor, _):
-            let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellButton
-            cell.buttonText = buttonText
-            cell.buttonTextColor = buttonTextColor
-            cell.buttonBackgroundColor = buttonBackgroundColor
-            cell.reloadView()
-            return cell
+            if let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as? DuangTableCellButton {
+                cell.buttonText = buttonText
+                cell.buttonTextColor = buttonTextColor
+                cell.buttonBackgroundColor = buttonBackgroundColor
+                cell.reloadView()
+                return cell
+            }
             
         case .DefaultRightDetail(let titleText, let detailText, _):
             let cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: row.cellIdentifier())
@@ -823,46 +837,45 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
             return cell
             
         case .Buttons(let buttonArray, let post):
-            let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as DuangTableCellButtons
-            cell.delegate = self
-
-            switch tableType {
-            case .Feed:
-                if let thePost = post {
-                    APIManager.sharedInstance.hasLikedPost(thePost, hasLiked: { (hasLiked) -> () in
-                        switch self.duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row] {
-                        case .Buttons(var buttonArray, let post):
-                            if hasLiked {
-                                buttonArray[2] = DuangTableDataSection.buttonItemTitleImageSelected("\(thePost[TablePost.LikeCount])", buttonImage: DuangImage.Like, function: DuangTableDataSection.function1PFObject(self.unlikePost, argument: thePost))
-//                                    DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, tapAction: DuangTableDataSection.Function1PFObject(self.unlikePost, argument: thePost))
-                            } else {
-                                buttonArray[2] = DuangTableDataSection.buttonItemTitleImageNormal("\(thePost[TablePost.LikeCount])", buttonImage: DuangImage.Like, function: DuangTableDataSection.function1PFObject(self.likePost, argument: thePost))
-//                                    DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.White, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, tapAction: DuangTableDataSection.Function1PFObject(self.likePost, argument: thePost))
+            if let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier(), forIndexPath: indexPath) as? DuangTableCellButtons {
+                cell.delegate = self
+                
+                switch tableType {
+                case .Feed:
+                    if let thePost = post {
+                        APIManager.sharedInstance.hasLikedPost(thePost, hasLiked: { (hasLiked) -> () in
+                            switch self.duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row] {
+                            case .Buttons(var buttonArray, let post):
+                                if hasLiked {
+                                    buttonArray[2] = DuangTableDataSection.buttonItemTitleImageSelected("\(thePost[TablePost.LikeCount])", buttonImage: DuangImage.Like, function: DuangTableDataSection.function1PFObject(self.unlikePost, argument: thePost))
+                                    //                                    DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, tapAction: DuangTableDataSection.Function1PFObject(self.unlikePost, argument: thePost))
+                                } else {
+                                    buttonArray[2] = DuangTableDataSection.buttonItemTitleImageNormal("\(thePost[TablePost.LikeCount])", buttonImage: DuangImage.Like, function: DuangTableDataSection.function1PFObject(self.likePost, argument: thePost))
+                                    //                                    DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.White, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, tapAction: DuangTableDataSection.Function1PFObject(self.likePost, argument: thePost))
+                                }
+                                self.duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row] = DuangTableDataSection.DuangTableDataRow.Buttons(buttonArray: buttonArray, thePFObject: post)
+                            default:
+                                break
                             }
-                            self.duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row] = DuangTableDataSection.DuangTableDataRow.Buttons(buttonArray: buttonArray, thePFObject: post)
-                        default:
-                            break
-                        }
-                        
-                        switch self.duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row] {
-                        case .Buttons(var buttonArray, _):
-                            cell.buttonArray = buttonArray
-                            cell.reloadView()
-                        default:
-                            break
-                        }
-                    })
+                            
+                            switch self.duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row] {
+                            case .Buttons(var buttonArray, _):
+                                cell.buttonArray = buttonArray
+                                cell.reloadView()
+                            default:
+                                break
+                            }
+                        })
+                    }
+                case .Comment:
+                    cell.buttonArray = buttonArray
+                    cell.reloadView()
+                default:
+                    cell.buttonArray = buttonArray
+                    cell.reloadView()
                 }
-            case .Comment:
-                cell.buttonArray = buttonArray
-                cell.reloadView()
-            default:
-                cell.buttonArray = buttonArray
-                cell.reloadView()
+                return cell
             }
-            
-            
-            return cell
             
         default:
             break
@@ -1123,9 +1136,8 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func cameraSupportsMedia(mediaType: String, sourceType: UIImagePickerControllerSourceType) -> Bool {
-        let availableMediaTypes = UIImagePickerController.availableMediaTypesForSourceType(sourceType) as [String]?
-        if let types = availableMediaTypes {
-            for type in types{
+        if let availableMediaTypes = UIImagePickerController.availableMediaTypesForSourceType(sourceType) as? [String] {
+            for type in availableMediaTypes {
                 if type == mediaType{
                     return true
                 }
@@ -1139,16 +1151,16 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
         
         if let type:AnyObject = mediaType {
             if type is String{
-                let stringType = type as String
-                
-                if stringType == kUTTypeMovie as String{
-                    let urlOfVideo = info[UIImagePickerControllerMediaURL] as? NSURL
-                    if let url = urlOfVideo{
-                        println("Video URL = \(url)")
-                    }
-                } else if stringType == kUTTypeImage as String {
-                    if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
-                        handleImage(image)
+                if let stringType = type as? String {
+                    if stringType == kUTTypeMovie as String{
+                        let urlOfVideo = info[UIImagePickerControllerMediaURL] as? NSURL
+                        if let url = urlOfVideo{
+                            println("Video URL = \(url)")
+                        }
+                    } else if stringType == kUTTypeImage as String {
+                        if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
+                            handleImage(image)
+                        }
                     }
                 }
             }
