@@ -153,7 +153,16 @@ class DuangTableDataSection
         if let thePost = post {
             let buttonShare = DuangTableDataSection.buttonItemTitleImageNormal("share 0", buttonImage: DuangImage.Share, function: DuangTableDataSection.function1PFObject(tapActionShare, argument: thePost))
             let buttonComment = DuangTableDataSection.buttonItemTitleImageNormal("comment 0", buttonImage: DuangImage.Comment, function: DuangTableDataSection.function1PFObject(tapActionComment, argument: thePost))
-            let buttonLike = DuangTableDataSection.buttonItemTitleImageNormal("\(thePost[TablePost.LikeCount])", buttonImage: DuangImage.Like, function: DuangTableDataSection.function1PFObject(tapActionLike, argument: thePost))
+            
+            var theLikeCount = "0"
+            if let likeCount: NSNumber = thePost[TablePost.LikeCount] as? NSNumber {
+                
+                println("likeCount = \(likeCount)")
+                
+                theLikeCount = "\(likeCount)"
+            }
+            let buttonLike = DuangTableDataSection.buttonItemTitleImageNormal(theLikeCount, buttonImage: DuangImage.Like, function: DuangTableDataSection.function1PFObject(tapActionLike, argument: thePost))
+            
             let buttonArray = [buttonShare, buttonComment, buttonLike]
             self.rowArray.append(DuangTableDataSection.DuangTableDataRow.Buttons(buttonArray: buttonArray, thePFObject: thePost))
         }

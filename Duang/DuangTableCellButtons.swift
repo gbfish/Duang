@@ -67,16 +67,7 @@ class DuangTableCellButtons: UITableViewCell
                     addSubview(button)
                     
                 case .ButtonItemTitle(let buttonText, let buttonTextColor, let buttonBackgroundColor, let borderColor, _):
-//                    let imageAndTitleSpacing: CGFloat = 6.0
-//                    let imageSize = CGSizeMake(20.0, 20.0)
                     let titleSize = APIManager.sizeForString(buttonText, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
-                    
-//                    let buttonImageView = UIImageView()
-//                    buttonImageView.image = buttonImage
-//                    let buttonImageViewX = (buttonRect.width - (imageSize.width + imageAndTitleSpacing + titleSize.width)) / 2
-//                    let buttonImageViewY = (buttonRect.height - imageSize.height) / 2
-//                    buttonImageView.frame = CGRectMake(buttonImageViewX, buttonImageViewY, imageSize.width, imageSize.height)
-//                    button.addSubview(buttonImageView)
                     
                     let buttonTitleLabel = UILabel()
                     buttonTitleLabel.text = buttonText

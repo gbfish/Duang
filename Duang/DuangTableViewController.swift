@@ -846,12 +846,14 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
                         APIManager.sharedInstance.hasLikedPost(thePost, hasLiked: { (hasLiked) -> () in
                             switch self.duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row] {
                             case .Buttons(var buttonArray, let post):
+                                var theLikeCount = "0"
+                                if let likeCount = thePost[TablePost.LikeCount] as? NSNumber {
+                                    theLikeCount = "\(likeCount)"
+                                }
                                 if hasLiked {
-                                    buttonArray[2] = DuangTableDataSection.buttonItemTitleImageSelected("\(thePost[TablePost.LikeCount])", buttonImage: DuangImage.Like, function: DuangTableDataSection.function1PFObject(self.unlikePost, argument: thePost))
-                                    //                                    DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, tapAction: DuangTableDataSection.Function1PFObject(self.unlikePost, argument: thePost))
+                                    buttonArray[2] = DuangTableDataSection.buttonItemTitleImageSelected(theLikeCount, buttonImage: DuangImage.Like, function: DuangTableDataSection.function1PFObject(self.unlikePost, argument: thePost))
                                 } else {
-                                    buttonArray[2] = DuangTableDataSection.buttonItemTitleImageNormal("\(thePost[TablePost.LikeCount])", buttonImage: DuangImage.Like, function: DuangTableDataSection.function1PFObject(self.likePost, argument: thePost))
-                                    //                                    DuangTableDataSection.DuangTableDataRow.ButtonItem(buttonText: "\(thePost[TablePost.LikeCount])", buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.White, borderColor: DuangColor.DarkBlue, buttonImage: DuangImage.Like, tapAction: DuangTableDataSection.Function1PFObject(self.likePost, argument: thePost))
+                                    buttonArray[2] = DuangTableDataSection.buttonItemTitleImageNormal(theLikeCount, buttonImage: DuangImage.Like, function: DuangTableDataSection.function1PFObject(self.likePost, argument: thePost))
                                 }
                                 self.duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row] = DuangTableDataSection.DuangTableDataRow.Buttons(buttonArray: buttonArray, thePFObject: post)
                             default:
