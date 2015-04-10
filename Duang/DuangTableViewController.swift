@@ -72,10 +72,11 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func showCommentPost(post: PFObject?) {
         if let thePost = post {
-            let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as DuangTableViewController
-            viewController.tableType = TableType.Comment
-            viewController.dataFromPreviousViewPost = thePost
-            self.navigationController?.pushViewController(viewController, animated: true)
+            if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DuangTableViewController") as? DuangTableViewController {
+                viewController.tableType = TableType.Comment
+                viewController.dataFromPreviousViewPost = thePost
+                self.navigationController?.pushViewController(viewController, animated: true)
+            }
         }
     }
     

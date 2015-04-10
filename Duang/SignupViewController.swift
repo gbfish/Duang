@@ -68,7 +68,9 @@ class SignupViewController: UIViewController {
             APIManager.sharedInstance.signup(userName, password: password, email: email, success: { () -> () in
                 self.signupSuccess()
             }, failure: { (error) -> () in
-                self.signupFailure(error)
+                if let theError = error {
+                    self.signupFailure(theError)
+                }                
             })
         }
     }
@@ -80,7 +82,7 @@ class SignupViewController: UIViewController {
     func signupFailure(error: NSError) {
         var errorString = "There was a problem processing your request."
         if let userInfo = error.userInfo as? [NSObject: NSObject] {
-            if let errorInfoString: NSString = userInfo["error"] as? NSString {
+            if let errorInfoString: String = userInfo["error"] as? String {
                 
                 errorString = errorInfoString
             }

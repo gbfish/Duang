@@ -14,8 +14,6 @@
 		566AC3E61AB39430001B87D1 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AC3E51AB39430001B87D1 /* LoginViewController.swift */; };
 		566AC3E81AB39E99001B87D1 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AC3E71AB39E99001B87D1 /* SignupViewController.swift */; };
 		5671448D1ACC682800EB03F8 /* DuangTableCellLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5671448C1ACC682800EB03F8 /* DuangTableCellLabel.swift */; };
-		5687C6411AB0E53000ED0005 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5687C6401AB0E53000ED0005 /* Parse.framework */; };
-		5687C6431AB0E63500ED0005 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5687C6421AB0E63500ED0005 /* Bolts.framework */; };
 		5687C6451AB0E6C400ED0005 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5687C6441AB0E6C400ED0005 /* AudioToolbox.framework */; };
 		5687C6471AB0E6D000ED0005 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5687C6461AB0E6D000ED0005 /* CFNetwork.framework */; };
 		5687C6491AB0E6DD00ED0005 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5687C6481AB0E6DD00ED0005 /* CoreGraphics.framework */; };
@@ -45,7 +43,12 @@
 		56DA1AD51ACCA63A00DCF12B /* DuangTableCellButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DA1AD41ACCA63A00DCF12B /* DuangTableCellButtons.swift */; };
 		56E946A31ABB464700634F5B /* DuangTableCellTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E946A21ABB464700634F5B /* DuangTableCellTextField.swift */; };
 		56F361751AB8DC0D00D94533 /* DuangTableCellUserBig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F361741AB8DC0D00D94533 /* DuangTableCellUserBig.swift */; };
-		E8D43E041ACE618400F6DA68 /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8D43E031ACE618400F6DA68 /* ParseUI.framework */; };
+		56FF68F31AD7535C00B228C1 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56FF68ED1AD7535C00B228C1 /* Bolts.framework */; };
+		56FF68F41AD7535C00B228C1 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56FF68EE1AD7535C00B228C1 /* Parse.framework */; };
+		56FF68F51AD7535C00B228C1 /* ParseCrashReporting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56FF68EF1AD7535C00B228C1 /* ParseCrashReporting.framework */; };
+		56FF68F61AD7535C00B228C1 /* ParseFacebookUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56FF68F01AD7535C00B228C1 /* ParseFacebookUtils.framework */; };
+		56FF68F71AD7535C00B228C1 /* ParseFacebookUtilsV4.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56FF68F11AD7535C00B228C1 /* ParseFacebookUtilsV4.framework */; };
+		56FF68F81AD7535C00B228C1 /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56FF68F21AD7535C00B228C1 /* ParseUI.framework */; };
 		E8E416C71ABEA52500D7727C /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E416C61ABEA52500D7727C /* MainTabBarController.swift */; };
 		E8E416CA1ABEA74F00D7727C /* DuangTableViewControllerNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E416C91ABEA74F00D7727C /* DuangTableViewControllerNavigationController.swift */; };
 /* End PBXBuildFile section */
@@ -68,8 +71,6 @@
 		566AC3E51AB39430001B87D1 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		566AC3E71AB39E99001B87D1 /* SignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		5671448C1ACC682800EB03F8 /* DuangTableCellLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableCellLabel.swift; sourceTree = "<group>"; };
-		5687C6401AB0E53000ED0005 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
-		5687C6421AB0E63500ED0005 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		5687C6441AB0E6C400ED0005 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		5687C6461AB0E6D000ED0005 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		5687C6481AB0E6DD00ED0005 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -103,7 +104,12 @@
 		56DA1AD41ACCA63A00DCF12B /* DuangTableCellButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableCellButtons.swift; sourceTree = "<group>"; };
 		56E946A21ABB464700634F5B /* DuangTableCellTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableCellTextField.swift; sourceTree = "<group>"; };
 		56F361741AB8DC0D00D94533 /* DuangTableCellUserBig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableCellUserBig.swift; sourceTree = "<group>"; };
-		E8D43E031ACE618400F6DA68 /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
+		56FF68ED1AD7535C00B228C1 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
+		56FF68EE1AD7535C00B228C1 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		56FF68EF1AD7535C00B228C1 /* ParseCrashReporting.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseCrashReporting.framework; sourceTree = "<group>"; };
+		56FF68F01AD7535C00B228C1 /* ParseFacebookUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseFacebookUtils.framework; sourceTree = "<group>"; };
+		56FF68F11AD7535C00B228C1 /* ParseFacebookUtilsV4.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseFacebookUtilsV4.framework; sourceTree = "<group>"; };
+		56FF68F21AD7535C00B228C1 /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
 		E8E416C21ABDCAFC00D7727C /* Duang-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Duang-Bridging-Header.h"; sourceTree = "<group>"; };
 		E8E416C61ABEA52500D7727C /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		E8E416C91ABEA74F00D7727C /* DuangTableViewControllerNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableViewControllerNavigationController.swift; sourceTree = "<group>"; };
@@ -114,15 +120,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5687C6411AB0E53000ED0005 /* Parse.framework in Frameworks */,
-				5687C6431AB0E63500ED0005 /* Bolts.framework in Frameworks */,
-				E8D43E041ACE618400F6DA68 /* ParseUI.framework in Frameworks */,
 				5687C6451AB0E6C400ED0005 /* AudioToolbox.framework in Frameworks */,
 				5687C6471AB0E6D000ED0005 /* CFNetwork.framework in Frameworks */,
 				5687C6491AB0E6DD00ED0005 /* CoreGraphics.framework in Frameworks */,
+				56FF68F31AD7535C00B228C1 /* Bolts.framework in Frameworks */,
 				5687C64B1AB0E6E700ED0005 /* CoreLocation.framework in Frameworks */,
+				56FF68F51AD7535C00B228C1 /* ParseCrashReporting.framework in Frameworks */,
 				5687C64D1AB0E6F500ED0005 /* MobileCoreServices.framework in Frameworks */,
+				56FF68F41AD7535C00B228C1 /* Parse.framework in Frameworks */,
+				56FF68F61AD7535C00B228C1 /* ParseFacebookUtils.framework in Frameworks */,
+				56FF68F81AD7535C00B228C1 /* ParseUI.framework in Frameworks */,
 				5687C64F1AB0E70700ED0005 /* QuartzCore.framework in Frameworks */,
+				56FF68F71AD7535C00B228C1 /* ParseFacebookUtilsV4.framework in Frameworks */,
 				5687C6511AB0E70F00ED0005 /* Security.framework in Frameworks */,
 				5687C6531AB0E71E00ED0005 /* StoreKit.framework in Frameworks */,
 				5687C6551AB0E73000ED0005 /* SystemConfiguration.framework in Frameworks */,
@@ -229,10 +238,8 @@
 		569E7A741AB0DADF009BF47B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				E8D43E031ACE618400F6DA68 /* ParseUI.framework */,
+				56FF68EC1AD7532B00B228C1 /* Parse */,
 				569E7A751AB0DADF009BF47B /* Info.plist */,
-				5687C6401AB0E53000ED0005 /* Parse.framework */,
-				5687C6421AB0E63500ED0005 /* Bolts.framework */,
 				5687C6581AB0E74A00ED0005 /* libsqlite3.dylib */,
 				5687C6561AB0E73E00ED0005 /* libz.dylib */,
 				5687C6541AB0E73000ED0005 /* SystemConfiguration.framework */,
@@ -263,6 +270,19 @@
 				569E7A8B1AB0DADF009BF47B /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		56FF68EC1AD7532B00B228C1 /* Parse */ = {
+			isa = PBXGroup;
+			children = (
+				56FF68ED1AD7535C00B228C1 /* Bolts.framework */,
+				56FF68EE1AD7535C00B228C1 /* Parse.framework */,
+				56FF68EF1AD7535C00B228C1 /* ParseCrashReporting.framework */,
+				56FF68F01AD7535C00B228C1 /* ParseFacebookUtils.framework */,
+				56FF68F11AD7535C00B228C1 /* ParseFacebookUtilsV4.framework */,
+				56FF68F21AD7535C00B228C1 /* ParseUI.framework */,
+			);
+			name = Parse;
 			sourceTree = "<group>";
 		};
 		E8E416C51ABE976600D7727C /* API */ = {

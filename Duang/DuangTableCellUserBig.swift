@@ -32,7 +32,7 @@ class DuangTableCellUserBig: UITableViewCell
         if let file = userAvatarFile {
             file.getDataInBackgroundWithBlock { (imageData, error) -> Void in
                 if error == nil {
-                    if let image = UIImage(data:imageData) {
+                    if let theImageData = imageData, image = UIImage(data: theImageData) {
                         self.userAvatarImageView.image = image
                     }
                 }
@@ -43,7 +43,7 @@ class DuangTableCellUserBig: UITableViewCell
         if let file = userBannerFile {
             file.getDataInBackgroundWithBlock { (imageData, error) -> Void in
                 if error == nil {
-                    if let image = UIImage(data:imageData) {
+                    if let theImageData = imageData, image = UIImage(data: theImageData) {
                         self.userBannerImageView.image = image
                     }
                 }

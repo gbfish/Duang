@@ -22,8 +22,8 @@ class DuangTableDataSection
         case ImageMutable(photos: PFRelation, tapAction: () -> ())
         case ImageBig(cellHeight: CGFloat, imagePlaceholder: UIImage, imageFile: PFFile?, tapAction: () -> ())
         
-        case TextView(placeholder: String)
-        case TextField(placeholder: String)
+        case TextView(placeholder: String?)
+        case TextField(placeholder: String?)
         case Label(cellHeight: CGFloat, text: String, font: UIFont)
         case Button(buttonText: String, buttonTextColor: UIColor, buttonBackgroundColor: UIColor, tapAction: () -> ())
         case DefaultRightDetail(titleText: String, detailText: String, tapAction: () -> ())

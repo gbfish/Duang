@@ -23,7 +23,7 @@ class APIManager {
     class func errorMessage(error: NSError) -> String {
         var errorString = "There was a problem processing your request."
         if let userInfo = error.userInfo as? [NSObject: NSObject] {
-            if let errorInfoString: NSString = userInfo["error"] as? NSString {
+            if let errorInfoString: String = userInfo["error"] as? String {
                 errorString = errorInfoString
             }
         }
@@ -48,61 +48,22 @@ class APIManager {
     
     class func getFileArrayFromPost(object: PFObject, success: ([PFFile]) -> (), failure: (error: NSError) -> ()) {
         
-        if let relation = object[TablePost.Photos] as? PFRelation {            
-            relation.query().findObjectsInBackgroundWithBlock {
-                (objects: [AnyObject]!, error: NSError!) -> Void in
-                if error != nil {
-                    // There was an error
-                } else {
+        if let relation = object[TablePost.Photos] as? PFRelation {
+            
+            relation.query()?.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
+                if error == nil {
                     var returnValue = [PFFile]()
-                    for object in objects {
-                        if let file = object[TablePhoto.Image] as? PFFile {
-                            returnValue.append(file)
+                    if let theObjects = objects {
+                        for object in theObjects {
+                            if let file = object[TablePhoto.Image] as? PFFile {
+                                returnValue.append(file)
+                            }
                         }
+                        success(returnValue)
                     }
-                    success(returnValue)
                 }
-            }
+            })
         }
-//        return nil
-        
-        /*
-        if let array = object[key] as? NSArray {
-            var returnValue = [PFFile]()
-            for objectInArray in array {
-                
-//                if objectInArray != nil {
-//                    objectInArray![TablePhoto.Image]
-//                }
-                
-                if let photo = objectInArray as? PFObject {
-                    
-                    println("--photo = \(photo)")
-                    
-//                    returnValue.append(photo[TablePhoto.Image]!)
-                    
-                    let imageFile = photo[TablePhoto.Image] as PFFile
-                    
-                    println("--imageFile = \(imageFile)")
-                    
-                    returnValue.append(imageFile)
-                    
-//                    if let imageFile = photo[TablePhoto.Image] as? PFFile {
-//                        returnValue.append(imageFile)
-//                        
-//                    } else {
-//                        println("else ")
-//                    }
-                    
-                    
-                }
-            }
-            if returnValue.count > 0 {
-                return returnValue
-            }
-        }
-        return nil
-*/
     }
     
     class func getFileFromObject(object: PFObject, key: String) -> PFFile? {
@@ -113,8 +74,8 @@ class APIManager {
     }
     
     class func getUserFromObject(object: PFObject?, key: String) -> PFUser? {
-        if object != nil {
-            if let returnValue = object![key] as? PFUser {
+        if let theObject = object {
+            if let returnValue = theObject[key] as? PFUser {
                 return returnValue
             }
         }
@@ -178,7 +139,7 @@ class APIManager {
         
     }
     
-    func signup(userName: String, password: String, email: String, success: () -> (), failure: (error: NSError) -> ()) {
+    func signup(userName: String, password: String, email: String, success: () -> (), failure: (error: NSError?) -> ()) {
         var user: PFUser = PFUser()
         
         user.username = userName
@@ -240,7 +201,7 @@ class APIManager {
     
     // MARK: Username
     
-    func getCurrentUserUsername() -> String {
+    func getCurrentUserUsername() -> String? {
         return currentUser.username
     }
     
@@ -283,7 +244,7 @@ class APIManager {
     
     // MARK: Email
     
-    func getCurrentUserEmail() -> String {
+    func getCurrentUserEmail() -> String? {
         return currentUser.email
     }
     
@@ -380,7 +341,7 @@ class APIManager {
     
     // MARK: - Table Post
     
-    func addPost(title: String, description: String, photoArray: NSArray, success: () -> (), failure: (NSError) -> ()) {
+    func addPost(title: String, description: String, photoArray: NSArray, success: () -> (), failure: (NSError?) -> ()) {
         var post = PFObject(className:TablePost.ClassName)
         post[TablePost.Title] = title
         post[TablePost.Description] = description
@@ -426,7 +387,7 @@ class APIManager {
         }
     }
     
-    func addPhotoForPost(post: PFObject, photoArray: NSArray, success: () -> (), failure: (NSError) -> ()) {
+    func addPhotoForPost(post: PFObject, photoArray: NSArray, success: () -> (), failure: (NSError?) -> ()) {
         
         var photos = post.relationForKey(TablePost.Photos)
         
@@ -461,11 +422,11 @@ class APIManager {
 
     }
     
-    func getPostArray(success: ([PFObject]) -> (), failure: (NSError) -> ()) {
+    func getPostArray(success: ([PFObject]) -> (), failure: (NSError?) -> ()) {
         var query = PFQuery(className:TablePost.ClassName)
         query.limit = 20
         query.findObjectsInBackgroundWithBlock {
-            (objects: [AnyObject]!, error: NSError!) -> Void in
+            (objects, error) -> Void in
             if error == nil {
                 if let objects = objects as? [PFObject] {
                     success(objects)
@@ -477,13 +438,14 @@ class APIManager {
     }
     
     func hasLikedPost(post: PFObject, hasLiked: (Bool) -> ()) {
-        var likeQuery = post.relationForKey(TablePost.Like).query()
-        likeQuery.whereKey(TableUser.Id, equalTo: PFUser.currentUser().objectId)
-        likeQuery.countObjectsInBackgroundWithBlock { (likeCount, error) -> Void in
-            if likeCount == 1 {
-                hasLiked(true)
-            } else {
-                hasLiked(false)
+        if let likeQuery = post.relationForKey(TablePost.Like).query() {
+            likeQuery.whereKey(TableUser.Id, equalTo: PFUser.currentUser().objectId)
+            likeQuery.countObjectsInBackgroundWithBlock { (likeCount, error) -> Void in
+                if likeCount == 1 {
+                    hasLiked(true)
+                } else {
+                    hasLiked(false)
+                }
             }
         }
     }
@@ -539,7 +501,7 @@ class APIManager {
     
     // MARK: - Table Photo
     
-    func addNewPhoto(image: UIImage, description: String, success: () -> (), failure: (error: NSError) -> ()) {
+    func addNewPhoto(image: UIImage, description: String, success: () -> (), failure: (error: NSError?) -> ()) {
         var photo = PFObject(className:TablePhoto.ClassName)
         
         photo[TablePhoto.Description] = description
@@ -562,11 +524,11 @@ class APIManager {
         }
     }
     
-    func getFeed(success: ([PFObject]) -> (), failure: (NSError) -> ()) {
+    func getFeed(success: ([PFObject]) -> (), failure: (NSError?) -> ()) {
         var query = PFQuery(className:TablePhoto.ClassName)
         query.limit = 20
         query.findObjectsInBackgroundWithBlock {
-            (objects: [AnyObject]!, error: NSError!) -> Void in
+            (objects, error) -> Void in
             if error == nil {
                 if let objects = objects as? [PFObject] {
                     success(objects)
@@ -579,16 +541,17 @@ class APIManager {
     
     // MARK: - Table User
     
-    func getUsers(success: ([PFUser]) -> (), failure: (NSError) -> ()) {
-        var query = PFUser.query()
-        query.limit = 20
-        query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
-            if error == nil {
-                if let objects = objects as? [PFUser] {
-                    success(objects)
+    func getUsers(success: ([PFUser]) -> (), failure: (NSError?) -> ()) {
+        if let query = PFUser.query() {
+            query.limit = 20
+            query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+                if error == nil {
+                    if let objects = objects as? [PFUser] {
+                        success(objects)
+                    }
+                } else {
+                    failure(error)
                 }
-            } else {
-                failure(error)
             }
         }
     }

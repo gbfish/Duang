@@ -30,7 +30,7 @@ class DuangTableCellImageSmall: UITableViewCell
         if let file = imageFile {
             file.getDataInBackgroundWithBlock { (imageData, error) -> Void in
                 if error == nil {
-                    if let image = UIImage(data:imageData) {
+                    if let theImageData = imageData, image = UIImage(data:theImageData) {
                         self.cellImageView.image = image
                     }
                 }
