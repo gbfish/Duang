@@ -49,6 +49,7 @@
 		56FF68F61AD7535C00B228C1 /* ParseFacebookUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56FF68F01AD7535C00B228C1 /* ParseFacebookUtils.framework */; };
 		56FF68F71AD7535C00B228C1 /* ParseFacebookUtilsV4.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56FF68F11AD7535C00B228C1 /* ParseFacebookUtilsV4.framework */; };
 		56FF68F81AD7535C00B228C1 /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56FF68F21AD7535C00B228C1 /* ParseUI.framework */; };
+		E8B4DD271AD98534003A1BDF /* DuangTableDataRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8B4DD261AD98534003A1BDF /* DuangTableDataRow.swift */; };
 		E8E416C71ABEA52500D7727C /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E416C61ABEA52500D7727C /* MainTabBarController.swift */; };
 		E8E416CA1ABEA74F00D7727C /* DuangTableViewControllerNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E416C91ABEA74F00D7727C /* DuangTableViewControllerNavigationController.swift */; };
 /* End PBXBuildFile section */
@@ -110,6 +111,7 @@
 		56FF68F01AD7535C00B228C1 /* ParseFacebookUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseFacebookUtils.framework; sourceTree = "<group>"; };
 		56FF68F11AD7535C00B228C1 /* ParseFacebookUtilsV4.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseFacebookUtilsV4.framework; sourceTree = "<group>"; };
 		56FF68F21AD7535C00B228C1 /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
+		E8B4DD261AD98534003A1BDF /* DuangTableDataRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableDataRow.swift; sourceTree = "<group>"; };
 		E8E416C21ABDCAFC00D7727C /* Duang-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Duang-Bridging-Header.h"; sourceTree = "<group>"; };
 		E8E416C61ABEA52500D7727C /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		E8E416C91ABEA74F00D7727C /* DuangTableViewControllerNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableViewControllerNavigationController.swift; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 			children = (
 				568A5CB81AB8A5A200EF43F4 /* DuangTableData.swift */,
 				5687EFA81AD48D33008D132E /* DuangTableDataSection.swift */,
+				E8B4DD261AD98534003A1BDF /* DuangTableDataRow.swift */,
 			);
 			name = DuangTableData;
 			sourceTree = "<group>";
@@ -421,6 +424,7 @@
 				5687C6631AB11D1F00ED0005 /* Extension.swift in Sources */,
 				565F08941AC0888200FDBA4A /* DuangTableCellImageBig.swift in Sources */,
 				5687C65C1AB0F32900ED0005 /* LandingViewController.swift in Sources */,
+				E8B4DD271AD98534003A1BDF /* DuangTableDataRow.swift in Sources */,
 				5601C5ED1AC6194C00BE4F1B /* DuangTableCellTextView.swift in Sources */,
 				569E7A771AB0DADF009BF47B /* AppDelegate.swift in Sources */,
 				5671448D1ACC682800EB03F8 /* DuangTableCellLabel.swift in Sources */,
