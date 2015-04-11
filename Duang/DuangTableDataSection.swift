@@ -180,45 +180,94 @@ class DuangTableDataSection
     }
     
     func addButtons2(buttonText1: String, function1: () -> (), buttonText2: String, function2: () -> ()) {
-        let buttonItem1 = DuangTableDataSection.buttonItemTitleNormal(buttonText1, function: DuangTableDataSection.DuangTableDataRowFunction.Function0(argumentCount: 0, function: function1))
-        let buttonItem2 = DuangTableDataSection.buttonItemTitleNormal(buttonText2, function: DuangTableDataSection.DuangTableDataRowFunction.Function0(argumentCount: 0, function: function2))
+        let buttonItem1 = DuangTableDataRowButtonItem.ButtonItemTitle(style: DuangTableDataRowButtonItem.DuangTableDataRowButtonItemStyle.Normal, buttonText: buttonText1, function: DuangTableDataSection.DuangTableDataRowFunction.Function0(argumentCount: 0, function: function1))
+        let buttonItem2 = DuangTableDataRowButtonItem.ButtonItemTitle(style: DuangTableDataRowButtonItem.DuangTableDataRowButtonItemStyle.Normal, buttonText: buttonText2, function: DuangTableDataSection.DuangTableDataRowFunction.Function0(argumentCount: 0, function: function2))
         let buttonArray = [buttonItem1, buttonItem2]
         self.rowArray.append(DuangTableDataSection.DuangTableDataRow.Buttons(buttonArray: buttonArray, thePFObject: nil))
+        
+        
+        DuangTableDataRowButtonItem.ButtonItemTitle(style: DuangTableDataSection.DuangTableDataRowButtonItem.DuangTableDataRowButtonItemStyle.Normal, buttonText: buttonText1, function: DuangTableDataSection.DuangTableDataRowFunction.Function0(argumentCount: 0, function: function1))
     }
     
     // MARK: - enum DuangTableDataRowButtonItem
     
     enum DuangTableDataRowButtonItem {
-        case ButtonItemTitleImage(buttonText: String, buttonTextColor: UIColor, buttonBackgroundColor: UIColor, borderColor: UIColor, buttonImage: UIImage, function: DuangTableDataRowFunction)
-        case ButtonItemTitle(buttonText: String, buttonTextColor: UIColor, buttonBackgroundColor: UIColor, borderColor: UIColor, function: DuangTableDataRowFunction)
+        case ButtonItemTitleImage(style: DuangTableDataRowButtonItemStyle, buttonText: String, buttonImage: UIImage, function: DuangTableDataRowFunction)
+        case ButtonItemTitle(style: DuangTableDataRowButtonItemStyle, buttonText: String, function: DuangTableDataRowFunction)
         
         func functionAction() {
             switch self {
-            case .ButtonItemTitleImage(_, _, _, _, _, let function):
+            case .ButtonItemTitleImage(_, _, _, let function):
                 function.functionAction()
-            case .ButtonItemTitle(_, _, _, _, let function):
+            case .ButtonItemTitle(_, _, let function):
                 function.functionAction()
+            }
+        }
+        
+        // MARK: - enum DuangTableDataRowButtonItemStyle
+        
+        enum DuangTableDataRowButtonItemStyle {
+            case Normal
+            case Selected
+            case Alert
+        }
+        
+        private func myStyle() -> DuangTableDataRowButtonItemStyle {
+            switch self {
+            case .ButtonItemTitle(let style, _, _):
+                return style
+            case .ButtonItemTitleImage(let style, _, _, _):
+                return style
+            }
+        }
+        
+        func buttonTextColor() -> UIColor {
+            switch myStyle() {
+            case .Normal:
+                return DuangColor.DarkBlue
+            case .Alert:
+                return DuangColor.White
+            case .Selected:
+                return DuangColor.White
+            }
+        }
+        
+        func buttonBackgroundColor() -> UIColor {
+            switch myStyle() {
+            case .Normal:
+                return DuangColor.White
+            case .Alert:
+                return DuangColor.Red
+            case .Selected:
+                return DuangColor.Orange
+            }
+        }
+        
+        func borderColor() -> UIColor {
+            switch myStyle() {
+            case .Normal:
+                return DuangColor.DarkBlue
+            case .Alert:
+                return DuangColor.DarkBlue
+            case .Selected:
+                return DuangColor.DarkBlue
             }
         }
     }
     
-    enum DuangTableDataRowButtonItemStyle {
-        case Normal
-        case Selected
-        case Alert
-    }
     
-    class func buttonItemTitleImageNormal(buttonText: String, buttonImage: UIImage, function: DuangTableDataRowFunction) -> DuangTableDataRowButtonItem {
-        return DuangTableDataRowButtonItem.ButtonItemTitleImage(buttonText: buttonText, buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.White, borderColor: DuangColor.DarkBlue, buttonImage: buttonImage, function: function)
-    }
     
-    class func buttonItemTitleImageSelected(buttonText: String, buttonImage: UIImage, function: DuangTableDataRowFunction) -> DuangTableDataRowButtonItem {
-        return DuangTableDataRowButtonItem.ButtonItemTitleImage(buttonText: buttonText, buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: buttonImage, function: function)
-    }
-    
-    class func buttonItemTitleNormal(buttonText: String, function: DuangTableDataRowFunction) -> DuangTableDataRowButtonItem {
-        return DuangTableDataRowButtonItem.ButtonItemTitle(buttonText: buttonText, buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.White, borderColor: DuangColor.DarkBlue, function: function)
-    }
+//    class func buttonItemTitleImageNormal(buttonText: String, buttonImage: UIImage, function: DuangTableDataRowFunction) -> DuangTableDataRowButtonItem {
+//        return DuangTableDataRowButtonItem.ButtonItemTitleImage(buttonText: buttonText, buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.White, borderColor: DuangColor.DarkBlue, buttonImage: buttonImage, function: function)
+//    }
+//    
+//    class func buttonItemTitleImageSelected(buttonText: String, buttonImage: UIImage, function: DuangTableDataRowFunction) -> DuangTableDataRowButtonItem {
+//        return DuangTableDataRowButtonItem.ButtonItemTitleImage(buttonText: buttonText, buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.Orange, borderColor: DuangColor.DarkBlue, buttonImage: buttonImage, function: function)
+//    }
+//    
+//    class func buttonItemTitleNormal(buttonText: String, function: DuangTableDataRowFunction) -> DuangTableDataRowButtonItem {
+//        return DuangTableDataRowButtonItem.ButtonItemTitle(buttonText: buttonText, buttonTextColor: DuangColor.DarkBlue, buttonBackgroundColor: DuangColor.White, borderColor: DuangColor.DarkBlue, function: function)
+//    }
     
     // MARK: - enum DuangTableDataRowFunction
     
