@@ -539,21 +539,16 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func doneAddComment() {
         if let theComment = getDuangTableCellTextViewText() {
-//            let selectedImage =
-            
-            
-            if let theImage: UIImage? = getSelectedImage(NSIndexPath(forRow: 0, inSection: 1)) {
-                
+            let theImage: UIImage? = getSelectedImage(NSIndexPath(forRow: 0, inSection: 1))
+            if theImage != nil {
                 delegate?.handleDuangTableDataDeliverer(DuangTableViewController.DuangTableDataDeliverer.ImageText(image: theImage!, text: theComment))
             } else {
-                
-                
                 delegate?.handleDuangTableDataDeliverer(DuangTableViewController.DuangTableDataDeliverer.Text(text: theComment))
             }
+            navigationController?.popViewControllerAnimated(true)
         } else {
             showAlart("Your comment is empty.")
         }
-        navigationController?.popViewControllerAnimated(true)
     }
     
     func getSelectedImage(indexPath: NSIndexPath) -> UIImage? {
@@ -1011,7 +1006,7 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
 
     // MARK: - DuangTableCellButtonsProtocol
     
-    func duangTableCellButtonsAction(duangTableDataRowItem: DuangTableDataSection.DuangTableDataRowItem) {
+    func duangTableCellButtonsAction(duangTableDataRowItem: DuangTableDataSection.DuangTableDataRowButtonItem) {
         duangTableDataRowItem.functionAction()
     }
     
@@ -1049,7 +1044,14 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
     // MARK: DuangTableCellTextViewProtocol
     
     func duangTableCellTextViewDoneAction() {
-        doneInput()
+        switch tableType {
+        case .Input:
+            doneInput()
+        case .AddComment:
+            doneAddComment()
+        default:
+            break
+        }
     }
     
     // MARK: - DuangTableCellTextFieldProtocol

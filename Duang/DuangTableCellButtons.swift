@@ -10,12 +10,12 @@ import UIKit
 
 protocol DuangTableCellButtonsProtocol
 {
-    func duangTableCellButtonsAction(duangTableDataRowItem: DuangTableDataSection.DuangTableDataRowItem)
+    func duangTableCellButtonsAction(duangTableDataRowItem: DuangTableDataSection.DuangTableDataRowButtonItem)
 }
 
 class DuangTableCellButtons: UITableViewCell
 {
-    var buttonArray: [DuangTableDataSection.DuangTableDataRowItem]?
+    var buttonArray: [DuangTableDataSection.DuangTableDataRowButtonItem]?
     var delegate: DuangTableCellButtonsProtocol?
     
     var buttons = [UIButton]()
