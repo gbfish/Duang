@@ -12,6 +12,23 @@ class DuangTableData
 {
     var sectionArray = [DuangTableDataSection]()
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     // MARK: - Post
     
     func addSectionPost(post: PFObject?, tapActionUser: () -> (), tapActionImage: () -> (), tapActionShare: (PFObject?) -> (), tapActionComment: (PFObject?) -> (), tapActionLike: (PFObject?) -> ()) {
