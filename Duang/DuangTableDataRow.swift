@@ -135,7 +135,7 @@ class DuangTableDataRow
             }
         }
         
-        // MARK: - y
+        // MARK: - Style
         
         enum DuangTableDataRowButtonItemStyle {
             case Normal

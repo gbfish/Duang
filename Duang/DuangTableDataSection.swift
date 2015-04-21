@@ -25,7 +25,7 @@ class DuangTableDataSection
     
     
     
-    
+    /*
     // MARK: TextView
     
     func addTextView(placeholder: String?) {
@@ -105,7 +105,7 @@ class DuangTableDataSection
         DuangTableDataRowButtonItem.ButtonItemTitle(style: DuangTableDataSection.DuangTableDataRowButtonItem.DuangTableDataRowButtonItemStyle.Normal, buttonText: buttonText1, function: DuangTableDataSection.DuangTableDataRowFunction.Function0(argumentCount: 0, function: function1))
     }
     
-        
+        */
     
     
 //    class func buttonItemTitleImageNormal(buttonText: String, buttonImage: UIImage, function: DuangTableDataRowFunction) -> DuangTableDataRowButtonItem {

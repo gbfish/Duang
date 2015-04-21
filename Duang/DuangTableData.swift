@@ -10,11 +10,35 @@ import Foundation
 
 class DuangTableData
 {
+    enum TableType {
+        case Feed
+//        case Users
+//        case Profile
+//        case ProfileEdit
+//        case Settings
+//        case ChangePassword
+//        case Input
+//        case AddPhoto
+//        case AddPost
+//        
+//        case Comment
+//        case AddComment
+    }
+    
+    
+    
+    class func duangTableData(tableType: TableType) -> DuangTableData {
+        var duangTableData = DuangTableData()
+        switch tableType {
+        case .Feed:
+            
+        }
+        
+        
+        return duangTableData
+    }
+    
     var sectionArray = [DuangTableDataSection]()
-    
-    
-    
-    
     
     
     
