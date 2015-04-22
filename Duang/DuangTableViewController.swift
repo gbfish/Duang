@@ -10,11 +10,11 @@ import UIKit
 import MobileCoreServices
 
 protocol DuangTableViewControllerProtocol {
-    func handleDuangTableDataDeliverer(dataDeliverer: DuangTableViewController.DuangTableDataDeliverer)
+//    func handleDuangTableDataDeliverer(dataDeliverer: DuangTableViewController.DuangTableDataDeliverer)
 }
-
-class DuangTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, DuangTableViewControllerProtocol, DuangTableCellButtonsProtocol, DuangTableCellTextViewProtocol, DuangTableCellTextFieldProtocol
-{
+class DuangTableViewController: UIViewController
+//class DuangTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, DuangTableViewControllerProtocol, DuangTableCellButtonsProtocol, DuangTableCellTextViewProtocol, DuangTableCellTextFieldProtocol
+{/*
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -1288,5 +1288,5 @@ class DuangTableViewController: UIViewController, UITableViewDelegate, UITableVi
 //            moveTextFieldForKeyboard()
 //        }
 //    }
-    
+    */
 }

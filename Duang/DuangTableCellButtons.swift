@@ -10,12 +10,12 @@ import UIKit
 
 protocol DuangTableCellButtonsProtocol
 {
-    func duangTableCellButtonsAction(duangTableDataRowItem: DuangTableDataSection.DuangTableDataRowButtonItem)
+//    func duangTableCellButtonsAction(duangTableDataRowItem: DuangTableDataSection.DuangTableDataRowButtonItem)
 }
 
 class DuangTableCellButtons: UITableViewCell
 {
-    var buttonArray: [DuangTableDataSection.DuangTableDataRowButtonItem]?
+//    var buttonArray: [DuangTableDataSection.DuangTableDataRowButtonItem]?
     var delegate: DuangTableCellButtonsProtocol?
     
     var buttons = [UIButton]()
@@ -24,7 +24,7 @@ class DuangTableCellButtons: UITableViewCell
         for button in buttons {
             button.removeFromSuperview()
         }
-        
+        /*
         if let theButtonArray = buttonArray {
             let spacing: CGFloat = 8.0
             let buttonWidth = (self.bounds.width - (spacing * CGFloat(theButtonArray.count + 1))) / CGFloat(theButtonArray.count)
@@ -93,12 +93,12 @@ class DuangTableCellButtons: UITableViewCell
                 }
                 buttons.append(button)
             }
-        }
+        }*/
     }
     
-    func buttonAction(sender: UIButton) {
+    func buttonAction(sender: UIButton) {/*
         if let theButtonArray = buttonArray {
             delegate?.duangTableCellButtonsAction(theButtonArray[sender.tag])
-        }
+        }*/
     }
 }

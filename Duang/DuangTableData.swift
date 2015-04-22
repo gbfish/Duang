@@ -26,7 +26,7 @@ class DuangTableData
     }
     
     
-    
+    /*
     class func duangTableData(tableType: TableType) -> DuangTableData {
         var duangTableData = DuangTableData()
         switch tableType {
@@ -37,7 +37,7 @@ class DuangTableData
         
         return duangTableData
     }
-    
+    */
     var sectionArray = [DuangTableDataSection]()
     
     
@@ -49,7 +49,7 @@ class DuangTableData
     
     
     
-    
+    /*
     
     
     
@@ -118,5 +118,6 @@ class DuangTableData
         section.addButtons2(buttonText1, function1: function1, buttonText2: buttonText2, function2: function2)
         self.sectionArray.append(section)
     }
+*/
 }
 
