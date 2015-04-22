@@ -34,6 +34,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // MARK: DTableViewModelProtocol
     
     func dataDidLoad() {
+        title = dTableViewModel.viewControllerTitle
         tableView.reloadData()
     }
     
@@ -81,6 +82,14 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     cell.reloadView()
                     return cell
                 }
+            case .TextField(let textFieldTitle, let textFieldText, let textFieldTitleWidth):
+                if let cell = tableView.dequeueReusableCellWithIdentifier(modelRow.cellIdentifier(), forIndexPath: indexPath) as? DTableViewCellTextField {
+                    cell.cellTitle = textFieldTitle
+                    cell.cellText = textFieldText
+                    cell.cellTitleWidth = textFieldTitleWidth
+                    cell.reloadView()
+                    return cell
+                }
             default:
                 break
             }
@@ -89,7 +98,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        tableView.cellForRowAtIndexPath(indexPath)?.selected = false
+        tableView.cellForRowAtIndexPath(indexPath)?.selected = false
         
 //        selectedIndexPath = indexPath
 //        duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row].tapAction()
@@ -110,15 +119,26 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         case .Landing:
             dTableViewModel.functionShowSignUp = DTableViewModelRow.Function.Function(argumentCount: 0, function: showSignUp)
             dTableViewModel.functionShowLogIn = DTableViewModelRow.Function.Function(argumentCount: 0, function: showLogIn)
+        case .SignUp:
+            println("SignUp")
         }
     }
     
     func showSignUp() {
         println("showSignUp")
+        
+        showDTableViewController(DTableViewModel.TableType.SignUp)
     }
     
     func showLogIn() {
         println("showLogIn")
+    }
+    
+    func showDTableViewController(presentedViewTableType: DTableViewModel.TableType) {
+        if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DTableViewController") as? DTableViewController {
+            viewController.dTableViewModel.tableType = presentedViewTableType
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
     }
     
     

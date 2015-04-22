@@ -25,6 +25,10 @@ class DTableViewModel
     }
     private var status = Status.NoData
     
+    // MARK: - Data
+    
+    var viewControllerTitle = ""
+    
     // MARK: - UITableViewDataSource
     
     func numberOfSections() -> Int {
@@ -60,26 +64,48 @@ class DTableViewModel
     
     enum TableType {
         case Landing
+        case SignUp
     }
     
     var tableType = TableType.Landing
     
     func dataWillLoad() {
+        var section = DTableViewModelSection()
+        var row = DTableViewModelRow()
+        
         switch tableType {
         case .Landing:
-            var section = DTableViewModelSection()
-            var row = DTableViewModelRow()
+            viewControllerTitle = "Duang"
             
             row.rowType = DTableViewModelRow.RowType.Image(heightForRow: DuangGlobal.screenWidth, image: DuangImage.Welcome, imageFile: nil, function: DTableViewModelRow.Function.Nothing)
             section.rowArray.append(row)
-            
             sectionArray.append(section)
-            section = DTableViewModelSection()
-            row = DTableViewModelRow()
             
+            row = DTableViewModelRow()
+            section = DTableViewModelSection()
             let buttonItemSignUp = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Sign up", function: functionShowSignUp)
             let buttonItemLogin = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Log in", function: functionShowLogIn)
             row.rowType = DTableViewModelRow.RowType.Buttons(buttonItemArray: [buttonItemSignUp, buttonItemLogin])
+            section.rowArray.append(row)
+            sectionArray.append(section)
+            
+        case .SignUp:
+            viewControllerTitle = "Sign up"
+            
+            let usernameSize = APIManager.sizeForString("Username:", font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
+            let passwordSize = APIManager.sizeForString("Password:", font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
+            let emailSize = APIManager.sizeForString("Email:", font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
+            let widthMax = max(usernameSize.width, passwordSize.width, emailSize.width)
+            
+            row.rowType = DTableViewModelRow.RowType.TextField(textFieldTitle: "Username:", textFieldText: nil, textFieldTitleWidth: widthMax)
+            section.rowArray.append(row)
+            
+            row = DTableViewModelRow()
+            row.rowType = DTableViewModelRow.RowType.TextField(textFieldTitle: "Password:", textFieldText: nil, textFieldTitleWidth: widthMax)
+            section.rowArray.append(row)
+            
+            row = DTableViewModelRow()
+            row.rowType = DTableViewModelRow.RowType.TextField(textFieldTitle: "Email:", textFieldText: nil, textFieldTitleWidth: widthMax)
             section.rowArray.append(row)
             
             sectionArray.append(section)

@@ -564,6 +564,13 @@
                                             <outlet property="cellImageView" destination="OfS-Nj-XYo" id="ihj-tG-e2x"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DTableViewCellTextField" rowHeight="50" id="3d8-if-93a" customClass="DTableViewCellTextField" customModule="Duang" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3d8-if-93a" id="qTO-gb-OU1">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="tQ9-8h-W4D" id="kIU-S1-EKe"/>

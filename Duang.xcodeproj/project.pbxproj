@@ -48,6 +48,7 @@
 		56E70EB11AE71503008478A3 /* DTableViewModelRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E70EB01AE71503008478A3 /* DTableViewModelRow.swift */; };
 		56E70EB31AE811A8008478A3 /* DTableViewCellButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E70EB21AE811A8008478A3 /* DTableViewCellButtons.swift */; };
 		56E70EB61AE833B9008478A3 /* DTableViewCellImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E70EB51AE833B9008478A3 /* DTableViewCellImage.swift */; };
+		56E70EB81AE8475D008478A3 /* DTableViewCellTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E70EB71AE8475D008478A3 /* DTableViewCellTextField.swift */; };
 		56E946A31ABB464700634F5B /* DuangTableCellTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E946A21ABB464700634F5B /* DuangTableCellTextField.swift */; };
 		56F361751AB8DC0D00D94533 /* DuangTableCellUserBig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F361741AB8DC0D00D94533 /* DuangTableCellUserBig.swift */; };
 		56FF68F31AD7535C00B228C1 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56FF68ED1AD7535C00B228C1 /* Bolts.framework */; };
@@ -116,6 +117,7 @@
 		56E70EB01AE71503008478A3 /* DTableViewModelRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTableViewModelRow.swift; sourceTree = "<group>"; };
 		56E70EB21AE811A8008478A3 /* DTableViewCellButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTableViewCellButtons.swift; sourceTree = "<group>"; };
 		56E70EB51AE833B9008478A3 /* DTableViewCellImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTableViewCellImage.swift; sourceTree = "<group>"; };
+		56E70EB71AE8475D008478A3 /* DTableViewCellTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTableViewCellTextField.swift; sourceTree = "<group>"; };
 		56E946A21ABB464700634F5B /* DuangTableCellTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableCellTextField.swift; sourceTree = "<group>"; };
 		56F361741AB8DC0D00D94533 /* DuangTableCellUserBig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableCellUserBig.swift; sourceTree = "<group>"; };
 		56FF68ED1AD7535C00B228C1 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
@@ -313,6 +315,7 @@
 			children = (
 				56E70EB21AE811A8008478A3 /* DTableViewCellButtons.swift */,
 				56E70EB51AE833B9008478A3 /* DTableViewCellImage.swift */,
+				56E70EB71AE8475D008478A3 /* DTableViewCellTextField.swift */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -461,6 +464,7 @@
 				5687C6611AB118A800ED0005 /* APIManager.swift in Sources */,
 				568A5CB61AB8A49100EF43F4 /* DuangTableViewController.swift in Sources */,
 				568A5CB91AB8A5A200EF43F4 /* DuangTableData.swift in Sources */,
+				56E70EB81AE8475D008478A3 /* DTableViewCellTextField.swift in Sources */,
 				56E70EAA1AE70EBA008478A3 /* DTableViewController.swift in Sources */,
 				E8E416C71ABEA52500D7727C /* MainTabBarController.swift in Sources */,
 				568A5CBB1AB8AAA600EF43F4 /* DuangTableCellButton.swift in Sources */,

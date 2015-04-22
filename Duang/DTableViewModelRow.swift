@@ -10,14 +10,13 @@ import Foundation
 
 class DTableViewModelRow
 {
-    
-    
     // MARK: - RowType
     
     enum RowType {
         case Nothing
         case Buttons(buttonItemArray: [ButtonItem])
         case Image(heightForRow: CGFloat, image: UIImage?, imageFile: PFFile?, function: Function)
+        case TextField(textFieldTitle: String?, textFieldText: String?, textFieldTitleWidth: CGFloat?)
     }
     
     var rowType = RowType.Nothing
@@ -28,6 +27,8 @@ class DTableViewModelRow
             return "DTableViewCellButtons"
         case .Image(_):
             return "DTableViewCellImage"
+        case .TextField(_):
+            return "DTableViewCellTextField"
         default:
             return "DefaultCell"
         }
@@ -123,7 +124,4 @@ class DTableViewModelRow
             }
         }
     }
-    
-    
-
 }
