@@ -71,14 +71,18 @@ class DTableViewModel
             let row = DTableViewModelRow()
             
             let buttonItemSignUp = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Sign up", function: functionShowSignUp)
+            let buttonItemLogin = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Log in", function: functionShowLogIn)
             
-            row.rowType = DTableViewModelRow.RowType.Buttons(buttonItemArray: [buttonItemSignUp])
+            row.rowType = DTableViewModelRow.RowType.Buttons(buttonItemArray: [buttonItemSignUp, buttonItemLogin])
             section.rowArray.append(row)
             sectionArray.append(section)
         }
+        
+        dataDidLoad()
     }
     
     func dataDidLoad() {
+        status = Status.Normal
         delegate?.dataDidLoad()
     }
     
@@ -98,6 +102,7 @@ class DTableViewModel
     // MARK: - Function
 
     var functionShowSignUp = DTableViewModelRow.Function.Nothing
+    var functionShowLogIn = DTableViewModelRow.Function.Nothing
     
 
 }

@@ -21,7 +21,16 @@ class DTableViewModelRow
     
     var rowType = RowType.Nothing
     
-    // MARK: - enum DuangTableDataRowButtonItem
+    func cellIdentifier() -> String {
+        switch rowType {
+        case .Buttons(_):
+            return "DTableViewCellButtons"
+        default:
+            return "DefaultCell"
+        }
+    }
+    
+    // MARK: - ButtonItem
     
     enum ButtonItem {
         case ButtonItemTitleImage(style: ButtonItemStyle, buttonText: String, buttonImage: UIImage, function: Function)
@@ -36,53 +45,44 @@ class DTableViewModelRow
             }
         }
         
-        // MARK: - Style
+        // MARK: Style
         
         enum ButtonItemStyle {
             case Normal
             case Selected
             case Alert
-        }
-        
-        private func myStyle() -> ButtonItemStyle {
-            switch self {
-            case .ButtonItemTitle(let style, _, _):
-                return style
-            case .ButtonItemTitleImage(let style, _, _, _):
-                return style
+            
+            func buttonTextColor() -> UIColor {
+                switch self {
+                case .Normal:
+                    return DuangColor.DarkBlue
+                case .Alert:
+                    return DuangColor.White
+                case .Selected:
+                    return DuangColor.White
+                }
             }
-        }
-        
-        func buttonTextColor() -> UIColor {
-            switch myStyle() {
-            case .Normal:
-                return DuangColor.DarkBlue
-            case .Alert:
-                return DuangColor.White
-            case .Selected:
-                return DuangColor.White
+            
+            func buttonBackgroundColor() -> UIColor {
+                switch self {
+                case .Normal:
+                    return DuangColor.White
+                case .Alert:
+                    return DuangColor.Red
+                case .Selected:
+                    return DuangColor.Orange
+                }
             }
-        }
-        
-        func buttonBackgroundColor() -> UIColor {
-            switch myStyle() {
-            case .Normal:
-                return DuangColor.White
-            case .Alert:
-                return DuangColor.Red
-            case .Selected:
-                return DuangColor.Orange
-            }
-        }
-        
-        func borderColor() -> UIColor {
-            switch myStyle() {
-            case .Normal:
-                return DuangColor.DarkBlue
-            case .Alert:
-                return DuangColor.DarkBlue
-            case .Selected:
-                return DuangColor.DarkBlue
+            
+            func borderColor() -> CGColor {
+                switch self {
+                case .Normal:
+                    return DuangColor.DarkBlue.CGColor
+                case .Alert:
+                    return DuangColor.DarkBlue.CGColor
+                case .Selected:
+                    return DuangColor.DarkBlue.CGColor
+                }
             }
         }
     }

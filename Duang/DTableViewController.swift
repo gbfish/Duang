@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, DTableViewModelProtocol
+class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, DTableViewModelProtocol, DTableViewCellButtonsProtocol
 {
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,13 +66,35 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if let modelRow = dTableViewModel.row(indexPath) {
+            switch modelRow.rowType {
+            case .Buttons(let buttonItemArray):
+                if let cell = tableView.dequeueReusableCellWithIdentifier(modelRow.cellIdentifier(), forIndexPath: indexPath) as? DTableViewCellButtons {
+                    cell.delegate = self
+                    cell.buttonItemArray = buttonItemArray
+                    cell.reloadView()
+                    return cell
+                }
+            default:
+                break
+            }
+        }
         return UITableViewCell()
+
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.cellForRowAtIndexPath(indexPath)?.selected = false
 //        selectedIndexPath = indexPath
 //        duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row].tapAction()
+        
+        
+    }
+    
+    // MARK: - Cell DTableViewCellButtonsProtocol
+    
+    func dTableViewCellButtonsAction(buttonItem: DTableViewModelRow.ButtonItem) {
+        buttonItem.functionAction()
     }
     
     // MARK: - Function
@@ -81,13 +103,18 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         switch dTableViewModel.tableType {
         case .Landing:
             dTableViewModel.functionShowSignUp = DTableViewModelRow.Function.Function(argumentCount: 0, function: showSignUp)
+            dTableViewModel.functionShowLogIn = DTableViewModelRow.Function.Function(argumentCount: 0, function: showLogIn)
         }
         
         
     }
     
     func showSignUp() {
-        
+        println("showSignUp")
+    }
+    
+    func showLogIn() {
+        println("showLogIn")
     }
     
     
