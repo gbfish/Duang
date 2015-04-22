@@ -10,13 +10,14 @@ import Foundation
 
 class DTableViewModelRow
 {
-    var heightForRow: CGFloat = 50.0
+    
     
     // MARK: - RowType
     
     enum RowType {
         case Nothing
         case Buttons(buttonItemArray: [ButtonItem])
+        case Image(heightForRow: CGFloat, image: UIImage?, imageFile: PFFile?, function: Function)
     }
     
     var rowType = RowType.Nothing
@@ -25,8 +26,21 @@ class DTableViewModelRow
         switch rowType {
         case .Buttons(_):
             return "DTableViewCellButtons"
+        case .Image(_):
+            return "DTableViewCellImage"
         default:
             return "DefaultCell"
+        }
+    }
+    
+    // MARK: - Height For Row
+    
+    func heightForRow() -> CGFloat {
+        switch rowType {
+        case .Image(let heightForRow, _, _, _):
+            return heightForRow
+        default:
+            return 50.0
         }
     }
     

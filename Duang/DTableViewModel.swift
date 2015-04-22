@@ -51,7 +51,7 @@ class DTableViewModel
     
     func heightForRowAtIndexPath(indexPath: NSIndexPath) -> CGFloat {
         if let row = row(indexPath) {
-            return row.heightForRow
+            return row.heightForRow()
         }
         return 50.0
     }
@@ -67,14 +67,21 @@ class DTableViewModel
     func dataWillLoad() {
         switch tableType {
         case .Landing:
-            let section = DTableViewModelSection()
-            let row = DTableViewModelRow()
+            var section = DTableViewModelSection()
+            var row = DTableViewModelRow()
+            
+            row.rowType = DTableViewModelRow.RowType.Image(heightForRow: DuangGlobal.screenWidth, image: DuangImage.Welcome, imageFile: nil, function: DTableViewModelRow.Function.Nothing)
+            section.rowArray.append(row)
+            
+            sectionArray.append(section)
+            section = DTableViewModelSection()
+            row = DTableViewModelRow()
             
             let buttonItemSignUp = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Sign up", function: functionShowSignUp)
             let buttonItemLogin = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Log in", function: functionShowLogIn)
-            
             row.rowType = DTableViewModelRow.RowType.Buttons(buttonItemArray: [buttonItemSignUp, buttonItemLogin])
             section.rowArray.append(row)
+            
             sectionArray.append(section)
         }
         

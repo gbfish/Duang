@@ -543,6 +543,27 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DTableViewCellImage" rowHeight="50" id="PKz-ea-EbA" customClass="DTableViewCellImage" customModule="Duang" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PKz-ea-EbA" id="ZA5-JB-Dv5">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OfS-Nj-XYo">
+                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="OfS-Nj-XYo" firstAttribute="top" secondItem="ZA5-JB-Dv5" secondAttribute="top" id="6YF-eH-w3R"/>
+                                                <constraint firstAttribute="bottom" secondItem="OfS-Nj-XYo" secondAttribute="bottom" id="TUo-Xu-IQ2"/>
+                                                <constraint firstItem="OfS-Nj-XYo" firstAttribute="leading" secondItem="ZA5-JB-Dv5" secondAttribute="leading" id="eRI-BK-G8C"/>
+                                                <constraint firstAttribute="trailing" secondItem="OfS-Nj-XYo" secondAttribute="trailing" id="h1l-Jx-E3U"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="cellImageView" destination="OfS-Nj-XYo" id="ihj-tG-e2x"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="tQ9-8h-W4D" id="kIU-S1-EKe"/>

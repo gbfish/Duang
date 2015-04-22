@@ -18,6 +18,8 @@ struct DuangImage {
     static let Share = UIImage(named: "Action_Share")!
     static let Comment = UIImage(named: "Action_Comment")!
     static let Like = UIImage(named: "Action_Like")!
+    
+    static let Welcome = UIImage(named: "welcome")!
 }
 
 struct DuangColor {

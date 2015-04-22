@@ -30,7 +30,6 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // MARK: - DTableViewModel
     
     var dTableViewModel = DTableViewModel()
-//    var tableType = DTableViewModel.TableType.Landing
     
     // MARK: DTableViewModelProtocol
     
@@ -75,16 +74,23 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     cell.reloadView()
                     return cell
                 }
+            case .Image(_, let image, let imageFile, _):
+                if let cell = tableView.dequeueReusableCellWithIdentifier(modelRow.cellIdentifier(), forIndexPath: indexPath) as? DTableViewCellImage {
+                    cell.cellImage = image
+                    cell.cellImageFile = imageFile
+                    cell.reloadView()
+                    return cell
+                }
             default:
                 break
             }
         }
         return UITableViewCell()
-
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.cellForRowAtIndexPath(indexPath)?.selected = false
+//        tableView.cellForRowAtIndexPath(indexPath)?.selected = false
+        
 //        selectedIndexPath = indexPath
 //        duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row].tapAction()
         
@@ -105,8 +111,6 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             dTableViewModel.functionShowSignUp = DTableViewModelRow.Function.Function(argumentCount: 0, function: showSignUp)
             dTableViewModel.functionShowLogIn = DTableViewModelRow.Function.Function(argumentCount: 0, function: showLogIn)
         }
-        
-        
     }
     
     func showSignUp() {
