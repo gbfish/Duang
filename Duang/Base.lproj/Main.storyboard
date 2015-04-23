@@ -497,9 +497,6 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="A0O-ky-t9L"/>
-                    <connections>
-                        <segue destination="P1t-uR-RBw" kind="modal" identifier="MainTabBar" id="8QT-z9-KMp"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EKB-Db-U4h" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -518,7 +515,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fGe-V7-dZE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1633" y="2775"/>
+            <point key="canvasLocation" x="3568" y="3638"/>
         </scene>
         <!--Table View Controller-->
         <scene sceneID="oJF-3N-oW7">
@@ -589,6 +586,7 @@
                     <navigationItem key="navigationItem" id="E1c-0m-zz5"/>
                     <connections>
                         <outlet property="tableView" destination="7MB-eD-9PA" id="Gim-yk-OuY"/>
+                        <segue destination="P1t-uR-RBw" kind="presentation" identifier="MainTabBar" id="0t8-qS-aTq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4YS-Rx-EeR" userLabel="First Responder" sceneMemberID="firstResponder"/>

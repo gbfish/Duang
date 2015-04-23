@@ -37,6 +37,27 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func protocolSignUpSuccess() {
         println("protocolSignUpSuccess")
+        
+        if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DTableViewController") as? DTableViewController {
+            viewController.delegate = self
+            viewController.dTableViewModel.tableType = DTableViewModel.TableType.Landing
+            
+            
+            navigationController?.presentViewController(viewController, animated: true, completion: nil)
+            
+//            presentViewController(viewController, animated: true, completion: nil)
+            
+//            self.navigationController?.pushViewController(viewController, animated: true)
+        }
+        
+//        performSegueWithIdentifier("MainTabBar", sender: nil)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        print("prepareForSegue")
+        
+        
+        
     }
     
     // MARK: - DTableViewModel
@@ -190,6 +211,8 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func showLogIn() {
         println("showLogIn")
+        
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func showDTableViewController(presentedViewTableType: DTableViewModel.TableType) {
