@@ -8,8 +8,16 @@
 
 import UIKit
 
-class DTableViewCellTextField: UITableViewCell
+protocol DTableViewCellTextFieldProtocol
 {
+    func dTableViewCellTextFieldDidBeginEditing(dTableViewCellTextField: DTableViewCellTextField)
+    func dTableViewCellTextFieldDidEndEditing(dTableViewCellTextField: DTableViewCellTextField)
+}
+
+class DTableViewCellTextField: UITableViewCell, UITextFieldDelegate
+{
+    var delegate: DTableViewCellTextFieldProtocol?
+    
     var cellTitle: String?
     var cellTitleWidth: CGFloat?
     
@@ -27,6 +35,7 @@ class DTableViewCellTextField: UITableViewCell
         cellTextField.removeFromSuperview()
         
         if let theCellTitle = cellTitle, theCellTitleWidth = cellTitleWidth {
+            cellTitleLabel = UILabel()
             cellTitleLabel.frame = CGRectMake(spacing, spacing, theCellTitleWidth, itemHeight)
             cellTitleLabel.text = cellTitle
             addSubview(cellTitleLabel)
@@ -34,11 +43,28 @@ class DTableViewCellTextField: UITableViewCell
             textFieldX = textFieldX + theCellTitleWidth + spacing
         }
         
+        cellTextField = UITextField()
+        cellTextField.delegate = self
         cellTextField.frame = CGRectMake(textFieldX, spacing, self.bounds.width - textFieldX - spacing, itemHeight)
         cellTextField.borderStyle = UITextBorderStyle.RoundedRect
         if let theCellText = cellText {
             cellTextField.text = theCellText
         }
         addSubview(cellTextField)
+    }
+    
+    // MARK: - UITextFieldDelegate
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+        delegate?.dTableViewCellTextFieldDidBeginEditing(self)
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        delegate?.dTableViewCellTextFieldDidEndEditing(self)
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

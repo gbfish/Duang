@@ -58,7 +58,7 @@ class DTableViewCellButtons: UITableViewCell
                     
                     button.backgroundColor = style.buttonBackgroundColor()
                     button.layer.borderColor = style.borderColor()
-                    button.layer.borderWidth = 2.0
+                    button.layer.borderWidth = 1.0
                     button.layer.masksToBounds = true
                     button.layer.cornerRadius = 5.0
                     button.tag = index
@@ -80,7 +80,7 @@ class DTableViewCellButtons: UITableViewCell
                     
                     button.backgroundColor = style.buttonBackgroundColor()
                     button.layer.borderColor = style.borderColor()
-                    button.layer.borderWidth = 2.0
+                    button.layer.borderWidth = 1.0
                     button.layer.masksToBounds = true
                     button.layer.cornerRadius = 5.0
                     button.tag = index

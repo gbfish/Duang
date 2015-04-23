@@ -96,18 +96,21 @@ class DTableViewModel
             let passwordSize = APIManager.sizeForString("Password:", font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
             let emailSize = APIManager.sizeForString("Email:", font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
             let widthMax = max(usernameSize.width, passwordSize.width, emailSize.width)
-            
             row.rowType = DTableViewModelRow.RowType.TextField(textFieldTitle: "Username:", textFieldText: nil, textFieldTitleWidth: widthMax)
             section.rowArray.append(row)
-            
             row = DTableViewModelRow()
             row.rowType = DTableViewModelRow.RowType.TextField(textFieldTitle: "Password:", textFieldText: nil, textFieldTitleWidth: widthMax)
             section.rowArray.append(row)
-            
             row = DTableViewModelRow()
             row.rowType = DTableViewModelRow.RowType.TextField(textFieldTitle: "Email:", textFieldText: nil, textFieldTitleWidth: widthMax)
             section.rowArray.append(row)
+            sectionArray.append(section)
             
+            row = DTableViewModelRow()
+            section = DTableViewModelSection()
+            let buttonItem = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Sign up", function: functionSignUp)
+            row.rowType = DTableViewModelRow.RowType.Buttons(buttonItemArray: [buttonItem])
+            section.rowArray.append(row)
             sectionArray.append(section)
         }
         
@@ -136,6 +139,8 @@ class DTableViewModel
 
     var functionShowSignUp = DTableViewModelRow.Function.Nothing
     var functionShowLogIn = DTableViewModelRow.Function.Nothing
+    
+    var functionSignUp = DTableViewModelRow.Function.Nothing
     
 
 }
