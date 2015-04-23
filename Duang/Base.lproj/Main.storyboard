@@ -505,7 +505,7 @@
         <!--Main Tab Bar Controller-->
         <scene sceneID="fX9-rg-Sv6">
             <objects>
-                <tabBarController id="P1t-uR-RBw" customClass="MainTabBarController" customModule="Duang" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="MainTabBarController" id="P1t-uR-RBw" customClass="MainTabBarController" customModule="Duang" customModuleProvider="target" sceneMemberID="viewController">
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="mfX-n2-U6p">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
@@ -586,7 +586,6 @@
                     <navigationItem key="navigationItem" id="E1c-0m-zz5"/>
                     <connections>
                         <outlet property="tableView" destination="7MB-eD-9PA" id="Gim-yk-OuY"/>
-                        <segue destination="P1t-uR-RBw" kind="presentation" identifier="MainTabBar" id="0t8-qS-aTq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4YS-Rx-EeR" userLabel="First Responder" sceneMemberID="firstResponder"/>

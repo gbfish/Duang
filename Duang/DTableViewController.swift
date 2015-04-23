@@ -38,17 +38,19 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func protocolSignUpSuccess() {
         println("protocolSignUpSuccess")
         
-        if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DTableViewController") as? DTableViewController {
-            viewController.delegate = self
-            viewController.dTableViewModel.tableType = DTableViewModel.TableType.Landing
-            
-            
-            navigationController?.presentViewController(viewController, animated: true, completion: nil)
-            
-//            presentViewController(viewController, animated: true, completion: nil)
-            
-//            self.navigationController?.pushViewController(viewController, animated: true)
-        }
+        showMainTabBarController()
+        
+//        if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DTableViewController") as? DTableViewController {
+//            viewController.delegate = self
+//            viewController.dTableViewModel.tableType = DTableViewModel.TableType.Landing
+//            
+//            
+//            navigationController?.presentViewController(viewController, animated: true, completion: nil)
+//            
+////            presentViewController(viewController, animated: true, completion: nil)
+//            
+////            self.navigationController?.pushViewController(viewController, animated: true)
+//        }
         
 //        performSegueWithIdentifier("MainTabBar", sender: nil)
     }
@@ -220,6 +222,12 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             viewController.delegate = self
             viewController.dTableViewModel.tableType = presentedViewTableType
             self.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
+    
+    func showMainTabBarController() {
+        if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("MainTabBarController") as? MainTabBarController {
+            navigationController?.presentViewController(viewController, animated: true, completion: nil)
         }
     }
     
