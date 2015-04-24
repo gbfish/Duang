@@ -72,7 +72,7 @@ struct TabBarTitle {
     static let Feed = "Feed"
     static let Users = "Users"
     static let AddPost = "Add New"
-    static let Profile = "Me"
+    static let MyProfile = "Me"
 }
 
 // MARK: - Table

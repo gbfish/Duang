@@ -8,11 +8,18 @@
 
 import UIKit
 
+protocol DTableViewCellDetailProtocol
+{
+    func dTableViewCellDetailButtonAction(buttonItem: DTableViewModelRow.ButtonItem)
+}
+
 class DTableViewCellDetail: UITableViewCell
 {
     @IBOutlet weak var detailLabel: UILabel!
     @IBOutlet weak var detailImageView: UIImageView!
     @IBOutlet weak var detailButton: UIButton!
+    
+    var delegate: DTableViewCellDetailProtocol?
     
     var detailText: String?
     
@@ -42,8 +49,16 @@ class DTableViewCellDetail: UITableViewCell
         
         if let theButtonItem = buttonItem {
             detailButton.hidden = false
+            detailButton.setButton(theButtonItem, buttonSize: detailButton.frame.size)
+            detailButton.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
         } else {
             detailButton.hidden = true
+        }
+    }
+    
+    func buttonAction(sender: UIButton) {
+        if let theButtonItem = buttonItem {
+             delegate?.dTableViewCellDetailButtonAction(theButtonItem)
         }
     }
 }

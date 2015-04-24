@@ -67,6 +67,8 @@ class DTableViewModel
         case SignUp
         case LogIn
         case Feed
+        case MyProfile
+        case Setting
     }
     
     var tableType = TableType.Landing
@@ -79,6 +81,7 @@ class DTableViewModel
         case .Landing:
             viewControllerTitle = "Duang"
             
+            row = DTableViewModelRow()
             row.rowType = DTableViewModelRow.RowType.Image(heightForRow: UIScreen.mainScreen().bounds.width, image: DuangImage.Welcome, imageFile: nil, function: DTableViewModelRow.Function.Nothing)
             section.rowArray.append(row)
             sectionArray.append(section)
@@ -94,21 +97,23 @@ class DTableViewModel
         case .SignUp:
             viewControllerTitle = "Sign up"
             
-            let usernameSize = APIManager.sizeForString("Username:", font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
-            let passwordSize = APIManager.sizeForString("Password:", font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
-            let emailSize = APIManager.sizeForString("Email:", font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
+            let stringArray = ["Username:", "Password:", "Email:"]
+            
+            let usernameSize = APIManager.sizeForString(stringArray[0], font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
+            let passwordSize = APIManager.sizeForString(stringArray[1], font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
+            let emailSize = APIManager.sizeForString(stringArray[2], font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
             let widthMax = max(usernameSize.width, passwordSize.width, emailSize.width)
             
             row = DTableViewModelRow()
-            row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: 50.0, textViewTitle: "Username:", textViewText: nil, textViewTitleWidth: widthMax)
+            row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: 50.0, textViewTitle: stringArray[0], textViewText: nil, textViewTitleWidth: widthMax)
             section.rowArray.append(row)
             
             row = DTableViewModelRow()
-            row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: 50.0, textViewTitle: "Password:", textViewText: nil, textViewTitleWidth: widthMax)
+            row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: 50.0, textViewTitle: stringArray[1], textViewText: nil, textViewTitleWidth: widthMax)
             section.rowArray.append(row)
             
             row = DTableViewModelRow()
-            row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: 50.0, textViewTitle: "Email:", textViewText: nil, textViewTitleWidth: widthMax)
+            row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: 50.0, textViewTitle: stringArray[2], textViewText: nil, textViewTitleWidth: widthMax)
             section.rowArray.append(row)
             sectionArray.append(section)
             
@@ -122,16 +127,18 @@ class DTableViewModel
         case .LogIn:
             viewControllerTitle = "Log in"
             
-            let usernameSize = APIManager.sizeForString("Username:", font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
-            let passwordSize = APIManager.sizeForString("Password:", font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
+            let stringArray = ["Username:", "Password:"]
+            
+            let usernameSize = APIManager.sizeForString(stringArray[0], font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
+            let passwordSize = APIManager.sizeForString(stringArray[1], font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
             let widthMax = max(usernameSize.width, passwordSize.width)
             
             row = DTableViewModelRow()
-            row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: 50.0, textViewTitle: "Username:", textViewText: nil, textViewTitleWidth: widthMax)
+            row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: 50.0, textViewTitle: stringArray[0], textViewText: nil, textViewTitleWidth: widthMax)
             section.rowArray.append(row)
             
             row = DTableViewModelRow()
-            row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: 50.0, textViewTitle: "Password:", textViewText: nil, textViewTitleWidth: widthMax)
+            row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: 50.0, textViewTitle: stringArray[1], textViewText: nil, textViewTitleWidth: widthMax)
             section.rowArray.append(row)
             sectionArray.append(section)
             
@@ -171,6 +178,20 @@ class DTableViewModel
             }, failure: { (error) -> () in
                 self.dataDidLoad()
             })
+            
+        case .MyProfile:
+            viewControllerTitle = "Me"
+            
+            row = DTableViewModelRow()
+            let user = PFUser.currentUser()
+            let buttonItemSetting = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Setting", function: functionShowSetting)
+            row.rowType = DTableViewModelRow.RowType.Detail(image: ImagePlaceholder.Avatar, imageFile: APIManager.getFileFromUser(user, key: TableUser.Avatar), isRound: true, detailTitle: APIManager.getNameFromUser(user), detailButton: buttonItemSetting)
+            section.rowArray.append(row)
+            
+            sectionArray.append(section)
+            
+        case .Setting:
+            viewControllerTitle = "Setting"
         }
         
         dataDidLoad()
@@ -198,9 +219,12 @@ class DTableViewModel
 
     var functionShowSignUp = DTableViewModelRow.Function.Nothing
     var functionShowLogIn = DTableViewModelRow.Function.Nothing
+    var functionShowSetting = DTableViewModelRow.Function.Nothing
     
     var functionSignUp = DTableViewModelRow.Function.Nothing
     var functionLogIn = DTableViewModelRow.Function.Nothing
+    
+    
     
 
 }

@@ -14,7 +14,7 @@ protocol DTableViewControllerProtocol
     func protocolLogInSuccess()
 }
 
-class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, DTableViewControllerProtocol, DTableViewModelProtocol, DTableViewCellButtonsProtocol, DTableViewCellTextViewProtocol
+class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, DTableViewControllerProtocol, DTableViewModelProtocol, DTableViewCellButtonsProtocol, DTableViewCellTextViewProtocol, DTableViewCellDetailProtocol
 {
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -110,20 +110,10 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     cell.reloadView()
                     return cell
                 }
-//            case .TextField(let textFieldTitle, let textFieldText, let textFieldTitleWidth):
-//                if let cell = tableView.dequeueReusableCellWithIdentifier(modelRow.cellIdentifier(), forIndexPath: indexPath) as? DTableViewCellTextField {
-//                    cell.delegate = self
-//                    cell.cellTitle = textFieldTitle
-//                    cell.cellText = textFieldText
-//                    cell.cellTitleWidth = textFieldTitleWidth
-//                    cell.reloadView()
-//                    addTextField(cell, modelRow: modelRow)
-//                    return cell
-//                }
                 
             case .Detail(let image, let imageFile, let isRound, let detailTitle, let detailButton):
                 if let cell = tableView.dequeueReusableCellWithIdentifier(modelRow.cellIdentifier(), forIndexPath: indexPath) as? DTableViewCellDetail {
-//                    cell.delegate = self
+                    cell.delegate = self
                     cell.detailText = detailTitle
                     
                     cell.detailImage = image
@@ -177,66 +167,11 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         buttonItem.functionAction()
     }
     
-    // MARK: - Cell DTableViewCellTextField
-    /*
-    var textFieldArray = [DTableViewCellTextField]()
-    var textFieldModelRowArray = [DTableViewModelRow]()
-    var textFieldIfGoNext = true
-    var textFieldFirstResponder = DTableViewCellTextField()
+    // MARK: - Cell DTableViewCellDetailProtocol
     
-    func addTextField(textField: DTableViewCellTextField, modelRow: DTableViewModelRow) {
-        for temTextField in textFieldArray {
-            if temTextField == textField {
-                return
-            }
-        }
-        textFieldArray.append(textField)
-        textFieldModelRowArray.append(modelRow)
+    func dTableViewCellDetailButtonAction(buttonItem: DTableViewModelRow.ButtonItem) {
+        buttonItem.functionAction()
     }
-    
-    func getTextArray() -> [String] {
-        textFieldIfGoNext = false
-        textFieldFirstResponder.cellTextField.resignFirstResponder()
-        
-        var textArray = [String]()
-        for var index = 0; index < textFieldModelRowArray.count; ++index {
-            switch textFieldModelRowArray[index].rowType {
-            case .TextField(_, let textFieldText, _):
-                textArray.append(textFieldText ?? "")
-            default:
-                break
-            }
-        }
-        return textArray
-    }
-    
-    // MARK: DTableViewCellTextFieldProtocol
-    
-    func dTableViewCellTextFieldDidBeginEditing(dTableViewCellTextField: DTableViewCellTextField) {
-        textFieldIfGoNext = true
-        textFieldFirstResponder = dTableViewCellTextField
-    }
-    
-    func dTableViewCellTextFieldDidEndEditing(dTableViewCellTextField: DTableViewCellTextField) {
-        for var index = 0; index < textFieldArray.count; ++index {
-            if dTableViewCellTextField == textFieldArray[index] {
-                var modelRow = textFieldModelRowArray[index]
-                if let theTextFieldText = dTableViewCellTextField.cellTextField.text {
-                    switch modelRow.rowType {
-                    case .TextField(let textFieldTitle, let textFieldText, let textFieldTitleWidth):
-                        modelRow.rowType = DTableViewModelRow.RowType.TextField(textFieldTitle: textFieldTitle, textFieldText: theTextFieldText, textFieldTitleWidth: textFieldTitleWidth)
-                    default:
-                        break
-                    }
-                }
-                if textFieldIfGoNext && index < textFieldArray.count - 1 {
-                    let nextTextField = textFieldArray[index + 1]
-                    nextTextField.cellTextField.becomeFirstResponder()
-                }
-            }
-        }
-    }
-*/
     
     // MARK: - Cell DTableViewCellTextView
     
@@ -335,6 +270,8 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             dTableViewModel.functionSignUp = DTableViewModelRow.Function.Function(argumentCount: 0, function: signUp)
         case .LogIn:
             dTableViewModel.functionLogIn = DTableViewModelRow.Function.Function(argumentCount: 0, function: logIn)
+        case .MyProfile:
+            dTableViewModel.functionShowSetting = DTableViewModelRow.Function.Function(argumentCount: 0, function: showSetting)
         default:
             break
         }
@@ -356,6 +293,10 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func showLogIn() {
         showDTableViewController(DTableViewModel.TableType.LogIn)
+    }
+    
+    func showSetting() {
+        showDTableViewController(DTableViewModel.TableType.Setting)
     }
     
     func showMainTabBarController() {
@@ -435,5 +376,8 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         showAlert("Sorry", message: "The user name and password do not match our records.")
     }
 
+    
+    
+    
 
 }

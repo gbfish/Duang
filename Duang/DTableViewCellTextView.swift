@@ -67,8 +67,6 @@ class DTableViewCellTextView: UITableViewCell, UITextViewDelegate
     var textViewHeight: CGFloat = 40.0 {
         didSet {
             if textViewHeight != oldValue {
-                println("value change!")
-                
                 delegate?.dTableViewCellTextViewCellHeight(self, newHeightForRow: textViewHeight + (spacing * 2))
             }
         }

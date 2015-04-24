@@ -34,63 +34,11 @@ class DTableViewCellButtons: UITableViewCell
                 let buttonRect = CGRectMake((buttonWidth + spacing) * CGFloat(index) + spacing, spacing, buttonWidth, buttonHeight)
                 let button = UIButton(frame: buttonRect)
                 
-                switch theButtonItemArray[index] {
-                case .ButtonItemTitleImage(let style, let buttonText, let buttonImage, _):
-                    let imageAndTitleSpacing: CGFloat = 6.0
-                    let imageSize = CGSizeMake(20.0, 20.0)
-                    let titleSize = APIManager.sizeForString(buttonText, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
-                    
-                    let buttonImageView = UIImageView()
-                    buttonImageView.image = buttonImage
-                    let buttonImageViewX = (buttonRect.width - (imageSize.width + imageAndTitleSpacing + titleSize.width)) / 2
-                    let buttonImageViewY = (buttonRect.height - imageSize.height) / 2
-                    buttonImageView.frame = CGRectMake(buttonImageViewX, buttonImageViewY, imageSize.width, imageSize.height)
-                    button.addSubview(buttonImageView)
-                    
-                    let buttonTitleLabel = UILabel()
-                    buttonTitleLabel.text = buttonText
-                    buttonTitleLabel.textColor = style.buttonTextColor()
-                    buttonTitleLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
-                    let buttonTitleLabelX = buttonImageViewX + imageSize.width + imageAndTitleSpacing
-                    let buttonTitleLabelY = (buttonRect.height - titleSize.height) / 2
-                    buttonTitleLabel.frame = CGRectMake(buttonTitleLabelX, buttonTitleLabelY, titleSize.width, titleSize.height)
-                    button.addSubview(buttonTitleLabel)
-                    
-                    button.backgroundColor = style.buttonBackgroundColor()
-                    button.layer.borderColor = style.borderColor()
-                    button.layer.borderWidth = 1.0
-                    button.layer.masksToBounds = true
-                    button.layer.cornerRadius = 5.0
-                    button.tag = index
-                    button.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
-                    
-                    addSubview(button)
-                    
-                case .ButtonItemTitle(let style, let buttonText, _):
-                    let titleSize = APIManager.sizeForString(buttonText, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
-                    
-                    let buttonTitleLabel = UILabel()
-                    buttonTitleLabel.text = buttonText
-                    buttonTitleLabel.textColor = style.buttonTextColor()
-                    buttonTitleLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
-                    let buttonTitleLabelX = (buttonRect.width - titleSize.width) / 2
-                    let buttonTitleLabelY = (buttonRect.height - titleSize.height) / 2
-                    buttonTitleLabel.frame = CGRectMake(buttonTitleLabelX, buttonTitleLabelY, titleSize.width, titleSize.height)
-                    button.addSubview(buttonTitleLabel)
-                    
-                    button.backgroundColor = style.buttonBackgroundColor()
-                    button.layer.borderColor = style.borderColor()
-                    button.layer.borderWidth = 1.0
-                    button.layer.masksToBounds = true
-                    button.layer.cornerRadius = 5.0
-                    button.tag = index
-                    button.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
-                    
-                    addSubview(button)
-                    
-                default:
-                    break
-                }
+                button.setButton(theButtonItemArray[index], buttonSize: buttonRect.size)
+                button.tag = index
+                button.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+                addSubview(button)
+                
                 buttons.append(button)
             }
         }
