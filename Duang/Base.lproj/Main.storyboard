@@ -568,6 +568,48 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="bfW-Lp-r3z">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bfW-Lp-r3z" id="qd5-0X-TNY">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="g4a-fh-0Uq">
+                                                    <rect key="frame" x="5" y="5" width="40" height="40"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="g4a-fh-0Uq" secondAttribute="height" multiplier="1:1" id="V2T-O7-7x7"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eb1-sk-wYq">
+                                                    <rect key="frame" x="535" y="5" width="60" height="40"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="eb1-sk-wYq" secondAttribute="height" multiplier="3:2" id="KVF-Wk-aOO"/>
+                                                    </constraints>
+                                                    <state key="normal" title="Button">
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1X8-b2-uTW">
+                                                    <rect key="frame" x="50" y="5" width="480" height="40"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="1X8-b2-uTW" firstAttribute="leading" secondItem="g4a-fh-0Uq" secondAttribute="trailing" constant="5" id="3R6-Hl-ZJ8"/>
+                                                <constraint firstItem="1X8-b2-uTW" firstAttribute="top" secondItem="qd5-0X-TNY" secondAttribute="topMargin" constant="-3" id="G8e-vf-w09"/>
+                                                <constraint firstItem="eb1-sk-wYq" firstAttribute="leading" secondItem="1X8-b2-uTW" secondAttribute="trailing" constant="5" id="I5G-tL-BrR"/>
+                                                <constraint firstAttribute="trailing" secondItem="eb1-sk-wYq" secondAttribute="trailing" constant="5" id="KAH-pW-i3o"/>
+                                                <constraint firstItem="g4a-fh-0Uq" firstAttribute="top" secondItem="qd5-0X-TNY" secondAttribute="top" constant="5" id="OMn-1B-VEb"/>
+                                                <constraint firstItem="g4a-fh-0Uq" firstAttribute="leading" secondItem="qd5-0X-TNY" secondAttribute="leading" constant="5" id="SNT-gF-T12"/>
+                                                <constraint firstAttribute="bottom" secondItem="eb1-sk-wYq" secondAttribute="bottom" constant="5" id="STO-Ue-bXN"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="1X8-b2-uTW" secondAttribute="bottom" constant="-3" id="XEN-qy-fts"/>
+                                                <constraint firstAttribute="bottom" secondItem="g4a-fh-0Uq" secondAttribute="bottom" constant="5" id="YW5-l8-O95"/>
+                                                <constraint firstItem="eb1-sk-wYq" firstAttribute="top" secondItem="qd5-0X-TNY" secondAttribute="top" constant="5" id="yT8-vJ-239"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="tQ9-8h-W4D" id="kIU-S1-EKe"/>
@@ -705,7 +747,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iui-Mh-ncD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2459" y="1329"/>
+            <point key="canvasLocation" x="2521" y="1865"/>
         </scene>
         <!--Signup View Controller-->
         <scene sceneID="P5o-Ue-pwE">
@@ -831,7 +873,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QLB-FS-H3K" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2459" y="660"/>
+            <point key="canvasLocation" x="2521" y="1196"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="tfZ-f4-CZP">

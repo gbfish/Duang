@@ -11,6 +11,7 @@ import UIKit
 protocol DTableViewControllerProtocol
 {
     func protocolSignUpSuccess()
+    func protocolLogInSuccess()
 }
 
 class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, DTableViewControllerProtocol, DTableViewModelProtocol, DTableViewCellButtonsProtocol, DTableViewCellTextFieldProtocol
@@ -36,31 +37,14 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var delegate: DTableViewControllerProtocol?
     
     func protocolSignUpSuccess() {
-        println("protocolSignUpSuccess")
-        
         showMainTabBarController()
-        
-//        if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DTableViewController") as? DTableViewController {
-//            viewController.delegate = self
-//            viewController.dTableViewModel.tableType = DTableViewModel.TableType.Landing
-//            
-//            
-//            navigationController?.presentViewController(viewController, animated: true, completion: nil)
-//            
-////            presentViewController(viewController, animated: true, completion: nil)
-//            
-////            self.navigationController?.pushViewController(viewController, animated: true)
-//        }
-        
-//        performSegueWithIdentifier("MainTabBar", sender: nil)
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        print("prepareForSegue")
-        
-        
-        
+    func protocolLogInSuccess() {
+        showMainTabBarController()
     }
+    
+    
     
     // MARK: - DTableViewModel
     
@@ -71,6 +55,15 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func dataDidLoad() {
         title = dTableViewModel.viewControllerTitle
         tableView.reloadData()
+        
+        switch dTableViewModel.tableType {
+        case .Landing:
+            if APIManager.sharedInstance.isCurrentUserAuthenticated {
+                showMainTabBarController()
+            }
+        default:
+            break
+        }
     }
     
     // MARK: - TableView
@@ -149,7 +142,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         buttonItem.functionAction()
     }
     
-    // MARK: - DTableViewCellTextField
+    // MARK: - Cell DTableViewCellTextField
     
     var textFieldArray = [DTableViewCellTextField]()
     var textFieldModelRowArray = [DTableViewModelRow]()
@@ -164,6 +157,22 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         textFieldArray.append(textField)
         textFieldModelRowArray.append(modelRow)
+    }
+    
+    func getTextArray() -> [String] {
+        textFieldIfGoNext = false
+        textFieldFirstResponder.cellTextField.resignFirstResponder()
+        
+        var textArray = [String]()
+        for var index = 0; index < textFieldModelRowArray.count; ++index {
+            switch textFieldModelRowArray[index].rowType {
+            case .TextField(_, let textFieldText, _):
+                textArray.append(textFieldText ?? "")
+            default:
+                break
+            }
+        }
+        return textArray
     }
     
     // MARK: DTableViewCellTextFieldProtocol
@@ -193,6 +202,14 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
+    // MARK: - Alert
+    
+    func showAlert(title: String, message: String) {
+        var alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in }))
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
     // MARK: - Function
     
     func setDTableViewModelFunctions() {
@@ -202,20 +219,12 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             dTableViewModel.functionShowLogIn = DTableViewModelRow.Function.Function(argumentCount: 0, function: showLogIn)
         case .SignUp:
             dTableViewModel.functionSignUp = DTableViewModelRow.Function.Function(argumentCount: 0, function: signUp)
+        case .LogIn:
+            dTableViewModel.functionLogIn = DTableViewModelRow.Function.Function(argumentCount: 0, function: logIn)
         }
     }
     
-    func showSignUp() {
-        println("showSignUp")
-        
-        showDTableViewController(DTableViewModel.TableType.SignUp)
-    }
-    
-    func showLogIn() {
-        println("showLogIn")
-        
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
+    // MARK: Show ViewController
     
     func showDTableViewController(presentedViewTableType: DTableViewModel.TableType) {
         if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DTableViewController") as? DTableViewController {
@@ -225,66 +234,50 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
+    func showSignUp() {
+        showDTableViewController(DTableViewModel.TableType.SignUp)
+    }
+    
+    func showLogIn() {
+        showDTableViewController(DTableViewModel.TableType.LogIn)
+    }
+    
     func showMainTabBarController() {
         if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("MainTabBarController") as? MainTabBarController {
             navigationController?.presentViewController(viewController, animated: true, completion: nil)
         }
     }
     
-    
-    
-    // MARK: - Signup
+    // MARK: SignUp
     
     func signUp() {
-        textFieldIfGoNext = false
-        textFieldFirstResponder.cellTextField.resignFirstResponder()
-        
-        println("signUp")
-        
-        var textArray = [String]()
-        for var index = 0; index < textFieldModelRowArray.count; ++index {
-            switch textFieldModelRowArray[index].rowType {
-            case .TextField(_, let textFieldText, _):
-                textArray.append(textFieldText ?? "")
-            default:
-                break
-            }
-        }
+        let textArray = getTextArray()
         
         let userName = textArray[0]
         let password = textArray[1]
         let email = textArray[2]
         
         if userName == "" {
-            var deleteAlert = UIAlertController(title: "Sorry", message: "User name is empty.", preferredStyle: UIAlertControllerStyle.Alert)
-            deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-            }))
-            presentViewController(deleteAlert, animated: true, completion: nil)
+            showAlert("Sorry", message: "User name is empty.")
         } else if password == "" {
-            var deleteAlert = UIAlertController(title: "Sorry", message: "Password is empty.", preferredStyle: UIAlertControllerStyle.Alert)
-            deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-            }))
-            presentViewController(deleteAlert, animated: true, completion: nil)
+            showAlert("Sorry", message: "Password is empty.")
         } else if !APIManager.validateEmail(email) {
-            var deleteAlert = UIAlertController(title: "Sorry", message: "That email address is not valid.", preferredStyle: UIAlertControllerStyle.Alert)
-            deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-            }))
-            presentViewController(deleteAlert, animated: true, completion: nil)
+            showAlert("Sorry", message: "That email address is not valid.")
         } else {
             APIManager.sharedInstance.signup(userName, password: password, email: email, success: { () -> () in
-                self.signupSuccess()
+                self.signUpSuccess()
             }, failure: { (error) -> () in
-                self.signupFailure(error)
+                self.signUpFailure(error)
             })
         }
     }
     
-    func signupSuccess() {
+    func signUpSuccess() {
         delegate?.protocolSignUpSuccess()
         navigationController?.popViewControllerAnimated(true)
     }
     
-    func signupFailure(error: NSError?) {
+    func signUpFailure(error: NSError?) {
         var errorString = "There was a problem processing your request."
         if let theError = error {
             if let userInfo = theError.userInfo as? [NSObject: NSObject] {
@@ -293,10 +286,38 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 }
             }
         }
-        var deleteAlert = UIAlertController(title: "Sorry", message: "\(errorString)", preferredStyle: UIAlertControllerStyle.Alert)
-        deleteAlert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-        }))
-        presentViewController(deleteAlert, animated: true, completion: nil)
+        showAlert("Sorry", message: "\(errorString)")
     }
+    
+    // MARK: LogIn
+    
+    func logIn() {
+        let textArray = getTextArray()
+        
+        let userName = textArray[0]
+        let password = textArray[1]
+        
+        if userName == "" {
+            showAlert("Sorry", message: "User name is empty.")
+        } else if password == "" {
+            showAlert("Sorry", message: "Password is empty.")
+        } else {
+            APIManager.sharedInstance.login(userName, password: password, success: { () -> () in
+                self.logInSuccess()
+            }) { () -> () in
+                self.logInFailure()
+            }
+        }
+    }
+    
+    func logInSuccess() {
+        delegate?.protocolLogInSuccess()
+        navigationController?.popViewControllerAnimated(true)
+    }
+    
+    func logInFailure() {
+        showAlert("Sorry", message: "The user name and password do not match our records.")
+    }
+
 
 }

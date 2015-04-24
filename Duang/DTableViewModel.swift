@@ -65,6 +65,7 @@ class DTableViewModel
     enum TableType {
         case Landing
         case SignUp
+        case LogIn
     }
     
     var tableType = TableType.Landing
@@ -112,6 +113,27 @@ class DTableViewModel
             row.rowType = DTableViewModelRow.RowType.Buttons(buttonItemArray: [buttonItem])
             section.rowArray.append(row)
             sectionArray.append(section)
+            
+        case .LogIn:
+            viewControllerTitle = "Log in"
+            
+            let usernameSize = APIManager.sizeForString("Username:", font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
+            let passwordSize = APIManager.sizeForString("Password:", font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
+            let widthMax = max(usernameSize.width, passwordSize.width)
+            row.rowType = DTableViewModelRow.RowType.TextField(textFieldTitle: "Username:", textFieldText: nil, textFieldTitleWidth: widthMax)
+            section.rowArray.append(row)
+            row = DTableViewModelRow()
+            row.rowType = DTableViewModelRow.RowType.TextField(textFieldTitle: "Password:", textFieldText: nil, textFieldTitleWidth: widthMax)
+            section.rowArray.append(row)
+            row = DTableViewModelRow()
+            sectionArray.append(section)
+            
+            row = DTableViewModelRow()
+            section = DTableViewModelSection()
+            let buttonItem = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Log in", function: functionLogIn)
+            row.rowType = DTableViewModelRow.RowType.Buttons(buttonItemArray: [buttonItem])
+            section.rowArray.append(row)
+            sectionArray.append(section)
         }
         
         dataDidLoad()
@@ -141,6 +163,7 @@ class DTableViewModel
     var functionShowLogIn = DTableViewModelRow.Function.Nothing
     
     var functionSignUp = DTableViewModelRow.Function.Nothing
+    var functionLogIn = DTableViewModelRow.Function.Nothing
     
 
 }

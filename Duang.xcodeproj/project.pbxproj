@@ -166,6 +166,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5603E15C1AE9BEB900FD306D /* old */ = {
+			isa = PBXGroup;
+			children = (
+				568A5CB71AB8A4AB00EF43F4 /* DuangTable */,
+				5687C65A1AB0F2D400ED0005 /* LoginAndRegister */,
+			);
+			name = old;
+			sourceTree = "<group>";
+		};
 		5687C65A1AB0F2D400ED0005 /* LoginAndRegister */ = {
 			isa = PBXGroup;
 			children = (
@@ -241,10 +250,9 @@
 				569E7A781AB0DADF009BF47B /* ViewController.swift */,
 				5687C65F1AB1185200ED0005 /* Global */,
 				E8E416C51ABE976600D7727C /* API */,
-				568A5CB71AB8A4AB00EF43F4 /* DuangTable */,
 				56E70EA41AE70B77008478A3 /* DTable */,
 				E8E416C81ABEA53600D7727C /* TabBar */,
-				5687C65A1AB0F2D400ED0005 /* LoginAndRegister */,
+				5603E15C1AE9BEB900FD306D /* old */,
 				569E7A7A1AB0DADF009BF47B /* Main.storyboard */,
 				569E7A7D1AB0DADF009BF47B /* Images.xcassets */,
 				569E7A7F1AB0DADF009BF47B /* LaunchScreen.xib */,

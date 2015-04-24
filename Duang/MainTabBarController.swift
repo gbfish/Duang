@@ -14,12 +14,12 @@ class MainTabBarController: UITabBarController
         super.viewDidLoad()
         
         var temViewControllers = [UIViewController]()
-        if let viewController = getViewController(DTableViewModel.TableType.Landing, itemTitle: TabBarTitle.Feed, itemImageName: "TabBar_Images", tag: 0) {
+        if let viewController = getViewController(DTableViewModel.TableType.SignUp, itemTitle: TabBarTitle.Feed, itemImageName: "TabBar_Images", tag: 0) {
             temViewControllers.append(viewController)
         }
-//        if let viewController = getViewController(DuangTableViewController.TableType.Users, itemTitle: TabBarTitle.Users, itemImageName: "TabBar_Users", tag: 1) {
-//            temViewControllers.append(viewController)
-//        }
+        if let viewController = getViewController(DTableViewModel.TableType.LogIn, itemTitle: TabBarTitle.Users, itemImageName: "TabBar_Users", tag: 1) {
+            temViewControllers.append(viewController)
+        }
 //        if let viewController = getViewController(DuangTableViewController.TableType.AddPost, itemTitle: TabBarTitle.AddPost, itemImageName: "TabBar_Add", tag: 2) {
 //            temViewControllers.append(viewController)
 //        }
