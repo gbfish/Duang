@@ -14,7 +14,7 @@ protocol DTableViewControllerProtocol
     func protocolLogInSuccess()
 }
 
-class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, DTableViewControllerProtocol, DTableViewModelProtocol, DTableViewCellButtonsProtocol, DTableViewCellTextFieldProtocol, DTableViewCellTextViewProtocol
+class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, DTableViewControllerProtocol, DTableViewModelProtocol, DTableViewCellButtonsProtocol, DTableViewCellTextViewProtocol
 {
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -110,16 +110,16 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     cell.reloadView()
                     return cell
                 }
-            case .TextField(let textFieldTitle, let textFieldText, let textFieldTitleWidth):
-                if let cell = tableView.dequeueReusableCellWithIdentifier(modelRow.cellIdentifier(), forIndexPath: indexPath) as? DTableViewCellTextField {
-                    cell.delegate = self
-                    cell.cellTitle = textFieldTitle
-                    cell.cellText = textFieldText
-                    cell.cellTitleWidth = textFieldTitleWidth
-                    cell.reloadView()
-                    addTextField(cell, modelRow: modelRow)
-                    return cell
-                }
+//            case .TextField(let textFieldTitle, let textFieldText, let textFieldTitleWidth):
+//                if let cell = tableView.dequeueReusableCellWithIdentifier(modelRow.cellIdentifier(), forIndexPath: indexPath) as? DTableViewCellTextField {
+//                    cell.delegate = self
+//                    cell.cellTitle = textFieldTitle
+//                    cell.cellText = textFieldText
+//                    cell.cellTitleWidth = textFieldTitleWidth
+//                    cell.reloadView()
+//                    addTextField(cell, modelRow: modelRow)
+//                    return cell
+//                }
                 
             case .Detail(let image, let imageFile, let isRound, let detailTitle, let detailButton):
                 if let cell = tableView.dequeueReusableCellWithIdentifier(modelRow.cellIdentifier(), forIndexPath: indexPath) as? DTableViewCellDetail {
@@ -178,7 +178,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     // MARK: - Cell DTableViewCellTextField
-    
+    /*
     var textFieldArray = [DTableViewCellTextField]()
     var textFieldModelRowArray = [DTableViewModelRow]()
     var textFieldIfGoNext = true
@@ -236,6 +236,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
         }
     }
+*/
     
     // MARK: - Cell DTableViewCellTextView
     

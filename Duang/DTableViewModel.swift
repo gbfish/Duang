@@ -98,7 +98,7 @@ class DTableViewModel
             let passwordSize = APIManager.sizeForString("Password:", font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
             let emailSize = APIManager.sizeForString("Email:", font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
             let widthMax = max(usernameSize.width, passwordSize.width, emailSize.width)
-            //
+            
             row = DTableViewModelRow()
             row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: 50.0, textViewTitle: "Username:", textViewText: nil, textViewTitleWidth: widthMax)
             section.rowArray.append(row)
@@ -110,16 +110,6 @@ class DTableViewModel
             row = DTableViewModelRow()
             row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: 50.0, textViewTitle: "Email:", textViewText: nil, textViewTitleWidth: widthMax)
             section.rowArray.append(row)
-            //
-//            row = DTableViewModelRow()
-//            row.rowType = DTableViewModelRow.RowType.TextField(textFieldTitle: "Username:", textFieldText: nil, textFieldTitleWidth: widthMax)
-//            section.rowArray.append(row)
-//            row = DTableViewModelRow()
-//            row.rowType = DTableViewModelRow.RowType.TextField(textFieldTitle: "Password:", textFieldText: nil, textFieldTitleWidth: widthMax)
-//            section.rowArray.append(row)
-//            row = DTableViewModelRow()
-//            row.rowType = DTableViewModelRow.RowType.TextField(textFieldTitle: "Email:", textFieldText: nil, textFieldTitleWidth: widthMax)
-//            section.rowArray.append(row)
             sectionArray.append(section)
             
             row = DTableViewModelRow()
@@ -135,12 +125,14 @@ class DTableViewModel
             let usernameSize = APIManager.sizeForString("Username:", font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
             let passwordSize = APIManager.sizeForString("Password:", font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
             let widthMax = max(usernameSize.width, passwordSize.width)
-            row.rowType = DTableViewModelRow.RowType.TextField(textFieldTitle: "Username:", textFieldText: nil, textFieldTitleWidth: widthMax)
-            section.rowArray.append(row)
+            
             row = DTableViewModelRow()
-            row.rowType = DTableViewModelRow.RowType.TextField(textFieldTitle: "Password:", textFieldText: nil, textFieldTitleWidth: widthMax)
+            row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: 50.0, textViewTitle: "Username:", textViewText: nil, textViewTitleWidth: widthMax)
             section.rowArray.append(row)
+            
             row = DTableViewModelRow()
+            row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: 50.0, textViewTitle: "Password:", textViewText: nil, textViewTitleWidth: widthMax)
+            section.rowArray.append(row)
             sectionArray.append(section)
             
             row = DTableViewModelRow()
@@ -179,26 +171,6 @@ class DTableViewModel
             }, failure: { (error) -> () in
                 self.dataDidLoad()
             })
-            
-            
-            
-//            let usernameSize = APIManager.sizeForString("Username:", font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
-//            let passwordSize = APIManager.sizeForString("Password:", font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
-//            let widthMax = max(usernameSize.width, passwordSize.width)
-//            row.rowType = DTableViewModelRow.RowType.TextField(textFieldTitle: "Username:", textFieldText: nil, textFieldTitleWidth: widthMax)
-//            section.rowArray.append(row)
-//            row = DTableViewModelRow()
-//            row.rowType = DTableViewModelRow.RowType.TextField(textFieldTitle: "Password:", textFieldText: nil, textFieldTitleWidth: widthMax)
-//            section.rowArray.append(row)
-//            row = DTableViewModelRow()
-//            sectionArray.append(section)
-//            
-//            row = DTableViewModelRow()
-//            section = DTableViewModelSection()
-//            let buttonItem = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Log in", function: functionLogIn)
-//            row.rowType = DTableViewModelRow.RowType.Buttons(buttonItemArray: [buttonItem])
-//            section.rowArray.append(row)
-//            sectionArray.append(section)
         }
         
         dataDidLoad()

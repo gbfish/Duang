@@ -16,10 +16,7 @@ class DTableViewModelRow
         case Nothing
         case Buttons(buttonItemArray: [ButtonItem])
         case Image(heightForRow: CGFloat?, image: UIImage?, imageFile: PFFile?, function: Function?)
-        
-        case TextField(textFieldTitle: String?, textFieldText: String?, textFieldTitleWidth: CGFloat?)
         case TextView(heightForRow: CGFloat?, textViewTitle: String?, textViewText: String?, textViewTitleWidth: CGFloat?)
-        
         case Detail(image: UIImage?, imageFile: PFFile?, isRound: Bool, detailTitle: String?, detailButton: ButtonItem?)
         case Label(text: String?, font: UIFont?)
     }
@@ -32,8 +29,6 @@ class DTableViewModelRow
             return "DTableViewCellButtons"
         case .Image(_):
             return "DTableViewCellImage"
-        case .TextField(_):
-            return "DTableViewCellTextField"
         case .Detail(_):
             return "DTableViewCellDetail"
         case .Label(_):
