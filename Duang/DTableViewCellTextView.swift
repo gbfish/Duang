@@ -11,7 +11,8 @@ import UIKit
 protocol DTableViewCellTextViewProtocol
 {
     func dTableViewCellTextViewCellHeight(dTableViewCellTextView: DTableViewCellTextView, newHeightForRow: CGFloat)
-    
+    func dTableViewCellTextViewDidBeginEditing(dTableViewCellTextView: DTableViewCellTextView)
+    func dTableViewCellTextViewDidEndEditing(dTableViewCellTextView: DTableViewCellTextView)
 }
 
 class DTableViewCellTextView: UITableViewCell, UITextViewDelegate
@@ -83,25 +84,24 @@ class DTableViewCellTextView: UITableViewCell, UITextViewDelegate
         } else {
             textViewHeight = newSize.height
         }
-        
-        
-        println("newSize.height = \(newSize.height) - textViewHeight = \(textViewHeight)")
-        
         newFrame.size = CGSizeMake(fixedWidth, textViewHeight)
         textView.frame = newFrame
     }
     
-//    func textFieldDidBeginEditing(textField: UITextField) {
-//        delegate?.dTableViewCellTextFieldDidBeginEditing(self)
-//    }
-//    
-//    func textFieldDidEndEditing(textField: UITextField) {
-//        delegate?.dTableViewCellTextFieldDidEndEditing(self)
-//    }
-//    
-//    func textFieldShouldReturn(textField: UITextField) -> Bool {
-//        textField.resignFirstResponder()
-//        return true
-//    }
-
+    func textViewDidBeginEditing(textView: UITextView) {
+        delegate?.dTableViewCellTextViewDidBeginEditing(self)
+    }
+    
+    func textViewDidEndEditing(textView: UITextView) {
+        delegate?.dTableViewCellTextViewDidEndEditing(self)
+    }
+    
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.resignFirstResponder()
+            return false
+        } else {
+            return true
+        }
+    }
 }

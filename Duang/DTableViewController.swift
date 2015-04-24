@@ -241,6 +241,8 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     var textViewArray = [DTableViewCellTextView]()
     var textViewModelRowArray = [DTableViewModelRow]()
+    var textViewIfGoNext = true
+    var textViewFirstResponder = DTableViewCellTextView()
     
     func addTextView(textView: DTableViewCellTextView, modelRow: DTableViewModelRow) {
         for temTextView in textViewArray {
@@ -252,14 +254,28 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         textViewModelRowArray.append(modelRow)
     }
     
+    func getTextArrayFromTextViewArray() -> [String] {
+        textViewIfGoNext = false
+        textViewFirstResponder.cellTextView.resignFirstResponder()
+        
+        var textArray = [String]()
+        for var index = 0; index < textViewModelRowArray.count; ++index {
+            switch textViewModelRowArray[index].rowType {
+            case .TextView(_, _, let textViewText, _):
+                textArray.append(textViewText ?? "")
+            default:
+                break
+            }
+        }
+        return textArray
+    }
+    
     // MARK: DTableViewCellTextViewProtocol
     
     func dTableViewCellTextViewCellHeight(dTableViewCellTextView: DTableViewCellTextView, newHeightForRow: CGFloat) {
-        
         for var index = 0; index < textViewArray.count; ++index {
             if dTableViewCellTextView == textViewArray[index] {
                 var modelRow = textViewModelRowArray[index]
-                
                 switch modelRow.rowType {
                 case .TextView(let heightForRow, let textViewTitle, let textViewText, let textViewTitleWidth):
                     if heightForRow != newHeightForRow {
@@ -270,8 +286,31 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 default:
                     break
                 }
-                
-                
+            }
+        }
+    }
+    
+    func dTableViewCellTextViewDidBeginEditing(dTableViewCellTextView: DTableViewCellTextView) {
+        textViewIfGoNext = true
+        textViewFirstResponder = dTableViewCellTextView
+    }
+    
+    func dTableViewCellTextViewDidEndEditing(dTableViewCellTextView: DTableViewCellTextView) {
+        for var index = 0; index < textViewArray.count; ++index {
+            if dTableViewCellTextView == textViewArray[index] {
+                var modelRow = textViewModelRowArray[index]
+                if let theTextViewText = dTableViewCellTextView.cellTextView.text {
+                    switch modelRow.rowType {
+                    case .TextView(let heightForRow, let textViewTitle, _, let textViewTitleWidth):
+                        modelRow.rowType = DTableViewModelRow.RowType.TextView(heightForRow: heightForRow, textViewTitle: textViewTitle, textViewText: theTextViewText, textViewTitleWidth: textViewTitleWidth)
+                    default:
+                        break
+                    }
+                }
+                if textViewIfGoNext && index < textViewArray.count - 1 {
+                    let nextTextView = textViewArray[index + 1]
+                    nextTextView.cellTextView.becomeFirstResponder()
+                }
             }
         }
     }
@@ -327,7 +366,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // MARK: SignUp
     
     func signUp() {
-        let textArray = getTextArray()
+        let textArray = getTextArrayFromTextViewArray()
         
         let userName = textArray[0]
         let password = textArray[1]
@@ -368,7 +407,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // MARK: LogIn
     
     func logIn() {
-        let textArray = getTextArray()
+        let textArray = getTextArrayFromTextViewArray()
         
         let userName = textArray[0]
         let password = textArray[1]
