@@ -120,6 +120,30 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     addTextField(cell, modelRow: modelRow)
                     return cell
                 }
+                
+            case .Detail(let image, let imageFile, let isRound, let detailTitle, let detailButton):
+                if let cell = tableView.dequeueReusableCellWithIdentifier(modelRow.cellIdentifier(), forIndexPath: indexPath) as? DTableViewCellDetail {
+//                    cell.delegate = self
+                    cell.detailText = detailTitle
+                    
+                    cell.detailImage = image
+                    cell.detailImageFile = imageFile
+                    cell.detailImageIsRound = isRound
+
+                    cell.buttonItem = detailButton
+                    
+                    cell.reloadView()
+                    return cell
+                }
+                
+            case .Label(let text, let font):
+                if let cell = tableView.dequeueReusableCellWithIdentifier(modelRow.cellIdentifier(), forIndexPath: indexPath) as? DTableViewCellLabel {
+                    cell.cellLabelText = text
+                    cell.cellLabelFont = font
+                    cell.reloadView()
+                    return cell
+                }
+                
             default:
                 break
             }
@@ -221,6 +245,8 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             dTableViewModel.functionSignUp = DTableViewModelRow.Function.Function(argumentCount: 0, function: signUp)
         case .LogIn:
             dTableViewModel.functionLogIn = DTableViewModelRow.Function.Function(argumentCount: 0, function: logIn)
+        default:
+            break
         }
     }
     

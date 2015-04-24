@@ -82,11 +82,11 @@ class APIManager {
         return nil
     }
     
-    class func getHeightFromObject(object: PFObject, keyWidth: String, keyHeight: String) -> CGFloat? {
-        if let width = object[keyWidth] as? CGFloat {
-            if let height = object[keyHeight] as? CGFloat {
-                return DuangGlobal.screenWidth * height / width
-            }
+    // MARK: - Photo
+    
+    class func getHeightFromPhoto(object: PFObject) -> CGFloat? {
+        if let width = object[TablePhoto.ImageWidth] as? CGFloat, height = object[TablePhoto.ImageHeight] as? CGFloat {
+            return UIScreen.mainScreen().bounds.width * height / width
         }
         return nil
     }
@@ -524,9 +524,11 @@ class APIManager {
         }
     }
     
-    func getFeed(success: ([PFObject]) -> (), failure: (NSError?) -> ()) {
+    func getPhotoArray(pageSize: Int, page: Int, success: ([PFObject]) -> (), failure: (NSError?) -> ()) {
         var query = PFQuery(className:TablePhoto.ClassName)
-        query.limit = 20
+        query.limit = pageSize
+        query.skip = (page - 1) * pageSize
+        query.orderByDescending("updatedAt")
         query.findObjectsInBackgroundWithBlock {
             (objects, error) -> Void in
             if error == nil {
@@ -538,6 +540,7 @@ class APIManager {
             }
         }
     }
+    
     
     // MARK: - Table User
     

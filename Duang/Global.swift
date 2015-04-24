@@ -47,6 +47,7 @@ struct DuangColor {
     static let Yellow = UIColor(red: 230.0/255.0, green: 179.0/255.0, blue: 61.0/255.0, alpha: 1.0)
 }
 
+/*
 struct DuangGlobal {
     static var screenWidth: CGFloat {
         let currentOrientation = UIDevice.currentDevice().orientation
@@ -65,7 +66,7 @@ struct DuangGlobal {
             return UIScreen.mainScreen().bounds.width
         }
     }
-}
+}*/
 
 struct TabBarTitle {
     static let Feed = "Feed"

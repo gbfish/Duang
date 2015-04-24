@@ -66,6 +66,7 @@ class DTableViewModel
         case Landing
         case SignUp
         case LogIn
+        case Feed
     }
     
     var tableType = TableType.Landing
@@ -78,7 +79,7 @@ class DTableViewModel
         case .Landing:
             viewControllerTitle = "Duang"
             
-            row.rowType = DTableViewModelRow.RowType.Image(heightForRow: DuangGlobal.screenWidth, image: DuangImage.Welcome, imageFile: nil, function: DTableViewModelRow.Function.Nothing)
+            row.rowType = DTableViewModelRow.RowType.Image(heightForRow: UIScreen.mainScreen().bounds.width, image: DuangImage.Welcome, imageFile: nil, function: DTableViewModelRow.Function.Nothing)
             section.rowArray.append(row)
             sectionArray.append(section)
             
@@ -134,6 +135,56 @@ class DTableViewModel
             row.rowType = DTableViewModelRow.RowType.Buttons(buttonItemArray: [buttonItem])
             section.rowArray.append(row)
             sectionArray.append(section)
+            
+        case .Feed:
+            viewControllerTitle = "Feed"
+            
+            APIManager.sharedInstance.getPhotoArray(50, page: 1, success: { (objectArray) -> () in
+                for object in objectArray {
+                    section = DTableViewModelSection()
+                    
+                    row = DTableViewModelRow()
+                    let user = APIManager.getUserFromObject(object, key: TablePhoto.Owner)
+                    row.rowType = DTableViewModelRow.RowType.Detail(image: ImagePlaceholder.Avatar, imageFile: APIManager.getFileFromUser(user, key: TableUser.Avatar), isRound: true, detailTitle: APIManager.getNameFromUser(user), detailButton: nil)
+                    section.rowArray.append(row)
+                    
+                    row = DTableViewModelRow()
+                    row.rowType = DTableViewModelRow.RowType.Label(text: APIManager.getStringFromObject(object, key: TablePhoto.Description), font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody))
+                    section.rowArray.append(row)
+                    
+                    row = DTableViewModelRow()
+                    
+                    let heightForRow = APIManager.getHeightFromPhoto(object)
+                    row.rowType = DTableViewModelRow.RowType.Image(heightForRow: heightForRow, image: ImagePlaceholder.Image, imageFile: APIManager.getFileFromObject(object, key: TablePhoto.Image), function: nil)
+                    section.rowArray.append(row)
+                    
+                    self.sectionArray.append(section)
+                }
+                self.dataDidLoad()
+                
+            }, failure: { (error) -> () in
+                self.dataDidLoad()
+            })
+            
+            
+            
+//            let usernameSize = APIManager.sizeForString("Username:", font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
+//            let passwordSize = APIManager.sizeForString("Password:", font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
+//            let widthMax = max(usernameSize.width, passwordSize.width)
+//            row.rowType = DTableViewModelRow.RowType.TextField(textFieldTitle: "Username:", textFieldText: nil, textFieldTitleWidth: widthMax)
+//            section.rowArray.append(row)
+//            row = DTableViewModelRow()
+//            row.rowType = DTableViewModelRow.RowType.TextField(textFieldTitle: "Password:", textFieldText: nil, textFieldTitleWidth: widthMax)
+//            section.rowArray.append(row)
+//            row = DTableViewModelRow()
+//            sectionArray.append(section)
+//            
+//            row = DTableViewModelRow()
+//            section = DTableViewModelSection()
+//            let buttonItem = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Log in", function: functionLogIn)
+//            row.rowType = DTableViewModelRow.RowType.Buttons(buttonItemArray: [buttonItem])
+//            section.rowArray.append(row)
+//            sectionArray.append(section)
         }
         
         dataDidLoad()

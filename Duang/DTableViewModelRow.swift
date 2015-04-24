@@ -15,8 +15,10 @@ class DTableViewModelRow
     enum RowType {
         case Nothing
         case Buttons(buttonItemArray: [ButtonItem])
-        case Image(heightForRow: CGFloat, image: UIImage?, imageFile: PFFile?, function: Function)
+        case Image(heightForRow: CGFloat?, image: UIImage?, imageFile: PFFile?, function: Function?)
         case TextField(textFieldTitle: String?, textFieldText: String?, textFieldTitleWidth: CGFloat?)
+        case Detail(image: UIImage?, imageFile: PFFile?, isRound: Bool, detailTitle: String?, detailButton: ButtonItem?)
+        case Label(text: String?, font: UIFont?)
     }
     
     var rowType = RowType.Nothing
@@ -29,6 +31,10 @@ class DTableViewModelRow
             return "DTableViewCellImage"
         case .TextField(_):
             return "DTableViewCellTextField"
+        case .Detail(_):
+            return "DTableViewCellDetail"
+        case .Label(_):
+            return "DTableViewCellLabel"
         default:
             return "DefaultCell"
         }
@@ -39,10 +45,19 @@ class DTableViewModelRow
     func heightForRow() -> CGFloat {
         switch rowType {
         case .Image(let heightForRow, _, _, _):
-            return heightForRow
+            if let theHeightForRow = heightForRow {
+                return theHeightForRow
+            }
+        case .Label(let text, let font):
+            if let theText = text, theFont = font {
+                return APIManager.sizeForString(theText, font: theFont, width: UIScreen.mainScreen().bounds.width - 10, height: CGFloat.max).height
+            } else {
+                return 0.0
+            }
         default:
-            return 50.0
+            break
         }
+        return 50.0
     }
     
     // MARK: - ButtonItem

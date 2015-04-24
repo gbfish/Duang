@@ -57,6 +57,8 @@
 		56FF68F61AD7535C00B228C1 /* ParseFacebookUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56FF68F01AD7535C00B228C1 /* ParseFacebookUtils.framework */; };
 		56FF68F71AD7535C00B228C1 /* ParseFacebookUtilsV4.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56FF68F11AD7535C00B228C1 /* ParseFacebookUtilsV4.framework */; };
 		56FF68F81AD7535C00B228C1 /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56FF68F21AD7535C00B228C1 /* ParseUI.framework */; };
+		E8ABCDC31AEA1F7100B222BD /* DTableViewCellDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8ABCDC21AEA1F7100B222BD /* DTableViewCellDetail.swift */; };
+		E8ABCDC51AEA3D6000B222BD /* DTableViewCellLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8ABCDC41AEA3D6000B222BD /* DTableViewCellLabel.swift */; };
 		E8B4DD271AD98534003A1BDF /* DuangTableDataRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8B4DD261AD98534003A1BDF /* DuangTableDataRow.swift */; };
 		E8E416C71ABEA52500D7727C /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E416C61ABEA52500D7727C /* MainTabBarController.swift */; };
 /* End PBXBuildFile section */
@@ -126,6 +128,8 @@
 		56FF68F01AD7535C00B228C1 /* ParseFacebookUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseFacebookUtils.framework; sourceTree = "<group>"; };
 		56FF68F11AD7535C00B228C1 /* ParseFacebookUtilsV4.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseFacebookUtilsV4.framework; sourceTree = "<group>"; };
 		56FF68F21AD7535C00B228C1 /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
+		E8ABCDC21AEA1F7100B222BD /* DTableViewCellDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTableViewCellDetail.swift; sourceTree = "<group>"; };
+		E8ABCDC41AEA3D6000B222BD /* DTableViewCellLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTableViewCellLabel.swift; sourceTree = "<group>"; };
 		E8B4DD261AD98534003A1BDF /* DuangTableDataRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableDataRow.swift; sourceTree = "<group>"; };
 		E8E416C21ABDCAFC00D7727C /* Duang-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Duang-Bridging-Header.h"; sourceTree = "<group>"; };
 		E8E416C61ABEA52500D7727C /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
@@ -324,6 +328,8 @@
 				56E70EB21AE811A8008478A3 /* DTableViewCellButtons.swift */,
 				56E70EB51AE833B9008478A3 /* DTableViewCellImage.swift */,
 				56E70EB71AE8475D008478A3 /* DTableViewCellTextField.swift */,
+				E8ABCDC21AEA1F7100B222BD /* DTableViewCellDetail.swift */,
+				E8ABCDC41AEA3D6000B222BD /* DTableViewCellLabel.swift */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -473,6 +479,7 @@
 				568A5CB61AB8A49100EF43F4 /* DuangTableViewController.swift in Sources */,
 				568A5CB91AB8A5A200EF43F4 /* DuangTableData.swift in Sources */,
 				56E70EB81AE8475D008478A3 /* DTableViewCellTextField.swift in Sources */,
+				E8ABCDC31AEA1F7100B222BD /* DTableViewCellDetail.swift in Sources */,
 				56E70EAA1AE70EBA008478A3 /* DTableViewController.swift in Sources */,
 				E8E416C71ABEA52500D7727C /* MainTabBarController.swift in Sources */,
 				568A5CBB1AB8AAA600EF43F4 /* DuangTableCellButton.swift in Sources */,
@@ -480,6 +487,7 @@
 				56C6EFE81AC3472A00F91AF4 /* DuangTableCellImageMutable.swift in Sources */,
 				5687C6631AB11D1F00ED0005 /* Extension.swift in Sources */,
 				565F08941AC0888200FDBA4A /* DuangTableCellImageBig.swift in Sources */,
+				E8ABCDC51AEA3D6000B222BD /* DTableViewCellLabel.swift in Sources */,
 				5687C65C1AB0F32900ED0005 /* LandingViewController.swift in Sources */,
 				E8B4DD271AD98534003A1BDF /* DuangTableDataRow.swift in Sources */,
 				5601C5ED1AC6194C00BE4F1B /* DuangTableCellTextView.swift in Sources */,
