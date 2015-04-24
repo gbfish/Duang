@@ -14,7 +14,7 @@ protocol DTableViewControllerProtocol
     func protocolLogInSuccess()
 }
 
-class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, DTableViewControllerProtocol, DTableViewModelProtocol, DTableViewCellButtonsProtocol, DTableViewCellTextFieldProtocol
+class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, DTableViewControllerProtocol, DTableViewModelProtocol, DTableViewCellButtonsProtocol, DTableViewCellTextFieldProtocol, DTableViewCellTextViewProtocol
 {
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -144,6 +144,17 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     return cell
                 }
                 
+            case .TextView(_, let textViewTitle, let textViewText, let textViewTitleWidth):
+                if let cell = tableView.dequeueReusableCellWithIdentifier(modelRow.cellIdentifier(), forIndexPath: indexPath) as? DTableViewCellTextView {
+                    cell.delegate = self
+                    cell.textViewTitle = textViewTitle
+                    cell.textViewText = textViewText
+                    cell.textViewTitleWidth = textViewTitleWidth
+                    cell.reloadView()
+                    addTextView(cell, modelRow: modelRow)
+                    return cell
+                }
+                
             default:
                 break
             }
@@ -222,6 +233,45 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     let nextTextField = textFieldArray[index + 1]
                     nextTextField.cellTextField.becomeFirstResponder()
                 }
+            }
+        }
+    }
+    
+    // MARK: - Cell DTableViewCellTextView
+    
+    var textViewArray = [DTableViewCellTextView]()
+    var textViewModelRowArray = [DTableViewModelRow]()
+    
+    func addTextView(textView: DTableViewCellTextView, modelRow: DTableViewModelRow) {
+        for temTextView in textViewArray {
+            if temTextView == textView {
+                return
+            }
+        }
+        textViewArray.append(textView)
+        textViewModelRowArray.append(modelRow)
+    }
+    
+    // MARK: DTableViewCellTextViewProtocol
+    
+    func dTableViewCellTextViewCellHeight(dTableViewCellTextView: DTableViewCellTextView, newHeightForRow: CGFloat) {
+        
+        for var index = 0; index < textViewArray.count; ++index {
+            if dTableViewCellTextView == textViewArray[index] {
+                var modelRow = textViewModelRowArray[index]
+                
+                switch modelRow.rowType {
+                case .TextView(let heightForRow, let textViewTitle, let textViewText, let textViewTitleWidth):
+                    if heightForRow != newHeightForRow {
+                        modelRow.rowType = DTableViewModelRow.RowType.TextView(heightForRow: newHeightForRow, textViewTitle: textViewTitle, textViewText: textViewText, textViewTitleWidth: textViewTitleWidth)
+                        tableView.beginUpdates()
+                        tableView.endUpdates()
+                    }
+                default:
+                    break
+                }
+                
+                
             }
         }
     }

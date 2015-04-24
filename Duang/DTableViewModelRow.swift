@@ -16,7 +16,10 @@ class DTableViewModelRow
         case Nothing
         case Buttons(buttonItemArray: [ButtonItem])
         case Image(heightForRow: CGFloat?, image: UIImage?, imageFile: PFFile?, function: Function?)
+        
         case TextField(textFieldTitle: String?, textFieldText: String?, textFieldTitleWidth: CGFloat?)
+        case TextView(heightForRow: CGFloat?, textViewTitle: String?, textViewText: String?, textViewTitleWidth: CGFloat?)
+        
         case Detail(image: UIImage?, imageFile: PFFile?, isRound: Bool, detailTitle: String?, detailButton: ButtonItem?)
         case Label(text: String?, font: UIFont?)
     }
@@ -35,6 +38,8 @@ class DTableViewModelRow
             return "DTableViewCellDetail"
         case .Label(_):
             return "DTableViewCellLabel"
+        case .TextView(_):
+            return "DTableViewCellTextView"
         default:
             return "DefaultCell"
         }
@@ -53,6 +58,10 @@ class DTableViewModelRow
                 return APIManager.sizeForString(theText, font: theFont, width: UIScreen.mainScreen().bounds.width - 10, height: CGFloat.max).height
             } else {
                 return 0.0
+            }
+        case .TextView(let heightForRow, _, _, _):
+            if let theHeightForRow = heightForRow {
+                return theHeightForRow
             }
         default:
             break

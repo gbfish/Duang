@@ -98,6 +98,11 @@ class DTableViewModel
             let passwordSize = APIManager.sizeForString("Password:", font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
             let emailSize = APIManager.sizeForString("Email:", font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
             let widthMax = max(usernameSize.width, passwordSize.width, emailSize.width)
+            //
+            row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: 50.0, textViewTitle: "textViewTitle:", textViewText: nil, textViewTitleWidth: widthMax)
+            section.rowArray.append(row)
+            //
+            row = DTableViewModelRow()
             row.rowType = DTableViewModelRow.RowType.TextField(textFieldTitle: "Username:", textFieldText: nil, textFieldTitleWidth: widthMax)
             section.rowArray.append(row)
             row = DTableViewModelRow()

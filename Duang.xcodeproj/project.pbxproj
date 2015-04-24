@@ -13,6 +13,7 @@
 		565F08941AC0888200FDBA4A /* DuangTableCellImageBig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565F08931AC0888200FDBA4A /* DuangTableCellImageBig.swift */; };
 		566AC3E61AB39430001B87D1 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AC3E51AB39430001B87D1 /* LoginViewController.swift */; };
 		566AC3E81AB39E99001B87D1 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566AC3E71AB39E99001B87D1 /* SignupViewController.swift */; };
+		566BB6721AEAB52F00ED868F /* DTableViewCellTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566BB6711AEAB52F00ED868F /* DTableViewCellTextView.swift */; };
 		5671448D1ACC682800EB03F8 /* DuangTableCellLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5671448C1ACC682800EB03F8 /* DuangTableCellLabel.swift */; };
 		5687C6451AB0E6C400ED0005 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5687C6441AB0E6C400ED0005 /* AudioToolbox.framework */; };
 		5687C6471AB0E6D000ED0005 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5687C6461AB0E6D000ED0005 /* CFNetwork.framework */; };
@@ -80,6 +81,7 @@
 		565F08931AC0888200FDBA4A /* DuangTableCellImageBig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableCellImageBig.swift; sourceTree = "<group>"; };
 		566AC3E51AB39430001B87D1 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		566AC3E71AB39E99001B87D1 /* SignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
+		566BB6711AEAB52F00ED868F /* DTableViewCellTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTableViewCellTextView.swift; sourceTree = "<group>"; };
 		5671448C1ACC682800EB03F8 /* DuangTableCellLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DuangTableCellLabel.swift; sourceTree = "<group>"; };
 		5687C6441AB0E6C400ED0005 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		5687C6461AB0E6D000ED0005 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -328,6 +330,7 @@
 				56E70EB21AE811A8008478A3 /* DTableViewCellButtons.swift */,
 				56E70EB51AE833B9008478A3 /* DTableViewCellImage.swift */,
 				56E70EB71AE8475D008478A3 /* DTableViewCellTextField.swift */,
+				566BB6711AEAB52F00ED868F /* DTableViewCellTextView.swift */,
 				E8ABCDC21AEA1F7100B222BD /* DTableViewCellDetail.swift */,
 				E8ABCDC41AEA3D6000B222BD /* DTableViewCellLabel.swift */,
 			);
@@ -480,6 +483,7 @@
 				568A5CB91AB8A5A200EF43F4 /* DuangTableData.swift in Sources */,
 				56E70EB81AE8475D008478A3 /* DTableViewCellTextField.swift in Sources */,
 				E8ABCDC31AEA1F7100B222BD /* DTableViewCellDetail.swift in Sources */,
+				566BB6721AEAB52F00ED868F /* DTableViewCellTextView.swift in Sources */,
 				56E70EAA1AE70EBA008478A3 /* DTableViewController.swift in Sources */,
 				E8E416C71ABEA52500D7727C /* MainTabBarController.swift in Sources */,
 				568A5CBB1AB8AAA600EF43F4 /* DuangTableCellButton.swift in Sources */,
