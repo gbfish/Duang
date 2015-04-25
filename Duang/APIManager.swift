@@ -619,14 +619,25 @@ class APIManager {
         }
     }
     
-    class func sizeForString(string: String, font: UIFont, width: CGFloat, height: CGFloat) -> CGSize {
-        if string == "" {
-            return CGSizeZero
-        } else {
+    class func sizeForString(string: String?, font: UIFont, width: CGFloat, height: CGFloat) -> CGSize {
+        if let theString = string {
             let attributesDictionary = NSDictionary(object: font, forKey: NSFontAttributeName) as [NSObject : AnyObject]
-            let attributedString = NSMutableAttributedString(string: string, attributes: attributesDictionary)
+            let attributedString = NSMutableAttributedString(string: theString, attributes: attributesDictionary)
             let rect = attributedString.boundingRectWithSize(CGSize(width: width, height: height), options: NSStringDrawingOptions.UsesLineFragmentOrigin, context: nil)
             return rect.size
+        } else {
+            return CGSizeZero
         }
+    }
+    
+    class func widthMaxForStrings(stringArray: [String], font: UIFont) -> CGFloat {
+        var returnValue: CGFloat = 0.0
+        for string in stringArray {
+            let stringWidth = APIManager.sizeForString(string, font: font, width: CGFloat.max, height: CGFloat.max).width
+            if stringWidth > returnValue {
+                returnValue = stringWidth
+            }
+        }
+        return returnValue
     }
 }

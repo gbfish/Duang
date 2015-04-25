@@ -271,7 +271,11 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         case .LogIn:
             dTableViewModel.functionLogIn = DTableViewModelRow.Function.Function(argumentCount: 0, function: logIn)
         case .MyProfile:
-            dTableViewModel.functionShowSetting = DTableViewModelRow.Function.Function(argumentCount: 0, function: showSetting)
+            dTableViewModel.functionShowSettings = DTableViewModelRow.Function.Function(argumentCount: 0, function: showSettings)
+        case .Settings:
+            dTableViewModel.functionShowEditProfile = DTableViewModelRow.Function.Function(argumentCount: 0, function: showEditProfile)
+            dTableViewModel.functionShowAccountSettings = DTableViewModelRow.Function.Function(argumentCount: 0, function: showAccountSettings)
+            dTableViewModel.functionLogOut = DTableViewModelRow.Function.Function(argumentCount: 0, function: logOut)
         default:
             break
         }
@@ -295,8 +299,16 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         showDTableViewController(DTableViewModel.TableType.LogIn)
     }
     
-    func showSetting() {
-        showDTableViewController(DTableViewModel.TableType.Setting)
+    func showSettings() {
+        showDTableViewController(DTableViewModel.TableType.Settings)
+    }
+    
+    func showEditProfile() {
+        showDTableViewController(DTableViewModel.TableType.EditProfile)
+    }
+    
+    func showAccountSettings() {
+        showDTableViewController(DTableViewModel.TableType.AccountSettings)
     }
     
     func showMainTabBarController() {
@@ -376,8 +388,11 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         showAlert("Sorry", message: "The user name and password do not match our records.")
     }
 
+    // MARK: logOut
     
-    
+    func logOut() {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
     
 
 }

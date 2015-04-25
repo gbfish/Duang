@@ -26,12 +26,12 @@ class DTableViewCellButtons: UITableViewCell
         }
         
         if let theButtonItemArray = buttonItemArray {
-            let spacing: CGFloat = 5.0
-            let buttonWidth = (self.bounds.width - (spacing * CGFloat(theButtonItemArray.count + 1))) / CGFloat(theButtonItemArray.count)
-            let buttonHeight = self.bounds.height - (spacing * 2)
+            
+            let buttonWidth = (self.bounds.width - (DuangGlobal.spacing * CGFloat(theButtonItemArray.count + 1))) / CGFloat(theButtonItemArray.count)
+            let buttonHeight = self.bounds.height - (DuangGlobal.spacing * 2)
             
             for var index = 0; index < theButtonItemArray.count; ++index {
-                let buttonRect = CGRectMake((buttonWidth + spacing) * CGFloat(index) + spacing, spacing, buttonWidth, buttonHeight)
+                let buttonRect = CGRectMake((buttonWidth + DuangGlobal.spacing) * CGFloat(index) + DuangGlobal.spacing, DuangGlobal.spacing, buttonWidth, buttonHeight)
                 let button = UIButton(frame: buttonRect)
                 
                 button.setButton(theButtonItemArray[index], buttonSize: buttonRect.size)

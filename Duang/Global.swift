@@ -47,26 +47,28 @@ struct DuangColor {
     static let Yellow = UIColor(red: 230.0/255.0, green: 179.0/255.0, blue: 61.0/255.0, alpha: 1.0)
 }
 
-/*
+
 struct DuangGlobal {
-    static var screenWidth: CGFloat {
-        let currentOrientation = UIDevice.currentDevice().orientation
-        if currentOrientation == UIDeviceOrientation.Portrait || currentOrientation == UIDeviceOrientation.PortraitUpsideDown {
-            return UIScreen.mainScreen().bounds.width
-        } else {
-            return UIScreen.mainScreen().bounds.height
-        }
-    }
+    static let spacing: CGFloat = 5.0
     
-    static var screenHeight: CGFloat {
-        let currentOrientation = UIDevice.currentDevice().orientation
-        if currentOrientation == UIDeviceOrientation.Portrait || currentOrientation == UIDeviceOrientation.PortraitUpsideDown {
-            return UIScreen.mainScreen().bounds.height
-        } else {
-            return UIScreen.mainScreen().bounds.width
-        }
-    }
-}*/
+//    static var screenWidth: CGFloat {
+//        let currentOrientation = UIDevice.currentDevice().orientation
+//        if currentOrientation == UIDeviceOrientation.Portrait || currentOrientation == UIDeviceOrientation.PortraitUpsideDown {
+//            return UIScreen.mainScreen().bounds.width
+//        } else {
+//            return UIScreen.mainScreen().bounds.height
+//        }
+//    }
+//    
+//    static var screenHeight: CGFloat {
+//        let currentOrientation = UIDevice.currentDevice().orientation
+//        if currentOrientation == UIDeviceOrientation.Portrait || currentOrientation == UIDeviceOrientation.PortraitUpsideDown {
+//            return UIScreen.mainScreen().bounds.height
+//        } else {
+//            return UIScreen.mainScreen().bounds.width
+//        }
+//    }
+}
 
 struct TabBarTitle {
     static let Feed = "Feed"

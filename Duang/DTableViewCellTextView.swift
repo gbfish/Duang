@@ -27,23 +27,23 @@ class DTableViewCellTextView: UITableViewCell, UITextViewDelegate
     var cellTitleLabel = UILabel()
     var cellTextView = UITextView()
     
-    let spacing: CGFloat = 5.0
+
     let itemHeight: CGFloat = 40.0
     
     func reloadView() {
         
-        var textViewX = spacing
+        var textViewX = DuangGlobal.spacing
         
         cellTitleLabel.removeFromSuperview()
         cellTextView.removeFromSuperview()
         
         if let theTextViewTitle = textViewTitle, theTextViewTitleWidth = textViewTitleWidth {
             cellTitleLabel = UILabel()
-            cellTitleLabel.frame = CGRectMake(spacing, spacing, theTextViewTitleWidth, itemHeight)
+            cellTitleLabel.frame = CGRectMake(DuangGlobal.spacing, DuangGlobal.spacing, theTextViewTitleWidth, itemHeight)
             cellTitleLabel.text = theTextViewTitle
             addSubview(cellTitleLabel)
             
-            textViewX = textViewX + theTextViewTitleWidth + spacing
+            textViewX = textViewX + theTextViewTitleWidth + DuangGlobal.spacing
         }
         
         cellTextView = UITextView()
@@ -54,12 +54,13 @@ class DTableViewCellTextView: UITableViewCell, UITextViewDelegate
         cellTextView.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
         
         cellTextView.delegate = self
-        cellTextView.frame = CGRectMake(textViewX, spacing, self.bounds.width - textViewX - spacing, itemHeight)
+        cellTextView.frame = CGRectMake(textViewX, DuangGlobal.spacing, self.bounds.width - textViewX - DuangGlobal.spacing, itemHeight)
         
         if let theTextViewText = textViewText {
             cellTextView.text = theTextViewText
         }
         addSubview(cellTextView)
+        textViewDidChangeSelection(cellTextView)
     }
     
     // MARK: - UITextViewDelegate
@@ -67,7 +68,7 @@ class DTableViewCellTextView: UITableViewCell, UITextViewDelegate
     var textViewHeight: CGFloat = 40.0 {
         didSet {
             if textViewHeight != oldValue {
-                delegate?.dTableViewCellTextViewCellHeight(self, newHeightForRow: textViewHeight + (spacing * 2))
+                delegate?.dTableViewCellTextViewCellHeight(self, newHeightForRow: textViewHeight + (DuangGlobal.spacing * 2))
             }
         }
     }

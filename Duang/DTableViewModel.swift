@@ -68,7 +68,9 @@ class DTableViewModel
         case LogIn
         case Feed
         case MyProfile
-        case Setting
+        case Settings
+        case EditProfile
+        case AccountSettings
     }
     
     var tableType = TableType.Landing
@@ -99,10 +101,12 @@ class DTableViewModel
             
             let stringArray = ["Username:", "Password:", "Email:"]
             
-            let usernameSize = APIManager.sizeForString(stringArray[0], font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
-            let passwordSize = APIManager.sizeForString(stringArray[1], font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
-            let emailSize = APIManager.sizeForString(stringArray[2], font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
-            let widthMax = max(usernameSize.width, passwordSize.width, emailSize.width)
+//            let usernameSize = APIManager.sizeForString(stringArray[0], font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
+//            let passwordSize = APIManager.sizeForString(stringArray[1], font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
+//            let emailSize = APIManager.sizeForString(stringArray[2], font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
+//            let widthMax = max(usernameSize.width, passwordSize.width, emailSize.width)
+            
+            let widthMax = APIManager.widthMaxForStrings(stringArray, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline))
             
             row = DTableViewModelRow()
             row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: 50.0, textViewTitle: stringArray[0], textViewText: nil, textViewTitleWidth: widthMax)
@@ -129,9 +133,11 @@ class DTableViewModel
             
             let stringArray = ["Username:", "Password:"]
             
-            let usernameSize = APIManager.sizeForString(stringArray[0], font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
-            let passwordSize = APIManager.sizeForString(stringArray[1], font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
-            let widthMax = max(usernameSize.width, passwordSize.width)
+//            let usernameSize = APIManager.sizeForString(stringArray[0], font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
+//            let passwordSize = APIManager.sizeForString(stringArray[1], font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
+//            let widthMax = max(usernameSize.width, passwordSize.width)
+            
+            let widthMax = APIManager.widthMaxForStrings(stringArray, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline))
             
             row = DTableViewModelRow()
             row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: 50.0, textViewTitle: stringArray[0], textViewText: nil, textViewTitleWidth: widthMax)
@@ -184,14 +190,99 @@ class DTableViewModel
             
             row = DTableViewModelRow()
             let user = PFUser.currentUser()
-            let buttonItemSetting = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Setting", function: functionShowSetting)
+            let buttonItemSetting = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Settings", function: functionShowSettings)
             row.rowType = DTableViewModelRow.RowType.Detail(image: ImagePlaceholder.Avatar, imageFile: APIManager.getFileFromUser(user, key: TableUser.Avatar), isRound: true, detailTitle: APIManager.getNameFromUser(user), detailButton: buttonItemSetting)
             section.rowArray.append(row)
             
             sectionArray.append(section)
             
-        case .Setting:
-            viewControllerTitle = "Setting"
+        case .Settings:
+            viewControllerTitle = "Settings"
+            
+            row = DTableViewModelRow()
+            section = DTableViewModelSection()
+            var buttonItem = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Edit profile", function: functionShowEditProfile)
+            row.rowType = DTableViewModelRow.RowType.Buttons(buttonItemArray: [buttonItem])
+            section.rowArray.append(row)
+            
+            row = DTableViewModelRow()
+            buttonItem = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Account settings", function: functionShowAccountSettings)
+            row.rowType = DTableViewModelRow.RowType.Buttons(buttonItemArray: [buttonItem])
+            section.rowArray.append(row)
+            
+            sectionArray.append(section)
+            
+            section = DTableViewModelSection()
+            row = DTableViewModelRow()
+            buttonItem = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Log out", function: functionLogOut)
+            row.rowType = DTableViewModelRow.RowType.Buttons(buttonItemArray: [buttonItem])
+            section.rowArray.append(row)
+            sectionArray.append(section)
+            
+        case .EditProfile:
+            viewControllerTitle = "Edit profile"
+            
+            let user = PFUser.currentUser()
+            
+            row = DTableViewModelRow()
+            var buttonItem = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Edit", function: functionEditAvatar)
+            row.rowType = DTableViewModelRow.RowType.Detail(image: ImagePlaceholder.Avatar, imageFile: APIManager.getFileFromUser(user, key: TableUser.Avatar), isRound: true, detailTitle: "Avatar", detailButton: buttonItem)
+            section.rowArray.append(row)
+            
+            row = DTableViewModelRow()
+            buttonItem = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Edit", function: functionEditBanner)
+            row.rowType = DTableViewModelRow.RowType.Detail(image: ImagePlaceholder.Image, imageFile: APIManager.getFileFromUser(user, key: TableUser.Banner), isRound: false, detailTitle: "Banner", detailButton: buttonItem)
+            section.rowArray.append(row)
+            
+            sectionArray.append(section)
+            
+            section = DTableViewModelSection()
+            
+            let stringArray = ["First name:", "Last name:", "Description"]
+            let widthMax = APIManager.widthMaxForStrings(stringArray, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline))
+            let textViewWidth = UIScreen.mainScreen().bounds.width - widthMax - (DuangGlobal.spacing * 3)
+            
+            row = DTableViewModelRow()
+            
+            var textView = UITextView()
+            textView.text = APIManager.getStringFromUser(user, key: TableUser.FirstName)
+            textView.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
+            
+            var heightForRow = textView.sizeThatFits(CGSizeMake(textViewWidth, CGFloat.max)).height + (DuangGlobal.spacing * 2)
+            if heightForRow < 50.0 {
+                heightForRow = 50.0
+            }
+            row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: heightForRow, textViewTitle: stringArray[0], textViewText: APIManager.getStringFromUser(user, key: TableUser.FirstName), textViewTitleWidth: widthMax)
+            section.rowArray.append(row)
+            
+            row = DTableViewModelRow()
+            
+            textView.text = APIManager.getStringFromUser(user, key: TableUser.LastName)
+            textView.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
+            
+            heightForRow = textView.sizeThatFits(CGSizeMake(textViewWidth, CGFloat.max)).height + (DuangGlobal.spacing * 2)
+            if heightForRow < 50.0 {
+                heightForRow = 50.0
+            }
+            row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: heightForRow, textViewTitle: stringArray[1], textViewText: APIManager.getStringFromUser(user, key: TableUser.LastName), textViewTitleWidth: widthMax)
+            section.rowArray.append(row)
+            
+            row = DTableViewModelRow()
+            
+            textView.text = APIManager.getStringFromUser(user, key: TableUser.Description)
+            textView.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
+            
+            heightForRow = textView.sizeThatFits(CGSizeMake(textViewWidth, CGFloat.max)).height + (DuangGlobal.spacing * 2)
+            if heightForRow < 50.0 {
+                heightForRow = 50.0
+            }
+            row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: heightForRow, textViewTitle: stringArray[2], textViewText: APIManager.getStringFromUser(user, key: TableUser.Description), textViewTitleWidth: widthMax)
+            section.rowArray.append(row)
+            
+            sectionArray.append(section)
+            
+        case .AccountSettings:
+            viewControllerTitle = "Account settings"
         }
         
         dataDidLoad()
@@ -219,11 +310,15 @@ class DTableViewModel
 
     var functionShowSignUp = DTableViewModelRow.Function.Nothing
     var functionShowLogIn = DTableViewModelRow.Function.Nothing
-    var functionShowSetting = DTableViewModelRow.Function.Nothing
+    var functionShowSettings = DTableViewModelRow.Function.Nothing
+    var functionShowEditProfile = DTableViewModelRow.Function.Nothing
+    var functionShowAccountSettings = DTableViewModelRow.Function.Nothing
     
     var functionSignUp = DTableViewModelRow.Function.Nothing
     var functionLogIn = DTableViewModelRow.Function.Nothing
-    
+    var functionLogOut = DTableViewModelRow.Function.Nothing
+    var functionEditAvatar = DTableViewModelRow.Function.Nothing
+    var functionEditBanner = DTableViewModelRow.Function.Nothing
     
     
 
