@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MobileCoreServices
 
 protocol DTableViewControllerProtocol
 {
@@ -14,7 +15,7 @@ protocol DTableViewControllerProtocol
     func protocolLogInSuccess()
 }
 
-class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, DTableViewControllerProtocol, DTableViewModelProtocol, DTableViewCellButtonsProtocol, DTableViewCellTextViewProtocol, DTableViewCellDetailProtocol
+class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, DTableViewControllerProtocol, DTableViewModelProtocol, DTableViewCellButtonsProtocol, DTableViewCellTextViewProtocol, DTableViewCellDetailProtocol
 {
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -276,6 +277,8 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             dTableViewModel.functionShowEditProfile = DTableViewModelRow.Function.Function(argumentCount: 0, function: showEditProfile)
             dTableViewModel.functionShowAccountSettings = DTableViewModelRow.Function.Function(argumentCount: 0, function: showAccountSettings)
             dTableViewModel.functionLogOut = DTableViewModelRow.Function.Function(argumentCount: 0, function: logOut)
+        case .EditProfile:
+            dTableViewModel.functionEditAvatar = DTableViewModelRow.Function.Function(argumentCount: 0, function: logOut)
         default:
             break
         }
@@ -314,6 +317,131 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func showMainTabBarController() {
         if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("MainTabBarController") as? MainTabBarController {
             navigationController?.presentViewController(viewController, animated: true, completion: nil)
+        }
+    }
+    
+    // MARK: Select Image
+    
+    func selectImage() {
+        var deleteAlert = UIAlertController(title: "Photo", message: "", preferredStyle: UIAlertControllerStyle.Alert)
+        deleteAlert.addAction(UIAlertAction(title: "Take Photo", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+            self.takePhoto()
+        }))
+        deleteAlert.addAction(UIAlertAction(title: "Choose Existing Photo", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+            self.choosePhoto()
+        }))
+        deleteAlert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: { (action) -> Void in
+        }))
+        presentViewController(deleteAlert, animated: true, completion: nil)
+    }
+    
+    // MARK: - Camera
+    
+    var imagePickerController: UIImagePickerController?
+    
+    func takePhoto() {
+        if isCameraAvailable() && doesCameraSupportTakingPhotos() {
+            imagePickerController = UIImagePickerController()
+            if let theController = imagePickerController {
+                theController.sourceType = UIImagePickerControllerSourceType.Camera
+                theController.mediaTypes = [kUTTypeImage as String]
+                theController.allowsEditing = true
+                theController.delegate = self
+                
+                presentViewController(theController, animated: true, completion: nil)
+            }
+        } else {
+            println("Camera is not available")
+        }
+    }
+    
+    func choosePhoto() {
+        imagePickerController = UIImagePickerController()
+        if let theController = imagePickerController {
+            theController.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+            theController.mediaTypes = [kUTTypeImage as String]
+            theController.allowsEditing = true
+            theController.delegate = self
+            
+            presentViewController(theController, animated: true, completion: nil)
+        }
+    }
+    
+    func loadImagePickerController(isTakePhoto: Bool) {
+        if isCameraAvailable() && doesCameraSupportTakingPhotos() {
+            imagePickerController = UIImagePickerController()
+            if let theController = imagePickerController {
+                if isTakePhoto {
+                    theController.sourceType = UIImagePickerControllerSourceType.Camera
+                } else {
+                    theController.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+                }
+                theController.mediaTypes = [kUTTypeImage as String]
+                theController.allowsEditing = true
+                theController.delegate = self
+                
+                presentViewController(theController, animated: true, completion: nil)
+            }
+        } else {
+            println("Camera is not available")
+        }
+    }
+    
+    func isCameraAvailable() -> Bool{
+        return UIImagePickerController.isSourceTypeAvailable(.Camera)
+    }
+    
+    func doesCameraSupportTakingPhotos() -> Bool{
+        return cameraSupportsMedia(kUTTypeImage as String, sourceType: .Camera)
+    }
+    
+    func cameraSupportsMedia(mediaType: String, sourceType: UIImagePickerControllerSourceType) -> Bool {
+        if let availableMediaTypes = UIImagePickerController.availableMediaTypesForSourceType(sourceType) as? [String] {
+            for type in availableMediaTypes {
+                if type == mediaType{
+                    return true
+                }
+            }
+        }
+        return false
+    }
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+        let mediaType:AnyObject? = info[UIImagePickerControllerMediaType]
+        
+        if let type:AnyObject = mediaType {
+            if type is String{
+                if let stringType = type as? String {
+                    if stringType == kUTTypeMovie as String{
+                        let urlOfVideo = info[UIImagePickerControllerMediaURL] as? NSURL
+                        if let url = urlOfVideo{
+                            println("Video URL = \(url)")
+                        }
+                    } else if stringType == kUTTypeImage as String {
+                        if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
+                            handleImage(image)
+                        }
+                    }
+                }
+            }
+        }
+        picker.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        picker.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    // MARK: Handle Image
+    
+    func handleImage (image: UIImage) {
+        switch duangTableData.sectionArray[selectedIndexPath.section].rowArray[selectedIndexPath.row] {
+        case .ImageSmall(let imageTitle, let imagePlaceholder, let imageFile, let isRound, let tapAction):
+            duangTableData.sectionArray[selectedIndexPath.section].rowArray[selectedIndexPath.row] = DuangTableDataSection.DuangTableDataRow.ImageSmall(imageTitle: imageTitle, imagePlaceholder: image, imageFile: nil, isRound: isRound, tapAction: tapAction)
+            tableView.reloadData()
+            break
+        default:
+            break
         }
     }
     
