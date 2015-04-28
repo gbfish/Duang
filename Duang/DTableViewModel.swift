@@ -281,6 +281,13 @@ class DTableViewModel
             
             sectionArray.append(section)
             
+            row = DTableViewModelRow()
+            section = DTableViewModelSection()
+            buttonItem = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Save", function: functionSaveEditProfile)
+            row.rowType = DTableViewModelRow.RowType.Buttons(buttonItemArray: [buttonItem])
+            section.rowArray.append(row)
+            sectionArray.append(section)
+            
         case .AccountSettings:
             viewControllerTitle = "Account settings"
         }
@@ -313,6 +320,8 @@ class DTableViewModel
     var functionShowSettings = DTableViewModelRow.Function.Nothing
     var functionShowEditProfile = DTableViewModelRow.Function.Nothing
     var functionShowAccountSettings = DTableViewModelRow.Function.Nothing
+    
+    var functionSaveEditProfile = DTableViewModelRow.Function.Nothing
     
     var functionSignUp = DTableViewModelRow.Function.Nothing
     var functionLogIn = DTableViewModelRow.Function.Nothing

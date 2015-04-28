@@ -18,49 +18,50 @@ protocol DTableViewCellTextViewProtocol
 class DTableViewCellTextView: UITableViewCell, UITextViewDelegate
 {
     var delegate: DTableViewCellTextViewProtocol?
-    
-    var textViewTitle: String?
-    var textViewTitleWidth: CGFloat?
-    
-    var textViewText: String?
+    var modelRow: DTableViewModelRow?
     
     var cellTitleLabel = UILabel()
     var cellTextView = UITextView()
     
-
     let itemHeight: CGFloat = 40.0
     
     func reloadView() {
-        
-        var textViewX = DuangGlobal.spacing
-        
-        cellTitleLabel.removeFromSuperview()
-        cellTextView.removeFromSuperview()
-        
-        if let theTextViewTitle = textViewTitle, theTextViewTitleWidth = textViewTitleWidth {
-            cellTitleLabel = UILabel()
-            cellTitleLabel.frame = CGRectMake(DuangGlobal.spacing, DuangGlobal.spacing, theTextViewTitleWidth, itemHeight)
-            cellTitleLabel.text = theTextViewTitle
-            addSubview(cellTitleLabel)
-            
-            textViewX = textViewX + theTextViewTitleWidth + DuangGlobal.spacing
+        if let theModelRow = modelRow {
+            switch theModelRow.rowType {
+            case .TextView(let heightForRow, let textViewTitle, let textViewText, let textViewTitleWidth):
+                var textViewX = DuangGlobal.spacing
+                
+                cellTitleLabel.removeFromSuperview()
+                cellTextView.removeFromSuperview()
+                
+                if let theTextViewTitle = textViewTitle, theTextViewTitleWidth = textViewTitleWidth {
+                    cellTitleLabel = UILabel()
+                    cellTitleLabel.frame = CGRectMake(DuangGlobal.spacing, DuangGlobal.spacing, theTextViewTitleWidth, itemHeight)
+                    cellTitleLabel.text = theTextViewTitle
+                    addSubview(cellTitleLabel)
+                    
+                    textViewX = textViewX + theTextViewTitleWidth + DuangGlobal.spacing
+                }
+                
+                cellTextView = UITextView()
+                cellTextView.layer.borderColor = UIColor.lightGrayColor().CGColor
+                cellTextView.layer.borderWidth = 1.0
+                cellTextView.layer.masksToBounds = true
+                cellTextView.layer.cornerRadius = 5.0
+                cellTextView.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
+                
+                cellTextView.delegate = self
+                cellTextView.frame = CGRectMake(textViewX, DuangGlobal.spacing, self.bounds.width - textViewX - DuangGlobal.spacing, itemHeight)
+                
+                if let theTextViewText = textViewText {
+                    cellTextView.text = theTextViewText
+                }
+                addSubview(cellTextView)
+                textViewDidChangeSelection(cellTextView)
+            default:
+                break
+            }
         }
-        
-        cellTextView = UITextView()
-        cellTextView.layer.borderColor = UIColor.lightGrayColor().CGColor
-        cellTextView.layer.borderWidth = 1.0
-        cellTextView.layer.masksToBounds = true
-        cellTextView.layer.cornerRadius = 5.0
-        cellTextView.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
-        
-        cellTextView.delegate = self
-        cellTextView.frame = CGRectMake(textViewX, DuangGlobal.spacing, self.bounds.width - textViewX - DuangGlobal.spacing, itemHeight)
-        
-        if let theTextViewText = textViewText {
-            cellTextView.text = theTextViewText
-        }
-        addSubview(cellTextView)
-        textViewDidChangeSelection(cellTextView)
     }
     
     // MARK: - UITextViewDelegate

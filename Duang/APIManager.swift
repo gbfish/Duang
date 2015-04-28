@@ -334,8 +334,8 @@ class APIManager {
         return ""
     }
     
-    func setCurrentUserDescription(lastName: String) {
-        currentUser[TableUser.Description] = lastName
+    func setCurrentUserDescription(description: String) {
+        currentUser[TableUser.Description] = description
         currentUser.saveInBackground()
     }
     

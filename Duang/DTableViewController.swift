@@ -114,7 +114,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     return cell
                 }
                 
-            case .Detail(let image, let imageFile, let isRound, let detailTitle, let detailButton):
+            case .Detail(_):
                 if let cell = tableView.dequeueReusableCellWithIdentifier(modelRow.cellIdentifier(), forIndexPath: indexPath) as? DTableViewCellDetail {
                     cell.delegate = self
                     cell.modelRow = modelRow
@@ -130,12 +130,10 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     return cell
                 }
                 
-            case .TextView(_, let textViewTitle, let textViewText, let textViewTitleWidth):
+            case .TextView(_):
                 if let cell = tableView.dequeueReusableCellWithIdentifier(modelRow.cellIdentifier(), forIndexPath: indexPath) as? DTableViewCellTextView {
                     cell.delegate = self
-                    cell.textViewTitle = textViewTitle
-                    cell.textViewText = textViewText
-                    cell.textViewTitleWidth = textViewTitleWidth
+                    cell.modelRow = modelRow
                     cell.reloadView()
                     addTextView(cell, modelRow: modelRow)
                     return cell
@@ -282,6 +280,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         case .EditProfile:
             dTableViewModel.functionEditAvatar = DTableViewModelRow.Function.Function(argumentCount: 0, function: selectImage)
             dTableViewModel.functionEditBanner = DTableViewModelRow.Function.Function(argumentCount: 0, function: selectImage)
+            dTableViewModel.functionSaveEditProfile = DTableViewModelRow.Function.Function(argumentCount: 0, function: saveEditProfile)
         default:
             break
         }
@@ -321,6 +320,40 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("MainTabBarController") as? MainTabBarController {
             navigationController?.presentViewController(viewController, animated: true, completion: nil)
         }
+    }
+    
+    // MARK: - Save
+    
+    func saveEditProfile() {
+        switch dTableViewModel.sectionArray[0].rowArray[0].rowType {
+        case .Detail(let image, let imageFile, _, _, _):
+            if let theImage = image where imageFile == nil {
+                APIManager.sharedInstance.setCurrentUserAvatar(theImage)
+            }
+        default:
+            break
+        }
+        
+        switch dTableViewModel.sectionArray[0].rowArray[1].rowType {
+        case .Detail(let image, let imageFile, _, _, _):
+            if let theImage = image where imageFile == nil {
+                APIManager.sharedInstance.setCurrentUserBanner(theImage)
+            }
+        default:
+            break
+        }
+        
+        let textArray = getTextArrayFromTextViewArray()
+        
+        let firstName = textArray[0]
+        let lastName = textArray[1]
+        let description = textArray[2]
+        
+        APIManager.sharedInstance.setCurrentUserFirstName(firstName)
+        APIManager.sharedInstance.setCurrentUserLastName(lastName)
+        APIManager.sharedInstance.setCurrentUserDescription(description)
+        
+        navigationController?.popViewControllerAnimated(true)
     }
     
     // MARK: - Select Image
@@ -520,7 +553,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         showAlert("Sorry", message: "The user name and password do not match our records.")
     }
 
-    // MARK: logOut
+    // MARK: LogOut
     
     func logOut() {
         self.dismissViewControllerAnimated(true, completion: nil)
