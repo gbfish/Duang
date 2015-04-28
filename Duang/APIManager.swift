@@ -630,6 +630,34 @@ class APIManager {
         }
     }
     
+//    class func cellTextViewHeightForRow(string: String?, font: UIFont, width: CGFloat) -> CGFloat {
+//        var returnValue: CGFloat = 0
+//        
+//        
+//        if let theString = string {
+//            var textView = UITextView()
+//            textView.text = theString
+//            textView.font = font
+//            returnValue = textView.sizeThatFits(CGSizeMake(width, CGFloat.max)).height + (DuangGlobal.spacing * 2)
+//        }
+//        
+//        if returnValue < 50.0 {
+//            returnValue = 50.0
+//        }
+//        return returnValue
+//    }
+//
+//    class func sizeForTextView(string: String?, font: UIFont, width: CGFloat, height: CGFloat) -> CGSize {
+//        if let theString = string {
+//            var textView = UITextView()
+//            textView.text = theString
+//            textView.font = font
+//            return textView.sizeThatFits(CGSizeMake(width, height))
+//        } else {
+//            return CGSizeZero
+//        }
+//    }
+    
     class func widthMaxForStrings(stringArray: [String], font: UIFont) -> CGFloat {
         var returnValue: CGFloat = 0.0
         for string in stringArray {

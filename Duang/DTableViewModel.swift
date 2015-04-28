@@ -100,12 +100,6 @@ class DTableViewModel
             viewControllerTitle = "Sign up"
             
             let stringArray = ["Username:", "Password:", "Email:"]
-            
-//            let usernameSize = APIManager.sizeForString(stringArray[0], font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
-//            let passwordSize = APIManager.sizeForString(stringArray[1], font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
-//            let emailSize = APIManager.sizeForString(stringArray[2], font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
-//            let widthMax = max(usernameSize.width, passwordSize.width, emailSize.width)
-            
             let widthMax = APIManager.widthMaxForStrings(stringArray, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline))
             
             row = DTableViewModelRow()
@@ -132,11 +126,6 @@ class DTableViewModel
             viewControllerTitle = "Log in"
             
             let stringArray = ["Username:", "Password:"]
-            
-//            let usernameSize = APIManager.sizeForString(stringArray[0], font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
-//            let passwordSize = APIManager.sizeForString(stringArray[1], font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
-//            let widthMax = max(usernameSize.width, passwordSize.width)
-            
             let widthMax = APIManager.widthMaxForStrings(stringArray, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline))
             
             row = DTableViewModelRow()
@@ -238,46 +227,18 @@ class DTableViewModel
             
             section = DTableViewModelSection()
             
-            let stringArray = ["First name:", "Last name:", "Description"]
-            let widthMax = APIManager.widthMaxForStrings(stringArray, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline))
-            let textViewWidth = UIScreen.mainScreen().bounds.width - widthMax - (DuangGlobal.spacing * 3)
+            let textViewTitleArray = ["First name:", "Last name:", "Description"]
+            let textViewTextArray = [APIManager.getStringFromUser(user, key: TableUser.FirstName), APIManager.getStringFromUser(user, key: TableUser.LastName), APIManager.getStringFromUser(user, key: TableUser.Description)]
             
-            row = DTableViewModelRow()
+            let textViewTitleWidth = APIManager.widthMaxForStrings(textViewTitleArray, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline))
+            let textViewWidth = UIScreen.mainScreen().bounds.width - textViewTitleWidth - (DuangGlobal.spacing * 3)
             
-            var textView = UITextView()
-            textView.text = APIManager.getStringFromUser(user, key: TableUser.FirstName)
-            textView.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
-            
-            var heightForRow = textView.sizeThatFits(CGSizeMake(textViewWidth, CGFloat.max)).height + (DuangGlobal.spacing * 2)
-            if heightForRow < 50.0 {
-                heightForRow = 50.0
+            for index in 0...2 {
+                row = DTableViewModelRow()
+                let heightForRow = cellTextViewHeightForRow(textViewTextArray[index], font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody), width: textViewWidth)
+                row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: heightForRow, textViewTitle: textViewTitleArray[index], textViewText: textViewTextArray[index], textViewTitleWidth: textViewTitleWidth)
+                section.rowArray.append(row)
             }
-            row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: heightForRow, textViewTitle: stringArray[0], textViewText: APIManager.getStringFromUser(user, key: TableUser.FirstName), textViewTitleWidth: widthMax)
-            section.rowArray.append(row)
-            
-            row = DTableViewModelRow()
-            
-            textView.text = APIManager.getStringFromUser(user, key: TableUser.LastName)
-            textView.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
-            
-            heightForRow = textView.sizeThatFits(CGSizeMake(textViewWidth, CGFloat.max)).height + (DuangGlobal.spacing * 2)
-            if heightForRow < 50.0 {
-                heightForRow = 50.0
-            }
-            row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: heightForRow, textViewTitle: stringArray[1], textViewText: APIManager.getStringFromUser(user, key: TableUser.LastName), textViewTitleWidth: widthMax)
-            section.rowArray.append(row)
-            
-            row = DTableViewModelRow()
-            
-            textView.text = APIManager.getStringFromUser(user, key: TableUser.Description)
-            textView.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
-            
-            heightForRow = textView.sizeThatFits(CGSizeMake(textViewWidth, CGFloat.max)).height + (DuangGlobal.spacing * 2)
-            if heightForRow < 50.0 {
-                heightForRow = 50.0
-            }
-            row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: heightForRow, textViewTitle: stringArray[2], textViewText: APIManager.getStringFromUser(user, key: TableUser.Description), textViewTitleWidth: widthMax)
-            section.rowArray.append(row)
             
             sectionArray.append(section)
             
@@ -312,6 +273,25 @@ class DTableViewModel
         }
         return nil
     }
+    
+    // MARK: - Size
+    
+    private func cellTextViewHeightForRow(string: String?, font: UIFont, width: CGFloat) -> CGFloat {
+        var returnValue: CGFloat = 0
+        
+        if let theString = string {
+            var textView = UITextView()
+            textView.text = theString
+            textView.font = font
+            returnValue = textView.sizeThatFits(CGSizeMake(width, CGFloat.max)).height + (DuangGlobal.spacing * 2)
+        }
+        
+        if returnValue < 50.0 {
+            returnValue = 50.0
+        }
+        return returnValue
+    }
+
     
     // MARK: - Function
 
