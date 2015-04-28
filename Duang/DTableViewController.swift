@@ -447,15 +447,6 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 break
             }
         }
-        
-//        switch duangTableData.sectionArray[selectedIndexPath.section].rowArray[selectedIndexPath.row] {
-//        case .ImageSmall(let imageTitle, let imagePlaceholder, let imageFile, let isRound, let tapAction):
-//            duangTableData.sectionArray[selectedIndexPath.section].rowArray[selectedIndexPath.row] = DuangTableDataSection.DuangTableDataRow.ImageSmall(imageTitle: imageTitle, imagePlaceholder: image, imageFile: nil, isRound: isRound, tapAction: tapAction)
-//            tableView.reloadData()
-//            break
-//        default:
-//            break
-//        }
     }
     
     // MARK: - SignUp
