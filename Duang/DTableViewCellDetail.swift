@@ -10,7 +10,7 @@ import UIKit
 
 protocol DTableViewCellDetailProtocol
 {
-    func dTableViewCellDetailButtonAction(buttonItem: DTableViewModelRow.ButtonItem)
+    func dTableViewCellDetailButtonAction(modelRow: DTableViewModelRow)
 }
 
 class DTableViewCellDetail: UITableViewCell
@@ -21,44 +21,62 @@ class DTableViewCellDetail: UITableViewCell
     
     var delegate: DTableViewCellDetailProtocol?
     
-    var detailText: String?
+    var modelRow: DTableViewModelRow?
     
-    var detailImage: UIImage?
-    var detailImageFile: PFFile?
-    var detailImageIsRound = false
-    
-    var buttonItem: DTableViewModelRow.ButtonItem?
+//    var detailText: String?
+//    
+//    var detailImage: UIImage?
+//    var detailImageFile: PFFile?
+//    var detailImageIsRound = false
+//    
+//    var buttonItem: DTableViewModelRow.ButtonItem?
     
     func reloadView() {
-        detailLabel.text = detailText
-        
-        if detailImageIsRound {
-            detailImageView.layer.cornerRadius = detailImageView.frame.size.height / 2.0
-        }
-        
-        detailImageView.image = detailImage
-        if let file = detailImageFile {
-            file.getDataInBackgroundWithBlock { (imageData, error) -> Void in
-                if error == nil {
-                    if let theImageData = imageData, image = UIImage(data:theImageData) {
-                        self.detailImageView.image = image
+        if let theModelRow = modelRow {
+            switch theModelRow.rowType {
+            case .Detail(let image, let imageFile, let isRound, let detailTitle, let detailButtonItem):
+                
+                    detailLabel.text = detailTitle
+                    
+                    if isRound {
+                        detailImageView.layer.cornerRadius = detailImageView.frame.size.height / 2.0
                     }
+                    
+                    detailImageView.image = image
+                    if let theImageFile = imageFile {
+                        theImageFile.getDataInBackgroundWithBlock { (imageData, error) -> Void in
+                            if error == nil {
+                                if let theImageData = imageData, image = UIImage(data:theImageData) {
+                                    self.detailImageView.image = image
+                                }
+                            }
+                        }
+                    }
+                    
+                    if let theDetailButtonItem = detailButtonItem {
+                        detailButton.hidden = false
+                        detailButton.setButton(theDetailButtonItem, buttonSize: detailButton.frame.size)
+                        detailButton.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+                    } else {
+                        detailButton.hidden = true
                 }
+            default:
+                break
             }
         }
         
-        if let theButtonItem = buttonItem {
-            detailButton.hidden = false
-            detailButton.setButton(theButtonItem, buttonSize: detailButton.frame.size)
-            detailButton.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
-        } else {
-            detailButton.hidden = true
-        }
+        
+        
+        
     }
     
     func buttonAction(sender: UIButton) {
-        if let theButtonItem = buttonItem {
-             delegate?.dTableViewCellDetailButtonAction(theButtonItem)
+        if let theModelRow = modelRow {
+            delegate?.dTableViewCellDetailButtonAction(theModelRow)
         }
+        
+//        if let theButtonItem = buttonItem {
+//             delegate?.dTableViewCellDetailButtonAction(theButtonItem)
+//        }
     }
 }

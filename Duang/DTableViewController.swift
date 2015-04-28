@@ -45,7 +45,9 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         showMainTabBarController()
     }
     
+    // MARK: - Data
     
+    var selectedModelRow: DTableViewModelRow?
     
     // MARK: - DTableViewModel
     
@@ -115,14 +117,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             case .Detail(let image, let imageFile, let isRound, let detailTitle, let detailButton):
                 if let cell = tableView.dequeueReusableCellWithIdentifier(modelRow.cellIdentifier(), forIndexPath: indexPath) as? DTableViewCellDetail {
                     cell.delegate = self
-                    cell.detailText = detailTitle
-                    
-                    cell.detailImage = image
-                    cell.detailImageFile = imageFile
-                    cell.detailImageIsRound = isRound
-
-                    cell.buttonItem = detailButton
-                    
+                    cell.modelRow = modelRow
                     cell.reloadView()
                     return cell
                 }
@@ -170,8 +165,15 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     // MARK: - Cell DTableViewCellDetailProtocol
     
-    func dTableViewCellDetailButtonAction(buttonItem: DTableViewModelRow.ButtonItem) {
-        buttonItem.functionAction()
+    func dTableViewCellDetailButtonAction(modelRow: DTableViewModelRow) {
+        selectedModelRow = modelRow
+        
+        switch modelRow.rowType {
+        case .Detail(_, _, _, _, let detailButton):
+            detailButton?.functionAction()
+        default:
+            break
+        }
     }
     
     // MARK: - Cell DTableViewCellTextView
@@ -278,13 +280,14 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             dTableViewModel.functionShowAccountSettings = DTableViewModelRow.Function.Function(argumentCount: 0, function: showAccountSettings)
             dTableViewModel.functionLogOut = DTableViewModelRow.Function.Function(argumentCount: 0, function: logOut)
         case .EditProfile:
-            dTableViewModel.functionEditAvatar = DTableViewModelRow.Function.Function(argumentCount: 0, function: logOut)
+            dTableViewModel.functionEditAvatar = DTableViewModelRow.Function.Function(argumentCount: 0, function: selectImage)
+            dTableViewModel.functionEditBanner = DTableViewModelRow.Function.Function(argumentCount: 0, function: selectImage)
         default:
             break
         }
     }
     
-    // MARK: Show ViewController
+    // MARK: - Show ViewController
     
     func showDTableViewController(presentedViewTableType: DTableViewModel.TableType) {
         if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DTableViewController") as? DTableViewController {
@@ -320,7 +323,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-    // MARK: Select Image
+    // MARK: - Select Image
     
     func selectImage() {
         var deleteAlert = UIAlertController(title: "Photo", message: "", preferredStyle: UIAlertControllerStyle.Alert)
@@ -335,7 +338,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         presentViewController(deleteAlert, animated: true, completion: nil)
     }
     
-    // MARK: - Camera
+    // MARK: Camera
     
     var imagePickerController: UIImagePickerController?
     
@@ -435,17 +438,27 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // MARK: Handle Image
     
     func handleImage (image: UIImage) {
-        switch duangTableData.sectionArray[selectedIndexPath.section].rowArray[selectedIndexPath.row] {
-        case .ImageSmall(let imageTitle, let imagePlaceholder, let imageFile, let isRound, let tapAction):
-            duangTableData.sectionArray[selectedIndexPath.section].rowArray[selectedIndexPath.row] = DuangTableDataSection.DuangTableDataRow.ImageSmall(imageTitle: imageTitle, imagePlaceholder: image, imageFile: nil, isRound: isRound, tapAction: tapAction)
-            tableView.reloadData()
-            break
-        default:
-            break
+        if var theSelectedModelRow = selectedModelRow {
+            switch theSelectedModelRow.rowType {
+            case .Detail(_, _, let isRound, let detailTitle, let detailButton):
+                theSelectedModelRow.rowType = DTableViewModelRow.RowType.Detail(image: image, imageFile: nil, isRound: isRound, detailTitle: detailTitle, detailButton: detailButton)
+                tableView.reloadData()
+            default:
+                break
+            }
         }
+        
+//        switch duangTableData.sectionArray[selectedIndexPath.section].rowArray[selectedIndexPath.row] {
+//        case .ImageSmall(let imageTitle, let imagePlaceholder, let imageFile, let isRound, let tapAction):
+//            duangTableData.sectionArray[selectedIndexPath.section].rowArray[selectedIndexPath.row] = DuangTableDataSection.DuangTableDataRow.ImageSmall(imageTitle: imageTitle, imagePlaceholder: image, imageFile: nil, isRound: isRound, tapAction: tapAction)
+//            tableView.reloadData()
+//            break
+//        default:
+//            break
+//        }
     }
     
-    // MARK: SignUp
+    // MARK: - SignUp
     
     func signUp() {
         let textArray = getTextArrayFromTextViewArray()
