@@ -22,7 +22,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         dTableViewModel.delegate = self
         
-        
+        addRefreshControl()
         setDTableViewModelFunctions()
         
         dTableViewModel.dataWillLoad()
@@ -64,6 +64,8 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             if APIManager.sharedInstance.isCurrentUserAuthenticated {
                 showMainTabBarController()
             }
+        case .Feed:
+            endRefreshing()
         default:
             break
         }
@@ -153,6 +155,34 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
 //        duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row].tapAction()
         
         
+    }
+    
+    // MARK: - UIRefreshControl
+    
+    var refreshControl: UIRefreshControl!
+    
+    func addRefreshControl() {
+        switch dTableViewModel.tableType {
+        case .Feed:
+            refreshControl = UIRefreshControl()
+            refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+            refreshControl.addTarget(self, action: "beginRefreshingFeed", forControlEvents: UIControlEvents.ValueChanged)
+            tableView.addSubview(refreshControl)
+        default:
+            break
+        }
+        
+    }
+    
+    func beginRefreshingFeed()
+    {
+        dTableViewModel.feedInit()
+    }
+    
+    func endRefreshing() {
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.refreshControl.endRefreshing()
+        })
     }
     
     // MARK: - Cell DTableViewCellButtonsProtocol
@@ -281,6 +311,14 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             dTableViewModel.functionEditAvatar = DTableViewModelRow.Function.Function(argumentCount: 0, function: selectImage)
             dTableViewModel.functionEditBanner = DTableViewModelRow.Function.Function(argumentCount: 0, function: selectImage)
             dTableViewModel.functionSaveEditProfile = DTableViewModelRow.Function.Function(argumentCount: 0, function: saveEditProfile)
+        case .AccountSettings:
+            dTableViewModel.functionSaveAccountSettings = DTableViewModelRow.Function.Function(argumentCount: 0, function: saveAccountSettings)
+            dTableViewModel.functionShowChangePassword = DTableViewModelRow.Function.Function(argumentCount: 0, function: showChangePassword)
+        case .ChangePassword:
+            dTableViewModel.functionSaveChangePassword = DTableViewModelRow.Function.Function(argumentCount: 0, function: saveChangePassword)
+        case .AddPhoto:
+            dTableViewModel.functionAddPhoto = DTableViewModelRow.Function.Function(argumentCount: 0, function: selectImage)
+            dTableViewModel.functionSaveAddPhoto = DTableViewModelRow.Function.Function(argumentCount: 0, function: saveAddPhoto)
         default:
             break
         }
@@ -314,6 +352,10 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func showAccountSettings() {
         showDTableViewController(DTableViewModel.TableType.AccountSettings)
+    }
+    
+    func showChangePassword() {
+        showDTableViewController(DTableViewModel.TableType.ChangePassword)
     }
     
     func showMainTabBarController() {
@@ -356,6 +398,58 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         navigationController?.popViewControllerAnimated(true)
     }
     
+    func saveAccountSettings() {
+        let textArray = getTextArrayFromTextViewArray()
+        
+        let email = textArray[0]
+        
+        if let errorString = APIManager.sharedInstance.setCurrentUserEmail(email) {
+            showAlert("Sorry", message: errorString)
+        } else {
+            navigationController?.popViewControllerAnimated(true)
+        }
+    }
+    
+    func saveChangePassword() {
+        let textArray = getTextArrayFromTextViewArray()
+        
+        let oldPassword = textArray[0]
+        let newPassword = textArray[1]
+        let retypePassword = textArray[2]
+        
+        if newPassword == retypePassword {
+            if let errorString = APIManager.sharedInstance.changePassword(oldPassword, newPassword: newPassword) {
+                showAlert("Sorry", message: errorString)
+            } else {
+                navigationController?.popViewControllerAnimated(true)
+            }
+        } else {
+            showAlert("Sorry", message: "New password don't match.")
+        }
+    }
+    
+    func saveAddPhoto() {
+        if dTableViewModel.sectionArray.count == 3 {
+            showAlert("Sorry", message: "Please select a photo.")
+        } else if dTableViewModel.sectionArray.count == 4 {
+            switch dTableViewModel.sectionArray[0].rowArray[0].rowType {
+            case .Image(_, let image, _, _):
+                if let theImage = image {
+                    let textArray = getTextArrayFromTextViewArray()
+                    let description = textArray[0]
+                    
+                    APIManager.sharedInstance.addNewPhoto(theImage, description: description, success: { () -> () in
+                        self.showAlert("Success", message: "Success.")
+                    }, failure: { (error) -> () in
+                        
+                    })
+                }
+            default:
+                break
+            }
+        }
+    }
+    
     // MARK: - Select Image
     
     func selectImage() {
@@ -381,7 +475,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             if let theController = imagePickerController {
                 theController.sourceType = UIImagePickerControllerSourceType.Camera
                 theController.mediaTypes = [kUTTypeImage as String]
-                theController.allowsEditing = true
+                theController.allowsEditing = false
                 theController.delegate = self
                 
                 presentViewController(theController, animated: true, completion: nil)
@@ -396,7 +490,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if let theController = imagePickerController {
             theController.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
             theController.mediaTypes = [kUTTypeImage as String]
-            theController.allowsEditing = true
+            theController.allowsEditing = false
             theController.delegate = self
             
             presentViewController(theController, animated: true, completion: nil)
@@ -413,7 +507,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     theController.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
                 }
                 theController.mediaTypes = [kUTTypeImage as String]
-                theController.allowsEditing = true
+                theController.allowsEditing = false
                 theController.delegate = self
                 
                 presentViewController(theController, animated: true, completion: nil)
@@ -454,7 +548,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
                             println("Video URL = \(url)")
                         }
                     } else if stringType == kUTTypeImage as String {
-                        if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
+                        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
                             handleImage(image)
                         }
                     }
@@ -471,15 +565,34 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // MARK: Handle Image
     
     func handleImage (image: UIImage) {
-        if var theSelectedModelRow = selectedModelRow {
-            switch theSelectedModelRow.rowType {
-            case .Detail(_, _, let isRound, let detailTitle, let detailButton):
-                theSelectedModelRow.rowType = DTableViewModelRow.RowType.Detail(image: image, imageFile: nil, isRound: isRound, detailTitle: detailTitle, detailButton: detailButton)
-                tableView.reloadData()
-            default:
-                break
+        switch dTableViewModel.tableType {
+        case .AddPhoto:
+            let row = DTableViewModelRow()
+            let section = DTableViewModelSection()
+            let heightForRow = UIScreen.mainScreen().bounds.width * image.size.height / image.size.width
+            row.rowType = DTableViewModelRow.RowType.Image(heightForRow: heightForRow, image: image, imageFile: nil, function: nil)
+            section.rowArray.append(row)
+            
+            if dTableViewModel.sectionArray.count == 3 {
+                dTableViewModel.sectionArray.insert(section, atIndex: 0)
+            } else if dTableViewModel.sectionArray.count == 4 {
+                dTableViewModel.sectionArray[0] = section
+            }
+            tableView.reloadData()
+            
+        default:
+            if var theSelectedModelRow = selectedModelRow {
+                switch theSelectedModelRow.rowType {
+                case .Detail(_, _, let isRound, let detailTitle, let detailButton):
+                    theSelectedModelRow.rowType = DTableViewModelRow.RowType.Detail(image: image, imageFile: nil, isRound: isRound, detailTitle: detailTitle, detailButton: detailButton)
+                    tableView.reloadData()
+                default:
+                    break
+                }
             }
         }
+        
+        
     }
     
     // MARK: - SignUp

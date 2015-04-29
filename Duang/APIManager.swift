@@ -249,10 +249,13 @@ class APIManager {
     }
     
     func setCurrentUserEmail(email: String) -> String? {
+        let oldValue = currentUser.email
         currentUser.email = email
         var error: NSError? = nil
         currentUser.save(&error)
         if let theError = error {
+            currentUser.email = oldValue
+            currentUser.save()
             return APIManager.errorMessage(theError)
         }
         return nil
@@ -526,6 +529,16 @@ class APIManager {
     
     func getPhotoArray(pageSize: Int, page: Int, success: ([PFObject]) -> (), failure: (NSError?) -> ()) {
         var query = PFQuery(className:TablePhoto.ClassName)
+        
+        
+//        query.cachePolicy = PFCachePolicy.CacheThenNetwork
+        
+        
+        
+//        if query.hasCachedResult() && page == 1 {
+//            query.clearCachedResult()
+//        }
+        
         query.limit = pageSize
         query.skip = (page - 1) * pageSize
         query.orderByDescending("updatedAt")
