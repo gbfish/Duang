@@ -340,33 +340,14 @@ class DTableViewModel
         }
         
         for object in objectArray {
-            
-            
-            
-//            println("object = \(object.objectId) - \(object.objectForKey(TablePhoto.Owner)) -- \(userObject.objectForKey(TableUser.FirstName))")
-        }
-        
-        for object in objectArray {
             section = DTableViewModelSection()
-            
             row = DTableViewModelRow()
             
-            //PFUser(withoutDataWithClassName: TableUser.ClassName, objectId: <#String?#>))
             let user = APIManager.getUserFromObject(object, key: TablePhoto.Owner)
+
+            row.rowType = DTableViewModelRow.RowType.DetailUser(user: user, detailButtonItem: nil)
             
-            let userQuery = PFUser.query()
-            userQuery?.whereKey("_objectId", equalTo: user?.objectId)
-            userQuery?.findObjects()
-            
-            ////
-            
-            let name = APIManager.getNameFromUser(PFUser.currentUser())
-            
-            println("name = \(name)")
-            
-            
-            ////
-            row.rowType = DTableViewModelRow.RowType.Detail(image: ImagePlaceholder.Avatar, imageFile: APIManager.getFileFromUser(user, key: TableUser.Avatar), isRound: true, detailTitle: APIManager.getNameFromUser(user), detailButton: nil)
+//            row.rowType = DTableViewModelRow.RowType.Detail(image: ImagePlaceholder.Avatar, imageFile: APIManager.getFileFromUser(user, key: TableUser.Avatar), isRound: true, detailTitle: APIManager.getNameFromUser(user), detailButton: nil)
             section.rowArray.append(row)
             
             row = DTableViewModelRow()
@@ -386,62 +367,6 @@ class DTableViewModel
     private func waterfallSendRequestFailure() {
         dataDidLoad()
     }
-
-    
-    // MARK: - Feed
-    /*
-    var feedPage: NSInteger = 1
-    var feedPageSize: NSInteger = 50
-    var feedEnd = false
-    
-    func feedInit() {
-        feedPage = 1
-        feedEnd = false
-        sendRequestFeed()
-    }
-    
-    func feedMore() {
-        if !feedEnd {
-            ++feedPage
-            sendRequestFeed()
-        }
-    }
-    
-    private func sendRequestFeed() {
-        var section = DTableViewModelSection()
-        var row = DTableViewModelRow()
-        
-        APIManager.sharedInstance.getPhotoArray(feedPageSize, page: feedPage, success: { (objectArray) -> () in
-            if objectArray.count < self.feedPageSize {
-                self.feedEnd = true
-            }
-            
-            for object in objectArray {
-                section = DTableViewModelSection()
-                
-                row = DTableViewModelRow()
-                let user = APIManager.getUserFromObject(object, key: TablePhoto.Owner)
-                row.rowType = DTableViewModelRow.RowType.Detail(image: ImagePlaceholder.Avatar, imageFile: APIManager.getFileFromUser(user, key: TableUser.Avatar), isRound: true, detailTitle: APIManager.getNameFromUser(user), detailButton: nil)
-                section.rowArray.append(row)
-                
-                row = DTableViewModelRow()
-                row.rowType = DTableViewModelRow.RowType.Label(text: APIManager.getStringFromObject(object, key: TablePhoto.Description), font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody))
-                section.rowArray.append(row)
-                
-                row = DTableViewModelRow()
-                
-                let heightForRow = APIManager.getHeightFromPhoto(object)
-                row.rowType = DTableViewModelRow.RowType.Image(heightForRow: heightForRow, image: ImagePlaceholder.Image, imageFile: APIManager.getFileFromObject(object, key: TablePhoto.Image), function: nil)
-                section.rowArray.append(row)
-                
-                self.sectionArray.append(section)
-            }
-            self.dataDidLoad()
-            
-            }, failure: { (error) -> () in
-                self.dataDidLoad()
-        })
-    }*/
     
     // MARK: - Add Button
     

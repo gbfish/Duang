@@ -82,6 +82,18 @@ class APIManager {
         return nil
     }
     
+    class func fetchImageFromFile(file: PFFile?, success: (UIImage) -> ()) -> () {
+        if let theFile = file {
+            theFile.getDataInBackgroundWithBlock { (imageData, error) -> Void in
+                if error == nil {
+                    if let theImageData = imageData, image = UIImage(data:theImageData) {
+                        success(image)
+                    }
+                }
+            }
+        }
+    }
+    
     // MARK: - Photo
     
     class func getHeightFromPhoto(object: PFObject) -> CGFloat? {
@@ -560,6 +572,18 @@ class APIManager {
                 } else {
                     failure(error)
                 }
+            }
+        }
+    }
+    
+    func fetchUser(user: PFUser, success: (PFUser) -> (), failure: (NSError?) -> ()) {
+        user.fetchIfNeededInBackgroundWithBlock { (object, error) -> Void in
+            if error == nil {
+                if let theObject = object as? PFUser {
+                    success(theObject)
+                }
+            } else {
+                failure(error)
             }
         }
     }

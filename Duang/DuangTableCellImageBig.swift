@@ -17,14 +17,18 @@ class DuangTableCellImageBig: UITableViewCell {
     
     func reloadView() {
         cellImageView.image = imagePlaceholder
-        if let file = imageFile {
-            file.getDataInBackgroundWithBlock { (imageData, error) -> Void in
-                if error == nil {
-                    if let theImageData = imageData, image = UIImage(data:theImageData) {
-                        self.cellImageView.image = image
-                    }
-                }
-            }
-        }
+        
+        APIManager.fetchImageFromFile(imageFile, success: { (image) -> () in
+            self.cellImageView.image = image
+        })
+//        if let file = imageFile {
+//            file.getDataInBackgroundWithBlock { (imageData, error) -> Void in
+//                if error == nil {
+//                    if let theImageData = imageData, image = UIImage(data:theImageData) {
+//                        self.cellImageView.image = image
+//                    }
+//                }
+//            }
+//        }
     }
 }

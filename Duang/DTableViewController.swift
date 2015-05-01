@@ -116,7 +116,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     return cell
                 }
                 
-            case .Detail(_):
+            case .Detail(_), .DetailUser(_):
                 if let cell = tableView.dequeueReusableCellWithIdentifier(modelRow.cellIdentifier(), forIndexPath: indexPath) as? DTableViewCellDetail {
                     cell.delegate = self
                     cell.modelRow = modelRow

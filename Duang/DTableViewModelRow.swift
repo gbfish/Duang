@@ -18,7 +18,9 @@ class DTableViewModelRow
         case Buttons(buttonItemArray: [ButtonItem])
         case Image(heightForRow: CGFloat?, image: UIImage?, imageFile: PFFile?, function: Function?)
         case TextView(heightForRow: CGFloat?, textViewTitle: String?, textViewText: String?, textViewTitleWidth: CGFloat?)
-        case Detail(image: UIImage?, imageFile: PFFile?, isRound: Bool, detailTitle: String?, detailButton: ButtonItem?)
+//        case Detail(image: UIImage?, imageFile: PFFile?, isRound: Bool, detailTitle: String?, detailButton: ButtonItem?)
+        case DetailImage(image: UIImage?, detailTitle: String?, detailButtonItem: ButtonItem?)
+        case DetailUser(user: PFUser?, detailButtonItem: ButtonItem?)
         case Label(text: String?, font: UIFont?)
     }
     
@@ -30,7 +32,7 @@ class DTableViewModelRow
             return "DTableViewCellButtons"
         case .Image(_):
             return "DTableViewCellImage"
-        case .Detail(_):
+        case .DetailImage(_), .DetailUser(_):
             return "DTableViewCellDetail"
         case .Label(_):
             return "DTableViewCellLabel"
