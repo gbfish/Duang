@@ -64,7 +64,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             if APIManager.sharedInstance.isCurrentUserAuthenticated {
                 showMainTabBarController()
             }
-        case .Feed:
+        case .Waterfall(_):
             endRefreshing()
         default:
             break
@@ -163,7 +163,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func addRefreshControl() {
         switch dTableViewModel.tableType {
-        case .Feed:
+        case .Waterfall(_):
             refreshControl = UIRefreshControl()
             refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
             refreshControl.addTarget(self, action: "beginRefreshingFeed", forControlEvents: UIControlEvents.ValueChanged)
@@ -176,7 +176,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func beginRefreshingFeed()
     {
-        dTableViewModel.feedInit()
+        dTableViewModel.waterfallInit()
     }
     
     func endRefreshing() {
@@ -303,6 +303,13 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             dTableViewModel.functionLogIn = DTableViewModelRow.Function.Function(argumentCount: 0, function: logIn)
         case .MyProfile:
             dTableViewModel.functionShowSettings = DTableViewModelRow.Function.Function(argumentCount: 0, function: showSettings)
+            
+            if let theUser = PFUser.currentUser() {
+                let argument = DTableViewModelRow.Function.Argument.user(user: theUser)
+                dTableViewModel.functionShowWaterfallUser = DTableViewModelRow.Function.Function1Argument(argument: argument, function: showWaterfallUser)
+            }
+            
+            
         case .Settings:
             dTableViewModel.functionShowEditProfile = DTableViewModelRow.Function.Function(argumentCount: 0, function: showEditProfile)
             dTableViewModel.functionShowAccountSettings = DTableViewModelRow.Function.Function(argumentCount: 0, function: showAccountSettings)
@@ -362,6 +369,24 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("MainTabBarController") as? MainTabBarController {
             navigationController?.presentViewController(viewController, animated: true, completion: nil)
         }
+    }
+    
+    func showWaterfallUser(argumentPFUser: DTableViewModelRow.Function.Argument) {
+        
+        switch argumentPFUser {
+        case .user(let user):
+            if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DTableViewController") as? DTableViewController {
+                viewController.delegate = self
+                viewController.dTableViewModel.tableType = DTableViewModel.TableType.Waterfall(waterfallType: DTableViewModel.WaterfallType.PhotosUser(user: user))
+                self.navigationController?.pushViewController(viewController, animated: true)
+            }
+        default:
+            break
+        }
+        
+        
+        
+        
     }
     
     // MARK: - Save

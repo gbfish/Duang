@@ -19,8 +19,26 @@ extension UIViewController {
 
 extension UIButton {
     func setButton(buttonItem: DTableViewModelRow.ButtonItem, buttonSize: CGSize) {
+        var buttonStytle = DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal
+        
         switch buttonItem {
+        case .ButtonItemTitle(let style, let buttonText, _):
+            buttonStytle = style
+            
+            let titleSize = APIManager.sizeForString(buttonText, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
+            
+            let buttonTitleLabel = UILabel()
+            buttonTitleLabel.text = buttonText
+            buttonTitleLabel.textColor = style.buttonTextColor()
+            buttonTitleLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
+            let buttonTitleLabelX = (buttonSize.width - titleSize.width) / 2
+            let buttonTitleLabelY = (buttonSize.height - titleSize.height) / 2
+            buttonTitleLabel.frame = CGRectMake(buttonTitleLabelX, buttonTitleLabelY, titleSize.width, titleSize.height)
+            self.addSubview(buttonTitleLabel)
+            
         case .ButtonItemTitleImage(let style, let buttonText, let buttonImage, _):
+            buttonStytle = style
+            
             let imageAndTitleSpacing: CGFloat = 6.0
             let imageSize = CGSizeMake(20.0, 20.0)
             let titleSize = APIManager.sizeForString(buttonText, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
@@ -41,32 +59,30 @@ extension UIButton {
             buttonTitleLabel.frame = CGRectMake(buttonTitleLabelX, buttonTitleLabelY, titleSize.width, titleSize.height)
             self.addSubview(buttonTitleLabel)
             
-            self.backgroundColor = style.buttonBackgroundColor()
-            self.layer.borderColor = style.borderColor()
-            self.layer.borderWidth = 1.0
-            self.layer.masksToBounds = true
-            self.layer.cornerRadius = 5.0
+        case .ButtonItemTitleSubtitle(let style, let buttonTitleText, let buttonSubtitleText, _):
+            buttonStytle = style
             
-        case .ButtonItemTitle(let style, let buttonText, _):
-            let titleSize = APIManager.sizeForString(buttonText, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), width: CGFloat.max, height: CGFloat.max)
+            let buttonTitleLabelHeight = (buttonSize.height - (DuangGlobal.spacing * 2)) / 3 * 2
             
             let buttonTitleLabel = UILabel()
-            buttonTitleLabel.text = buttonText
+            buttonTitleLabel.text = buttonTitleText
             buttonTitleLabel.textColor = style.buttonTextColor()
             buttonTitleLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
-            let buttonTitleLabelX = (buttonSize.width - titleSize.width) / 2
-            let buttonTitleLabelY = (buttonSize.height - titleSize.height) / 2
-            buttonTitleLabel.frame = CGRectMake(buttonTitleLabelX, buttonTitleLabelY, titleSize.width, titleSize.height)
+            buttonTitleLabel.frame = CGRectMake(DuangGlobal.spacing, DuangGlobal.spacing, buttonSize.width - (DuangGlobal.spacing * 2), buttonTitleLabelHeight)
             self.addSubview(buttonTitleLabel)
             
-            self.backgroundColor = style.buttonBackgroundColor()
-            self.layer.borderColor = style.borderColor()
-            self.layer.borderWidth = 1.0
-            self.layer.masksToBounds = true
-            self.layer.cornerRadius = 5.0
-            
-        default:
-            break
+            let buttonSubtitleLabel = UILabel()
+            buttonSubtitleLabel.text = buttonSubtitleText
+            buttonSubtitleLabel.textColor = style.buttonTextColor()
+            buttonSubtitleLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
+            buttonSubtitleLabel.frame = CGRectMake(DuangGlobal.spacing, DuangGlobal.spacing + buttonTitleLabelHeight, buttonSize.width - (DuangGlobal.spacing * 2), (buttonSize.height - (DuangGlobal.spacing * 2)) / 3)
+            self.addSubview(buttonSubtitleLabel)
         }
+        
+        self.backgroundColor = buttonStytle.buttonBackgroundColor()
+        self.layer.borderColor = buttonStytle.borderColor()
+        self.layer.borderWidth = 1.0
+        self.layer.masksToBounds = true
+        self.layer.cornerRadius = 5.0
     }
 }

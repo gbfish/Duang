@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Parse
 
 class DTableViewModelRow
 {
@@ -67,14 +68,17 @@ class DTableViewModelRow
     // MARK: - ButtonItem
     
     enum ButtonItem {
-        case ButtonItemTitleImage(style: ButtonItemStyle, buttonText: String, buttonImage: UIImage, function: Function)
         case ButtonItemTitle(style: ButtonItemStyle, buttonText: String, function: Function)
+        case ButtonItemTitleImage(style: ButtonItemStyle, buttonText: String, buttonImage: UIImage, function: Function)
+        case ButtonItemTitleSubtitle(style: ButtonItemStyle, buttonTitleText: String, buttonSubtitleText: String, function: Function)
         
         func functionAction() {
             switch self {
+            case .ButtonItemTitle(_, _, let function):
+                function.action()
             case .ButtonItemTitleImage(_, _, _, let function):
                 function.action()
-            case .ButtonItemTitle(_, _, let function):
+            case .ButtonItemTitleSubtitle(_, _, _, let function):
                 function.action()
             }
         }
@@ -126,21 +130,25 @@ class DTableViewModelRow
     enum Function {
         case Nothing
         case Function(argumentCount: NSInteger, function: () -> ())
-        case Function1Argument(name: String, function: (Argument) -> (), argument: Argument)
+        case Function1Argument(argument: Argument, function: (Argument) -> ())
         
         enum Argument {
             case PFObject
+            case user(user: PFUser)
         }
         
         func action() {
             switch self {
             case .Function(_, let function):
                 function()
-            case .Function1Argument(_, let function, let argument):
+            case .Function1Argument(let argument, let function):
                 function(argument)
             default:
                 break
             }
         }
     }
+    
+    
+
 }

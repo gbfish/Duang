@@ -527,21 +527,14 @@ class APIManager {
         }
     }
     
-    func getPhotoArray(pageSize: Int, page: Int, success: ([PFObject]) -> (), failure: (NSError?) -> ()) {
-        var query = PFQuery(className:TablePhoto.ClassName)
-        
-        
-//        query.cachePolicy = PFCachePolicy.CacheThenNetwork
-        
-        
-        
-//        if query.hasCachedResult() && page == 1 {
-//            query.clearCachedResult()
-//        }
-        
+    func getPhotoArray(pageSize: Int, page: Int, user: PFUser?, success: ([PFObject]) -> (), failure: (NSError?) -> ()) {
+        var query = PFQuery(className: TablePhoto.ClassName)
         query.limit = pageSize
         query.skip = (page - 1) * pageSize
         query.orderByDescending("updatedAt")
+        if let theUser = user {
+            query.whereKey(TablePhoto.Owner, equalTo: theUser)
+        }
         query.findObjectsInBackgroundWithBlock {
             (objects, error) -> Void in
             if error == nil {
@@ -553,7 +546,6 @@ class APIManager {
             }
         }
     }
-    
     
     // MARK: - Table User
     
