@@ -116,7 +116,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     return cell
                 }
                 
-            case .Detail(_), .DetailUser(_):
+            case .DetailImage(_), .DetailUser(_):
                 if let cell = tableView.dequeueReusableCellWithIdentifier(modelRow.cellIdentifier(), forIndexPath: indexPath) as? DTableViewCellDetail {
                     cell.delegate = self
                     cell.modelRow = modelRow
@@ -197,8 +197,10 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         selectedModelRow = modelRow
         
         switch modelRow.rowType {
-        case .Detail(_, _, _, _, let detailButton):
-            detailButton?.functionAction()
+        case .DetailImage(_, _, _, let detailButtonItem):
+            detailButtonItem?.functionAction()
+        case .DetailUser(_, _, let detailButtonItem):
+            detailButtonItem?.functionAction()
         default:
             break
         }
@@ -393,8 +395,8 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func saveEditProfile() {
         switch dTableViewModel.sectionArray[0].rowArray[0].rowType {
-        case .Detail(let image, let imageFile, _, _, _):
-            if let theImage = image where imageFile == nil {
+        case .DetailUser(let image, _, _):
+            if let theImage = image {
                 APIManager.sharedInstance.setCurrentUserAvatar(theImage)
             }
         default:
@@ -402,8 +404,8 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         
         switch dTableViewModel.sectionArray[0].rowArray[1].rowType {
-        case .Detail(let image, let imageFile, _, _, _):
-            if let theImage = image where imageFile == nil {
+        case .DetailImage(let image, let imageFile, _, _):
+            if let theImage = image {
                 APIManager.sharedInstance.setCurrentUserBanner(theImage)
             }
         default:
@@ -608,8 +610,11 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         default:
             if var theSelectedModelRow = selectedModelRow {
                 switch theSelectedModelRow.rowType {
-                case .Detail(_, _, let isRound, let detailTitle, let detailButton):
-                    theSelectedModelRow.rowType = DTableViewModelRow.RowType.Detail(image: image, imageFile: nil, isRound: isRound, detailTitle: detailTitle, detailButton: detailButton)
+                case .DetailImage(_, let imageFile, let detailTitle, let detailButtonItem):
+                    theSelectedModelRow.rowType = DTableViewModelRow.RowType.DetailImage(image: image, imageFile: imageFile, detailTitle: detailTitle, detailButtonItem: detailButtonItem)
+                    tableView.reloadData()
+                case .DetailUser(_, let user, let detailButtonItem):
+                    theSelectedModelRow.rowType = DTableViewModelRow.RowType.DetailUser(image: image, user: user, detailButtonItem: detailButtonItem)
                     tableView.reloadData()
                 default:
                     break

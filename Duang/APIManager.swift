@@ -576,14 +576,12 @@ class APIManager {
         }
     }
     
-    func fetchUser(user: PFUser, success: (PFUser) -> (), failure: (NSError?) -> ()) {
+    func fetchUser(user: PFUser, success: (PFUser) -> ()) {
         user.fetchIfNeededInBackgroundWithBlock { (object, error) -> Void in
             if error == nil {
                 if let theObject = object as? PFUser {
                     success(theObject)
                 }
-            } else {
-                failure(error)
             }
         }
     }

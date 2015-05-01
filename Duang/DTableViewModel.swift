@@ -143,7 +143,9 @@ class DTableViewModel
             row = DTableViewModelRow()
             let user = PFUser.currentUser()
             let buttonItemSetting = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Settings", function: functionShowSettings)
-            row.rowType = DTableViewModelRow.RowType.Detail(image: ImagePlaceholder.Avatar, imageFile: APIManager.getFileFromUser(user, key: TableUser.Avatar), isRound: true, detailTitle: APIManager.getNameFromUser(user), detailButton: buttonItemSetting)
+            
+            row.rowType = DTableViewModelRow.RowType.DetailUser(image: nil, user: user, detailButtonItem: buttonItemSetting)
+//            row.rowType = DTableViewModelRow.RowType.Detail(image: ImagePlaceholder.Avatar, imageFile: APIManager.getFileFromUser(user, key: TableUser.Avatar), isRound: true, detailTitle: APIManager.getNameFromUser(user), detailButton: buttonItemSetting)
             section.rowArray.append(row)
             
             row = DTableViewModelRow()
@@ -180,12 +182,16 @@ class DTableViewModel
             
             row = DTableViewModelRow()
             var buttonItem = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Edit", function: functionEditAvatar)
-            row.rowType = DTableViewModelRow.RowType.Detail(image: ImagePlaceholder.Avatar, imageFile: APIManager.getFileFromUser(user, key: TableUser.Avatar), isRound: true, detailTitle: "Avatar", detailButton: buttonItem)
+            
+            row.rowType = DTableViewModelRow.RowType.DetailUser(image: nil, user: user, detailButtonItem: buttonItem)
+//            row.rowType = DTableViewModelRow.RowType.Detail(image: ImagePlaceholder.Avatar, imageFile: APIManager.getFileFromUser(user, key: TableUser.Avatar), isRound: true, detailTitle: "Avatar", detailButton: buttonItem)
             section.rowArray.append(row)
             
             row = DTableViewModelRow()
             buttonItem = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Edit", function: functionEditBanner)
-            row.rowType = DTableViewModelRow.RowType.Detail(image: ImagePlaceholder.Image, imageFile: APIManager.getFileFromUser(user, key: TableUser.Banner), isRound: false, detailTitle: "Banner", detailButton: buttonItem)
+            
+            row.rowType = DTableViewModelRow.RowType.DetailImage(image: nil, imageFile: APIManager.getFileFromUser(user, key: TableUser.Banner), detailTitle: "Banner", detailButtonItem: buttonItem)
+//            row.rowType = DTableViewModelRow.RowType.Detail(image: ImagePlaceholder.Image, imageFile: APIManager.getFileFromUser(user, key: TableUser.Banner), isRound: false, detailTitle: "Banner", detailButton: buttonItem)
             section.rowArray.append(row)
             
             sectionArray.append(section)
@@ -345,7 +351,7 @@ class DTableViewModel
             
             let user = APIManager.getUserFromObject(object, key: TablePhoto.Owner)
 
-            row.rowType = DTableViewModelRow.RowType.DetailUser(user: user, detailButtonItem: nil)
+            row.rowType = DTableViewModelRow.RowType.DetailUser(image: nil, user: user, detailButtonItem: nil)
             
 //            row.rowType = DTableViewModelRow.RowType.Detail(image: ImagePlaceholder.Avatar, imageFile: APIManager.getFileFromUser(user, key: TableUser.Avatar), isRound: true, detailTitle: APIManager.getNameFromUser(user), detailButton: nil)
             section.rowArray.append(row)
