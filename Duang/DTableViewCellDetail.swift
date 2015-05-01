@@ -47,7 +47,7 @@ class DTableViewCellDetail: UITableViewCell
                 } else {
                     detailImageView.image = ImagePlaceholder.Avatar
                     if let theUser = user {
-                        APIManager.sharedInstance.fetchUser(theUser, success: { (theUserResult) -> () in
+                        APIManager.fetchUser(theUser, success: { (theUserResult) -> () in
                             APIManager.fetchImageFromFile(APIManager.getFileFromUser(theUserResult, key: TableUser.Avatar), success: { (image) -> () in
                                 self.detailImageView.image = image
                             })
@@ -56,7 +56,7 @@ class DTableViewCellDetail: UITableViewCell
                 }
                 
                 if let theUser = user {
-                    APIManager.sharedInstance.fetchUser(theUser, success: { (theUserResult) -> () in
+                    APIManager.fetchUser(theUser, success: { (theUserResult) -> () in
                         self.detailLabel.text = APIManager.getNameFromUser(theUserResult)
                     })
                 }

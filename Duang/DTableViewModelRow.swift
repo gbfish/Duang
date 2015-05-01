@@ -15,13 +15,14 @@ class DTableViewModelRow
     
     enum RowType {
         case Nothing
+        
         case Buttons(buttonItemArray: [ButtonItem])
         case Image(heightForRow: CGFloat?, image: UIImage?, imageFile: PFFile?, function: Function?)
         case TextView(heightForRow: CGFloat?, textViewTitle: String?, textViewText: String?, textViewTitleWidth: CGFloat?)
-//        case Detail(image: UIImage?, imageFile: PFFile?, isRound: Bool, detailTitle: String?, detailButton: ButtonItem?)
-        case DetailImage(image: UIImage?, imageFile: PFFile?, detailTitle: String?, detailButtonItem: ButtonItem?)
-        case DetailUser(image: UIImage?, user: PFUser?, detailButtonItem: ButtonItem?)
         case Label(text: String?, font: UIFont?)
+        
+        case DetailUser(image: UIImage?, user: PFUser?, detailButtonItem: ButtonItem?)
+        case DetailImage(image: UIImage?, imageFile: PFFile?, detailTitle: String?, detailButtonItem: ButtonItem?)
     }
     
     var rowType = RowType.Nothing

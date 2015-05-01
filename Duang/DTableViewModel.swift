@@ -74,6 +74,7 @@ class DTableViewModel
         case AddPhoto
         
         case Waterfall(waterfallType: WaterfallType)
+        case Profile(user: PFUser)
     }
     
     enum WaterfallType {
@@ -137,30 +138,6 @@ class DTableViewModel
             
             dataDidLoad()
             
-        case .MyProfile:
-            viewControllerTitle = "Me"
-            
-            row = DTableViewModelRow()
-            let user = PFUser.currentUser()
-            let buttonItemSetting = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Settings", function: functionShowSettings)
-            
-            row.rowType = DTableViewModelRow.RowType.DetailUser(image: nil, user: user, detailButtonItem: buttonItemSetting)
-//            row.rowType = DTableViewModelRow.RowType.Detail(image: ImagePlaceholder.Avatar, imageFile: APIManager.getFileFromUser(user, key: TableUser.Avatar), isRound: true, detailTitle: APIManager.getNameFromUser(user), detailButton: buttonItemSetting)
-            section.rowArray.append(row)
-            
-            row = DTableViewModelRow()
-            let buttonItemPhoto = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "5", buttonSubtitleText: "Photos", function: functionShowWaterfallUser)
-            let buttonItemLike = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "52", buttonSubtitleText: "Likes", function: functionShowSignUp)
-            let buttonItemFollowing = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "15", buttonSubtitleText: "Following", function: functionShowSignUp)
-            let buttonItemFollower = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "53", buttonSubtitleText: "Followers", function: functionShowSignUp)
-            
-            row.rowType = DTableViewModelRow.RowType.Buttons(buttonItemArray: [buttonItemPhoto, buttonItemLike, buttonItemFollowing, buttonItemFollower])
-            section.rowArray.append(row)
-            
-            sectionArray.append(section)
-            
-            dataDidLoad()
-            
         case .Settings:
             viewControllerTitle = "Settings"
             
@@ -184,14 +161,12 @@ class DTableViewModel
             var buttonItem = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Edit", function: functionEditAvatar)
             
             row.rowType = DTableViewModelRow.RowType.DetailUser(image: nil, user: user, detailButtonItem: buttonItem)
-//            row.rowType = DTableViewModelRow.RowType.Detail(image: ImagePlaceholder.Avatar, imageFile: APIManager.getFileFromUser(user, key: TableUser.Avatar), isRound: true, detailTitle: "Avatar", detailButton: buttonItem)
             section.rowArray.append(row)
             
             row = DTableViewModelRow()
             buttonItem = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Edit", function: functionEditBanner)
             
             row.rowType = DTableViewModelRow.RowType.DetailImage(image: nil, imageFile: APIManager.getFileFromUser(user, key: TableUser.Banner), detailTitle: "Banner", detailButtonItem: buttonItem)
-//            row.rowType = DTableViewModelRow.RowType.Detail(image: ImagePlaceholder.Image, imageFile: APIManager.getFileFromUser(user, key: TableUser.Banner), isRound: false, detailTitle: "Banner", detailButton: buttonItem)
             section.rowArray.append(row)
             
             sectionArray.append(section)
@@ -271,6 +246,35 @@ class DTableViewModel
                 viewControllerTitle = APIManager.getNameFromUser(user)
                 waterfallInit()
             }
+            
+        case .MyProfile:
+            viewControllerTitle = "Me"
+            
+            row = DTableViewModelRow()
+            let user = PFUser.currentUser()
+            let buttonItemSetting = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Settings", function: functionShowSettings)
+            
+            row.rowType = DTableViewModelRow.RowType.DetailUser(image: nil, user: user, detailButtonItem: buttonItemSetting)
+            section.rowArray.append(row)
+            
+            row = DTableViewModelRow()
+            let buttonItemPhoto = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "5", buttonSubtitleText: "Photos", function: functionShowWaterfallUser)
+            let buttonItemLike = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "52", buttonSubtitleText: "Likes", function: functionShowSignUp)
+            let buttonItemFollowing = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "15", buttonSubtitleText: "Following", function: functionShowSignUp)
+            let buttonItemFollower = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "53", buttonSubtitleText: "Followers", function: functionShowSignUp)
+            
+            row.rowType = DTableViewModelRow.RowType.Buttons(buttonItemArray: [buttonItemPhoto, buttonItemLike, buttonItemFollowing, buttonItemFollower])
+            section.rowArray.append(row)
+            
+            sectionArray.append(section)
+            
+            dataDidLoad()
+            
+        case .Profile(let user):
+            viewControllerTitle = "Profile"
+            
+            profileInit(user)
+            
         }
         
         
@@ -297,16 +301,19 @@ class DTableViewModel
     
     var waterfallPageCount: NSInteger = 1
     var waterfallPageSize: NSInteger = 50
-    var waterfallPageEnd = false
+    
+    var waterfallEnd = false
+    var waterfallUpdating = false
     
     func waterfallInit() {
         waterfallPageCount = 1
-        waterfallPageEnd = false
+        waterfallEnd = false
+        waterfallUpdating = false
         waterfallSendRequest()
     }
     
     func waterfallMore() {
-        if !waterfallPageEnd {
+        if !waterfallEnd && !waterfallUpdating {
             ++waterfallPageCount
             waterfallSendRequest()
         }
@@ -317,12 +324,15 @@ class DTableViewModel
         case .Waterfall(let waterfallType):
             switch waterfallType {
             case .Feed:
+                waterfallUpdating = true
                 APIManager.sharedInstance.getPhotoArray(waterfallPageSize, page: waterfallPageCount, user: nil, success: { (objectArray) -> () in
                     self.waterfallSendRequestSuccess(objectArray)
-                    }, failure: { (error) -> () in
-                        self.waterfallSendRequestFailure()
+                }, failure: { (error) -> () in
+                    self.waterfallSendRequestFailure()
                 })
+                
             case .PhotosUser(let user):
+                waterfallUpdating = true
                 APIManager.sharedInstance.getPhotoArray(waterfallPageSize, page: waterfallPageCount, user: user, success: { (objectArray) -> () in
                     self.waterfallSendRequestSuccess(objectArray)
                 }, failure: { (error) -> () in
@@ -335,15 +345,13 @@ class DTableViewModel
     }
     
     private func waterfallSendRequestSuccess(objectArray: [PFObject]) {
-        
-        println("objectArray = \(objectArray.count)")
+        waterfallUpdating = false
+        if objectArray.count < waterfallPageSize {
+            waterfallEnd = true
+        }
         
         var section = DTableViewModelSection()
         var row = DTableViewModelRow()
-        
-        if objectArray.count < waterfallPageSize {
-            waterfallPageEnd = true
-        }
         
         for object in objectArray {
             section = DTableViewModelSection()
@@ -352,8 +360,6 @@ class DTableViewModel
             let user = APIManager.getUserFromObject(object, key: TablePhoto.Owner)
 
             row.rowType = DTableViewModelRow.RowType.DetailUser(image: nil, user: user, detailButtonItem: nil)
-            
-//            row.rowType = DTableViewModelRow.RowType.Detail(image: ImagePlaceholder.Avatar, imageFile: APIManager.getFileFromUser(user, key: TableUser.Avatar), isRound: true, detailTitle: APIManager.getNameFromUser(user), detailButton: nil)
             section.rowArray.append(row)
             
             row = DTableViewModelRow()
@@ -371,7 +377,54 @@ class DTableViewModel
     }
     
     private func waterfallSendRequestFailure() {
+        waterfallUpdating = false
         dataDidLoad()
+    }
+    
+    // MARK: - Profile
+    
+    func profileInit(user: PFUser) {
+        var section = DTableViewModelSection()
+        var row = DTableViewModelRow()
+        
+        APIManager.fetchUser(user, success: { (theUser) -> () in
+            self.viewControllerTitle = APIManager.getNameFromUser(theUser)
+            
+            row = DTableViewModelRow()
+            let user = PFUser.currentUser()
+            let buttonItemSetting = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Settings", function: self.functionShowSettings)
+            
+            row.rowType = DTableViewModelRow.RowType.DetailUser(image: nil, user: user, detailButtonItem: buttonItemSetting)
+            section.rowArray.append(row)
+            
+            row = DTableViewModelRow()
+            
+            APIManager.fetchPhotoTotal(theUser, success: { (photoTotal) -> () in
+                let buttonItemPhoto = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "\(photoTotal)", buttonSubtitleText: "Photos", function: self.functionShowWaterfallUser)
+                
+                let buttonItemLike = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "52", buttonSubtitleText: "Likes", function: self.functionShowSignUp)
+                let buttonItemFollowing = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "15", buttonSubtitleText: "Following", function: self.functionShowSignUp)
+                let buttonItemFollower = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "53", buttonSubtitleText: "Followers", function: self.functionShowSignUp)
+                
+                row.rowType = DTableViewModelRow.RowType.Buttons(buttonItemArray: [buttonItemPhoto, buttonItemLike, buttonItemFollowing, buttonItemFollower])
+                
+                section.rowArray.append(row)
+                
+                self.sectionArray.append(section)
+                
+                self.dataDidLoad()
+            })
+            
+            
+            
+            
+            
+            
+            
+        })
+        
+        
+        
     }
     
     // MARK: - Add Button

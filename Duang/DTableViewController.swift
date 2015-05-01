@@ -185,6 +185,31 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         })
     }
     
+    // MARK: - UIScrollViewDelegate
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        let offset = scrollView.contentOffset
+        let bounds = scrollView.bounds
+        let size = scrollView.contentSize
+        let inset = scrollView.contentInset
+        let y = offset.y + bounds.size.height - inset.bottom
+        let h = size.height
+        
+        let reload_distance: CGFloat = 10
+        if y > h + reload_distance {
+            loadMoreData()
+        }
+    }
+    
+    func loadMoreData() {
+        switch dTableViewModel.tableType {
+        case .Waterfall(_):
+            dTableViewModel.waterfallMore()
+        default:
+            break
+        }
+    }
+    
     // MARK: - Cell DTableViewCellButtonsProtocol
     
     func dTableViewCellButtonsAction(buttonItem: DTableViewModelRow.ButtonItem) {
@@ -303,7 +328,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             dTableViewModel.functionSignUp = DTableViewModelRow.Function.Function(argumentCount: 0, function: signUp)
         case .LogIn:
             dTableViewModel.functionLogIn = DTableViewModelRow.Function.Function(argumentCount: 0, function: logIn)
-        case .MyProfile:
+        case .MyProfile, .Profile(_) :
             dTableViewModel.functionShowSettings = DTableViewModelRow.Function.Function(argumentCount: 0, function: showSettings)
             
             if let theUser = PFUser.currentUser() {

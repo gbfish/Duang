@@ -20,9 +20,12 @@ class MainTabBarController: UITabBarController
         if let viewController = getViewController(DTableViewModel.TableType.AddPhoto, itemTitle: TabBarTitle.AddPhoto, itemImageName: "TabBar_Add", tag: 1) {
             temViewControllers.append(viewController)
         }
-        if let viewController = getViewController(DTableViewModel.TableType.MyProfile, itemTitle: TabBarTitle.MyProfile, itemImageName: "TabBar_Users", tag: 2) {
+        if let theUser = PFUser.currentUser(), viewController = getViewController(DTableViewModel.TableType.Profile(user: theUser), itemTitle: TabBarTitle.MyProfile, itemImageName: "TabBar_Users", tag: 2) {
             temViewControllers.append(viewController)
         }
+//        if let viewController = getViewController(DTableViewModel.TableType.MyProfile, itemTitle: TabBarTitle.MyProfile, itemImageName: "TabBar_Users", tag: 2) {
+//            temViewControllers.append(viewController)
+//        }
 
 //        if let viewController = getViewController(DuangTableViewController.TableType.Profile, itemTitle: TabBarTitle.Profile, itemImageName: "TabBar_Person", tag: 3) {
 //            temViewControllers.append(viewController)

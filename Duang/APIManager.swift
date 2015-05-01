@@ -559,6 +559,27 @@ class APIManager {
         }
     }
     
+    
+    class func fetchPhotoTotal(user: PFUser, success: (Int32) -> ()) {
+        var query = PFQuery(className: TablePhoto.ClassName)
+
+        query.whereKey(TablePhoto.Owner, equalTo: user)
+        
+        query.countObjectsInBackgroundWithBlock { (countNumber, error) -> Void in
+            if error == nil {
+                success(countNumber)
+            }
+        }
+    }
+    
+    class func fetchPhotoTotal(user: PFUser) -> Int {
+        var query = PFQuery(className: TablePhoto.ClassName)
+        
+        query.whereKey(TablePhoto.Owner, equalTo: user)
+        
+        return query.countObjects()
+    }
+    
     // MARK: - Table User
     
     func getUsers(success: ([PFUser]) -> (), failure: (NSError?) -> ()) {
@@ -576,7 +597,7 @@ class APIManager {
         }
     }
     
-    func fetchUser(user: PFUser, success: (PFUser) -> ()) {
+    class func fetchUser(user: PFUser, success: (PFUser) -> ()) {
         user.fetchIfNeededInBackgroundWithBlock { (object, error) -> Void in
             if error == nil {
                 if let theObject = object as? PFUser {
@@ -585,6 +606,8 @@ class APIManager {
             }
         }
     }
+    
+    
     
     // MARK: - Table Comment
     
