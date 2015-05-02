@@ -104,7 +104,8 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             case .Buttons(let buttonItemArray):
                 if let cell = tableView.dequeueReusableCellWithIdentifier(modelRow.cellIdentifier(), forIndexPath: indexPath) as? DTableViewCellButtons {
                     cell.delegate = self
-                    cell.buttonItemArray = buttonItemArray
+//                    cell.buttonItemArray = buttonItemArray
+                    cell.modelRow = modelRow
                     cell.reloadView()
                     return cell
                 }
