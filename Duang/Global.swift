@@ -102,6 +102,13 @@ struct TablePhoto {
     static let ImageHeight = "imageHeight"
 }
 
+struct TablePhotoLike {
+    static let ClassName = "PhotoLike"
+    
+    static let User = "user"
+    static let Photo = "photo"
+}
+
 struct TableUser {
     static let ClassName = "_User"
     

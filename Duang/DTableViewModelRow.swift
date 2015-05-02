@@ -16,10 +16,13 @@ class DTableViewModelRow
     enum RowType {
         case Nothing
         
-        case Buttons(buttonItemArray: [ButtonItem])
+        
         case Image(heightForRow: CGFloat?, image: UIImage?, imageFile: PFFile?, function: Function?)
         case TextView(heightForRow: CGFloat?, textViewTitle: String?, textViewText: String?, textViewTitleWidth: CGFloat?)
         case Label(text: String?, font: UIFont?)
+        
+        case Buttons(buttonItemArray: [ButtonItem])
+        case ButtonsWaterfall(photo: PFObject)
         
         case DetailUser(image: UIImage?, user: PFUser?, detailButtonItem: ButtonItem?)
         case DetailImage(image: UIImage?, imageFile: PFFile?, detailTitle: String?, detailButtonItem: ButtonItem?)
@@ -29,7 +32,7 @@ class DTableViewModelRow
     
     func cellIdentifier() -> String {
         switch rowType {
-        case .Buttons(_):
+        case .Buttons(_), .ButtonsWaterfall(_):
             return "DTableViewCellButtons"
         case .Image(_):
             return "DTableViewCellImage"

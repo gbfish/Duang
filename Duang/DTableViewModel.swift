@@ -371,6 +371,10 @@ class DTableViewModel
             row.rowType = DTableViewModelRow.RowType.Image(heightForRow: heightForRow, image: ImagePlaceholder.Image, imageFile: APIManager.getFileFromObject(object, key: TablePhoto.Image), function: nil)
             section.rowArray.append(row)
             
+//            row = DTableViewModelRow()
+//            row.rowType = DTableViewModelRow.RowType.ButtonsWaterfall(photo: object)
+//            section.rowArray.append(row)
+            
             sectionArray.append(section)
         }
         dataDidLoad()

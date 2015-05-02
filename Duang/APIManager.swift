@@ -559,7 +559,6 @@ class APIManager {
         }
     }
     
-    
     class func fetchPhotoTotal(user: PFUser, success: (Int32) -> ()) {
         var query = PFQuery(className: TablePhoto.ClassName)
 
@@ -572,13 +571,41 @@ class APIManager {
         }
     }
     
-    class func fetchPhotoTotal(user: PFUser) -> Int {
-        var query = PFQuery(className: TablePhoto.ClassName)
-        
-        query.whereKey(TablePhoto.Owner, equalTo: user)
-        
-        return query.countObjects()
+    // MARK: - Table PhotoLike
+    
+    class func likePhoto(user: PFUser, photo: PFObject) {
+        let query = PFQuery(className: TablePhotoLike.ClassName)
+        query.whereKey(TablePhotoLike.User, equalTo: user)
+        query.whereKey(TablePhotoLike.Photo, equalTo: photo)
+        query.countObjectsInBackgroundWithBlock { (likeTotal, error) -> Void in
+            if likeTotal == 0 {
+                //like
+                var photoLike = PFObject(className:TablePhotoLike.ClassName)
+                photo[TablePhotoLike.User] = user
+                photo[TablePhotoLike.Photo] = photo
+                photo.saveInBackground()
+            } else if likeTotal == 1 {
+                //already like
+            } else {
+                //something wrong
+                query.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
+                    if error == nil {
+                        if let photoLikeArray = objects as? [PFObject] {
+                            for photoLike in photoLikeArray {
+                                photoLike.deleteInBackground()
+                            }
+                        }
+                    }
+                    var photoLike = PFObject(className:TablePhotoLike.ClassName)
+                    photo[TablePhotoLike.User] = user
+                    photo[TablePhotoLike.Photo] = photo
+                    photo.saveInBackground()
+                })
+            }
+        }
     }
+    
+    
     
     // MARK: - Table User
     
@@ -587,8 +614,8 @@ class APIManager {
             query.limit = 20
             query.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
                 if error == nil {
-                    if let objects = objects as? [PFUser] {
-                        success(objects)
+                    if let theObjects = objects as? [PFUser] {
+                        success(theObjects)
                     }
                 } else {
                     failure(error)
