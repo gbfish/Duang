@@ -104,11 +104,20 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             case .Buttons(let buttonItemArray):
                 if let cell = tableView.dequeueReusableCellWithIdentifier(modelRow.cellIdentifier(), forIndexPath: indexPath) as? DTableViewCellButtons {
                     cell.delegate = self
-//                    cell.buttonItemArray = buttonItemArray
                     cell.modelRow = modelRow
                     cell.reloadView()
                     return cell
                 }
+                
+            case .ButtonsWaterfall(let photo):
+                if let cell = tableView.dequeueReusableCellWithIdentifier(modelRow.cellIdentifier(), forIndexPath: indexPath) as? DTableViewCellButtons {
+                    cell.delegate = self
+                    cell.photo = photo
+                    cell.modelRow = modelRow
+                    cell.reloadView()
+                    return cell
+                }
+                
             case .Image(_, let image, let imageFile, _):
                 if let cell = tableView.dequeueReusableCellWithIdentifier(modelRow.cellIdentifier(), forIndexPath: indexPath) as? DTableViewCellImage {
                     cell.cellImage = image

@@ -18,6 +18,8 @@ class DTableViewCellButtons: UITableViewCell
     var delegate: DTableViewCellButtonsProtocol?
     var modelRow: DTableViewModelRow?
     
+    var photo: PFObject?
+    
     var buttonItemArray: [DTableViewModelRow.ButtonItem]?
     
     
