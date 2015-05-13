@@ -573,38 +573,68 @@ class APIManager {
     
     // MARK: - Table PhotoLike
     
-    class func likePhoto(user: PFUser, photo: PFObject) {
-        let query = PFQuery(className: TablePhotoLike.ClassName)
-        query.whereKey(TablePhotoLike.User, equalTo: user)
-        query.whereKey(TablePhotoLike.Photo, equalTo: photo)
-        query.countObjectsInBackgroundWithBlock { (likeTotal, error) -> Void in
-            if likeTotal == 0 {
-                //like
-                var photoLike = PFObject(className:TablePhotoLike.ClassName)
-                photo[TablePhotoLike.User] = user
-                photo[TablePhotoLike.Photo] = photo
-                photo.saveInBackground()
-            } else if likeTotal == 1 {
-                //already like
-            } else {
-                //something wrong
-                query.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
-                    if error == nil {
-                        if let photoLikeArray = objects as? [PFObject] {
-                            for photoLike in photoLikeArray {
-                                photoLike.deleteInBackground()
+    class func likePhoto(photo: PFObject) {
+        if let user = PFUser.currentUser() {
+            let query = PFQuery(className: TablePhotoLike.ClassName)
+            query.whereKey(TablePhotoLike.User, equalTo: user)
+            query.whereKey(TablePhotoLike.Photo, equalTo: photo)
+            query.countObjectsInBackgroundWithBlock { (likeTotal, error) -> Void in
+                if likeTotal == 0 {
+                    //like
+                    var photoLike = PFObject(className:TablePhotoLike.ClassName)
+                    photoLike[TablePhotoLike.User] = user
+                    photoLike[TablePhotoLike.Photo] = photo
+                    photoLike.saveInBackground()
+                } else if likeTotal == 1 {
+                    //already like
+                } else {
+                    //something wrong
+                    query.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
+                        if error == nil {
+                            if let photoLikeArray = objects as? [PFObject] {
+                                for photoLike in photoLikeArray {
+                                    photoLike.deleteInBackground()
+                                }
                             }
                         }
-                    }
-                    var photoLike = PFObject(className:TablePhotoLike.ClassName)
-                    photo[TablePhotoLike.User] = user
-                    photo[TablePhotoLike.Photo] = photo
-                    photo.saveInBackground()
-                })
+                        var photoLike = PFObject(className:TablePhotoLike.ClassName)
+                        photoLike[TablePhotoLike.User] = user
+                        photoLike[TablePhotoLike.Photo] = photo
+                        photoLike.saveInBackground()
+                    })
+                }
             }
         }
     }
     
+    class func ifLikePhoto(user: PFUser, photo: PFObject, success: (Bool) -> ()) {
+        var query = PFQuery(className: TablePhotoLike.ClassName)
+        
+        query.whereKey(TablePhotoLike.User, equalTo: user)
+        query.whereKey(TablePhotoLike.Photo, equalTo: photo)
+        
+        query.countObjectsInBackgroundWithBlock { (countNumber, error) -> Void in
+            if error == nil {
+                if countNumber == 1 {
+                    success(true)
+                } else {
+                    success(false)
+                }
+            }
+        }
+    }
+    
+    class func fetchPhotoLikeTotal(photo: PFObject, success: (Int32) -> ()) {
+        var query = PFQuery(className: TablePhotoLike.ClassName)
+        
+        query.whereKey(TablePhotoLike.Photo, equalTo: photo)
+        
+        query.countObjectsInBackgroundWithBlock { (countNumber, error) -> Void in
+            if error == nil {
+                success(countNumber)
+            }
+        }
+    }
     
     
     // MARK: - Table User

@@ -101,7 +101,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if let modelRow = dTableViewModel.row(indexPath) {
             switch modelRow.rowType {
-            case .Buttons(let buttonItemArray):
+            case .Buttons(_):
                 if let cell = tableView.dequeueReusableCellWithIdentifier(modelRow.cellIdentifier(), forIndexPath: indexPath) as? DTableViewCellButtons {
                     cell.delegate = self
                     cell.modelRow = modelRow
@@ -109,10 +109,9 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     return cell
                 }
                 
-            case .ButtonsWaterfall(let photo):
+            case .ButtonsWaterfall(_):
                 if let cell = tableView.dequeueReusableCellWithIdentifier(modelRow.cellIdentifier(), forIndexPath: indexPath) as? DTableViewCellButtons {
                     cell.delegate = self
-                    cell.photo = photo
                     cell.modelRow = modelRow
                     cell.reloadView()
                     return cell
@@ -224,6 +223,22 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func dTableViewCellButtonsAction(buttonItem: DTableViewModelRow.ButtonItem) {
         buttonItem.functionAction()
+    }
+    
+    func dTableViewCellButtonsActionLike(photo: PFObject) {
+        APIManager.likePhoto(photo)
+    }
+    
+    func dTableViewCellButtonsActionUnlike(photo: PFObject) {
+        
+    }
+    
+    func dTableViewCellButtonsActionComment(photo: PFObject) {
+        
+    }
+    
+    func dTableViewCellButtonsActionShare(photo: PFObject) {
+        
     }
     
     // MARK: - Cell DTableViewCellDetailProtocol
@@ -363,6 +378,9 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         case .AddPhoto:
             dTableViewModel.functionAddPhoto = DTableViewModelRow.Function.Function(argumentCount: 0, function: selectImage)
             dTableViewModel.functionSaveAddPhoto = DTableViewModelRow.Function.Function(argumentCount: 0, function: saveAddPhoto)
+            
+//        case .Waterfall(_):
+            
         default:
             break
         }

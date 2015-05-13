@@ -353,26 +353,26 @@ class DTableViewModel
         var section = DTableViewModelSection()
         var row = DTableViewModelRow()
         
-        for object in objectArray {
+        for photo in objectArray {
             section = DTableViewModelSection()
             row = DTableViewModelRow()
             
-            let user = APIManager.getUserFromObject(object, key: TablePhoto.Owner)
+            let user = APIManager.getUserFromObject(photo, key: TablePhoto.Owner)
 
             row.rowType = DTableViewModelRow.RowType.DetailUser(image: nil, user: user, detailButtonItem: nil)
             section.rowArray.append(row)
             
             row = DTableViewModelRow()
-            row.rowType = DTableViewModelRow.RowType.Label(text: APIManager.getStringFromObject(object, key: TablePhoto.Description), font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody))
+            row.rowType = DTableViewModelRow.RowType.Label(text: APIManager.getStringFromObject(photo, key: TablePhoto.Description), font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody))
             section.rowArray.append(row)
             
             row = DTableViewModelRow()
-            let heightForRow = APIManager.getHeightFromPhoto(object)
-            row.rowType = DTableViewModelRow.RowType.Image(heightForRow: heightForRow, image: ImagePlaceholder.Image, imageFile: APIManager.getFileFromObject(object, key: TablePhoto.Image), function: nil)
+            let heightForRow = APIManager.getHeightFromPhoto(photo)
+            row.rowType = DTableViewModelRow.RowType.Image(heightForRow: heightForRow, image: ImagePlaceholder.Image, imageFile: APIManager.getFileFromObject(photo, key: TablePhoto.Image), function: nil)
             section.rowArray.append(row)
             
             row = DTableViewModelRow()
-            row.rowType = DTableViewModelRow.RowType.ButtonsWaterfall(photo: object)
+            row.rowType = DTableViewModelRow.RowType.ButtonsWaterfall(photo: photo)
             section.rowArray.append(row)
             
             sectionArray.append(section)
@@ -480,7 +480,6 @@ class DTableViewModel
     var functionShowChangePassword = DTableViewModelRow.Function.Nothing
     var functionShowWaterfallUser = DTableViewModelRow.Function.Nothing
     
-    
     var functionSaveEditProfile = DTableViewModelRow.Function.Nothing
     var functionSaveAccountSettings = DTableViewModelRow.Function.Nothing
     var functionSaveChangePassword = DTableViewModelRow.Function.Nothing
@@ -493,5 +492,4 @@ class DTableViewModel
     var functionEditBanner = DTableViewModelRow.Function.Nothing
     var functionAddPhoto = DTableViewModelRow.Function.Nothing
     
-
 }
