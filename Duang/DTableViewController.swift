@@ -249,11 +249,28 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         switch modelRow.rowType {
         case .DetailImage(_, _, _, let detailButtonItem):
             detailButtonItem?.functionAction()
-        case .DetailUser(_, let detailButtonItem):
-            detailButtonItem?.functionAction()
+//        case .DetailUser(_, let detailButtonItem):
+//            detailButtonItem?.functionAction()
+        case .DetailUser(_, let detailButtonType):
+            if let theDetailButtonType = detailButtonType {
+                switch theDetailButtonType {
+                case .ButtonItem(let buttonItem):
+                    buttonItem.functionAction()
+                default:
+                    break
+                }
+            }
         default:
             break
         }
+    }
+    
+    func dTableViewCellDetailButtonActionFollow(user: PFUser) {
+        APIManager.followUser(user)
+    }
+    
+    func dTableViewCellDetailButtonActionUnfollow(user: PFUser) {
+        APIManager.unfollowUser(user)
     }
     
     // MARK: - Cell DTableViewCellTextView

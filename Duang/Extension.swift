@@ -19,6 +19,12 @@ extension UIViewController {
 
 extension UIButton {
     func setButton(buttonItem: DTableViewModelRow.ButtonItem, buttonSize: CGSize) {
+        let subViews = self.subviews
+        for subView in subViews {
+            subView.removeFromSuperview()
+        }
+        
+        
         var buttonStytle = DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal
         
         switch buttonItem {

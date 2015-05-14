@@ -24,7 +24,8 @@ class DTableViewModelRow
         case Buttons(buttonItemArray: [ButtonItem])
         case ButtonsWaterfall(photo: PFObject)
         
-        case DetailUser(user: PFUser?, detailButtonItem: ButtonItem?)
+//        case DetailUser(user: PFUser?, detailButtonItem: ButtonItem?)
+        case DetailUser(user: PFUser?, detailButtonType: ButtonType?)
         case DetailImage(image: UIImage?, imageFile: PFFile?, detailTitle: String?, detailButtonItem: ButtonItem?)
     }
     
@@ -69,6 +70,13 @@ class DTableViewModelRow
             break
         }
         return 50.0
+    }
+    
+    // MARK: - ButtonType
+    
+    enum ButtonType {
+        case ButtonItem(buttonItem: DTableViewModelRow.ButtonItem)
+        case Follow
     }
     
     // MARK: - ButtonItem

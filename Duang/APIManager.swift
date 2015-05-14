@@ -801,6 +801,99 @@ class APIManager {
         }
     }
     
+    class func followUser(user: PFUser) {
+        if let currentUser = PFUser.currentUser() where user != currentUser {
+            let query = PFQuery(className: TableUserFollow.ClassName)
+            query.whereKey(TableUserFollow.User, equalTo: currentUser)
+            query.whereKey(TableUserFollow.UserFollowed, equalTo: user)
+            query.countObjectsInBackgroundWithBlock { (followTotal, error) -> Void in
+                if followTotal == 0 {
+                    //follow
+                    var userFollow = PFObject(className:TableUserFollow.ClassName)
+                    userFollow[TableUserFollow.User] = currentUser
+                    userFollow[TableUserFollow.UserFollowed] = user
+                    userFollow.saveInBackground()
+                } else if followTotal == 1 {
+                    //already follow
+                } else {
+                    //something wrong
+                    query.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
+                        if error == nil {
+                            if let userFollowArray = objects as? [PFObject] {
+                                for userFollow in userFollowArray {
+                                    userFollow.deleteInBackground()
+                                }
+                            }
+                        }
+                        var userFollow = PFObject(className:TableUserFollow.ClassName)
+                        userFollow[TableUserFollow.User] = currentUser
+                        userFollow[TableUserFollow.UserFollowed] = user
+                        userFollow.saveInBackground()
+                    })
+                }
+            }
+        }
+    }
+    
+    class func unfollowUser(user: PFUser) {
+        if let currentUser = PFUser.currentUser() where user != currentUser {
+            let query = PFQuery(className: TableUserFollow.ClassName)
+            query.whereKey(TableUserFollow.User, equalTo: currentUser)
+            query.whereKey(TableUserFollow.UserFollowed, equalTo: user)
+            query.countObjectsInBackgroundWithBlock { (followTotal, error) -> Void in
+                if followTotal != 0 {
+                    query.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
+                        if error == nil {
+                            if let userFollowArray = objects as? [PFObject] {
+                                for userFollow in userFollowArray {
+                                    userFollow.deleteInBackground()
+                                }
+                            }
+                        }
+                    })
+                }
+            }
+        }
+    }
+    
+    class func fetchFollowingTotal(success: (Int32) -> ()) {
+        if let currentUser = PFUser.currentUser() {
+            var query = PFQuery(className: TableUserFollow.ClassName)
+            query.whereKey(TableUserFollow.User, equalTo: currentUser)
+            query.countObjectsInBackgroundWithBlock { (countNumber, error) -> Void in
+                if error == nil {
+                    success(countNumber)
+                }
+            }
+        }
+    }
+    
+    class func fetchFollowingArray(pageSize: Int, page: Int, success: ([PFUser]) -> (), failure: (NSError?) -> ()) {
+        if let currentUser = PFUser.currentUser() {
+            var query = PFQuery(className: TableUserFollow.ClassName)
+            query.limit = pageSize
+            query.skip = (page - 1) * pageSize
+            query.orderByDescending("updatedAt")
+            query.whereKey(TableUserFollow.User, equalTo: currentUser)
+            query.findObjectsInBackgroundWithBlock {
+                (objects, error) -> Void in
+                if error == nil {
+                    if let objects = objects as? [PFObject] {
+                        var followingArray = [PFUser]()
+                        for userFollow in objects {
+                            if let userFollowing = APIManager.getUserFromObject(userFollow, key: TableUserFollow.UserFollowed) {
+                                followingArray.append(userFollowing)
+                            }
+                        }
+                        success(followingArray)
+                    }
+                } else {
+                    failure(error)
+                }
+            }
+        }
+    }
+    
     // MARK: - Table Comment
     
 
