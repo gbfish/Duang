@@ -62,7 +62,7 @@ extension UIButton {
         case .ButtonItemTitleSubtitle(let style, let buttonTitleText, let buttonSubtitleText, _):
             buttonStytle = style
             
-            let buttonTitleLabelHeight = (buttonSize.height - (DuangGlobal.spacing * 2)) / 3 * 2
+            let buttonTitleLabelHeight = (buttonSize.height - (DuangGlobal.spacing * 2)) / 2
             
             let buttonTitleLabel = UILabel()
             buttonTitleLabel.text = buttonTitleText
@@ -75,7 +75,7 @@ extension UIButton {
             buttonSubtitleLabel.text = buttonSubtitleText
             buttonSubtitleLabel.textColor = style.buttonTextColor()
             buttonSubtitleLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
-            buttonSubtitleLabel.frame = CGRectMake(DuangGlobal.spacing, DuangGlobal.spacing + buttonTitleLabelHeight, buttonSize.width - (DuangGlobal.spacing * 2), (buttonSize.height - (DuangGlobal.spacing * 2)) / 3)
+            buttonSubtitleLabel.frame = CGRectMake(DuangGlobal.spacing, DuangGlobal.spacing + buttonTitleLabelHeight, buttonSize.width - (DuangGlobal.spacing * 2), (buttonSize.height - (DuangGlobal.spacing * 2)) / 2)
             self.addSubview(buttonSubtitleLabel)
         }
         

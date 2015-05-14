@@ -230,11 +230,11 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func dTableViewCellButtonsActionUnlike(photo: PFObject) {
-        
+        APIManager.unlikePhoto(photo)
     }
     
     func dTableViewCellButtonsActionComment(photo: PFObject) {
-        
+        showComment(photo)
     }
     
     func dTableViewCellButtonsActionShare(photo: PFObject) {
@@ -357,8 +357,10 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             dTableViewModel.functionShowSettings = DTableViewModelRow.Function.Function(argumentCount: 0, function: showSettings)
             
             if let theUser = PFUser.currentUser() {
-                let argument = DTableViewModelRow.Function.Argument.user(user: theUser)
+                let argument = DTableViewModelRow.Function.Argument.User(user: theUser)
                 dTableViewModel.functionShowWaterfallUser = DTableViewModelRow.Function.Function1Argument(argument: argument, function: showWaterfallUser)
+                
+                dTableViewModel.functionShowWaterfallLike = DTableViewModelRow.Function.Function1Argument(argument: argument, function: showWaterfallLike)
             }
             
             
@@ -378,8 +380,10 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         case .AddPhoto:
             dTableViewModel.functionAddPhoto = DTableViewModelRow.Function.Function(argumentCount: 0, function: selectImage)
             dTableViewModel.functionSaveAddPhoto = DTableViewModelRow.Function.Function(argumentCount: 0, function: saveAddPhoto)
+        case .Comment(let photo):
             
-//        case .Waterfall(_):
+            let argument = DTableViewModelRow.Function.Argument.Object(object: photo)
+            dTableViewModel.functionSaveComment = DTableViewModelRow.Function.Function1Argument(argument: argument, function: saveComment)
             
         default:
             break
@@ -427,9 +431,8 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func showWaterfallUser(argumentPFUser: DTableViewModelRow.Function.Argument) {
-        
         switch argumentPFUser {
-        case .user(let user):
+        case .User(let user):
             if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DTableViewController") as? DTableViewController {
                 viewController.delegate = self
                 viewController.dTableViewModel.tableType = DTableViewModel.TableType.Waterfall(waterfallType: DTableViewModel.WaterfallType.PhotosUser(user: user))
@@ -438,10 +441,27 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         default:
             break
         }
-        
-        
-        
-        
+    }
+    
+    func showWaterfallLike(argumentPFUser: DTableViewModelRow.Function.Argument) {
+        switch argumentPFUser {
+        case .User(let user):
+            if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DTableViewController") as? DTableViewController {
+                viewController.delegate = self
+                viewController.dTableViewModel.tableType = DTableViewModel.TableType.Waterfall(waterfallType: DTableViewModel.WaterfallType.PhotosLike(user: user))
+                self.navigationController?.pushViewController(viewController, animated: true)
+            }
+        default:
+            break
+        }
+    }
+    
+    func showComment(photo: PFObject) {
+        if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DTableViewController") as? DTableViewController {
+            viewController.delegate = self
+            viewController.dTableViewModel.tableType = DTableViewModel.TableType.Comment(photo: photo)
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
     }
     
     // MARK: - Save
@@ -527,6 +547,28 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             default:
                 break
             }
+        }
+    }
+    
+    func saveComment(argumentPFObject: DTableViewModelRow.Function.Argument) {
+        switch argumentPFObject {
+        case .Object(let object):
+            let photo = object
+            
+            let textArray = getTextArrayFromTextViewArray()
+            let message = textArray[0]
+            
+            if message == "" {
+                showAlert("Sorry", message: "Comment is empty.")
+            } else {
+                APIManager.addComment(photo, message: message)
+                dTableViewModel.addComment(photo, message: message)
+                tableView.reloadData()
+            }
+            
+            
+        default:
+            break
         }
     }
     

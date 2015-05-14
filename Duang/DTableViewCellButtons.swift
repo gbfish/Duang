@@ -23,19 +23,7 @@ class DTableViewCellButtons: UITableViewCell
     var delegate: DTableViewCellButtonsProtocol?
     var modelRow: DTableViewModelRow?
     
-    var photo: PFObject? {
-        get {
-            if let theModelRow = modelRow {
-                switch theModelRow.rowType {
-                case .ButtonsWaterfall(let photo):
-                    return photo
-                default:
-                    break
-                }
-            }
-            return nil
-        }
-    }
+    
     
     private var buttonItemArray: [DTableViewModelRow.ButtonItem]?
     
@@ -89,52 +77,90 @@ class DTableViewCellButtons: UITableViewCell
     
     // MARK: - Waterfall
     
+    private var photo: PFObject? {
+        get {
+            if let theModelRow = modelRow {
+                switch theModelRow.rowType {
+                case .ButtonsWaterfall(let photo):
+                    return photo
+                default:
+                    break
+                }
+            }
+            return nil
+        }
+    }
+    
+    private var likePhoto = false
+    
+    private var totalLike: Int32 = 0
+    private var totalComment: Int32 = 0
+    
     private func setButtons(photo: PFObject) {
-        APIManager.fetchPhotoLikeTotal(photo) { (likeTotal) -> () in
+        APIManager.fetchLikeTotalPhoto(photo, success: { (likeTotal) -> () in
+            self.totalLike = likeTotal
+            
             if let user = PFUser.currentUser() {
-                 APIManager.ifLikePhoto(user, photo: photo, success: { (like) -> () in
-                    let buttonItemLike = DTableViewModelRow.ButtonItem.ButtonItemTitleImage(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "\(likeTotal)", buttonImage: DuangImage.Like, function: DTableViewModelRow.Function.Nothing)
-                    let buttonItemLiked = DTableViewModelRow.ButtonItem.ButtonItemTitleImage(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Selected, buttonText: "\(likeTotal)", buttonImage: DuangImage.Like, function: DTableViewModelRow.Function.Nothing)
+                APIManager.ifLikePhoto(user, photo: photo, success: { (like) -> () in
+                    self.likePhoto = like
                     
-                    let buttonItemComment = DTableViewModelRow.ButtonItem.ButtonItemTitleImage(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "3", buttonImage: DuangImage.Comment, function: DTableViewModelRow.Function.Nothing)
-                    let buttonItemShare = DTableViewModelRow.ButtonItem.ButtonItemTitleImage(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "4", buttonImage: DuangImage.Share, function: DTableViewModelRow.Function.Nothing)
-                    
-                    if like {
-                        self.buttonItemArray = [buttonItemLiked, buttonItemComment, buttonItemShare]
-                    } else {
-                        self.buttonItemArray = [buttonItemLike, buttonItemComment, buttonItemShare]
-                    }
-                    
-                    if let theButtonItemArray = self.buttonItemArray {
-                        let buttonWidth = (self.bounds.width - (DuangGlobal.spacing * CGFloat(theButtonItemArray.count + 1))) / CGFloat(theButtonItemArray.count)
-                        let buttonHeight = self.bounds.height - (DuangGlobal.spacing * 2)
+                    APIManager.fetchCommentTotalPhoto(photo, success: { (comment) -> () in
+                        self.totalComment = comment
                         
-                        for var index = 0; index < theButtonItemArray.count; ++index {
-                            let buttonRect = CGRectMake((buttonWidth + DuangGlobal.spacing) * CGFloat(index) + DuangGlobal.spacing, DuangGlobal.spacing, buttonWidth, buttonHeight)
-                            let button = UIButton(frame: buttonRect)
-                            
-                            button.setButton(theButtonItemArray[index], buttonSize: buttonRect.size)
-                            button.tag = index
-                            
-                            switch index {
-                            case 0:
-                                if like {
-                                    button.addTarget(self, action: "buttonActionUnike:", forControlEvents: UIControlEvents.TouchUpInside)
-                                } else {
-                                    button.addTarget(self, action: "buttonActionLike:", forControlEvents: UIControlEvents.TouchUpInside)
-                                }
-                            case 1:
-                                button.addTarget(self, action: "buttonActionComment:", forControlEvents: UIControlEvents.TouchUpInside)
-                            case 2:
-                                button.addTarget(self, action: "buttonActionShare:", forControlEvents: UIControlEvents.TouchUpInside)
-                            default:
-                                break
-                            }
-                            self.addSubview(button)
-                            self.buttons.append(button)
-                        }
+                        self.reloadButtonsData()
+                    })
+                })
+            }
+        })
+    }
+    
+    private func reloadButtonsData() {
+        var newButtonItemArray: [DTableViewModelRow.ButtonItem]?
+        
+        let buttonItemLike = DTableViewModelRow.ButtonItem.ButtonItemTitleImage(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "\(totalLike)", buttonImage: DuangImage.Like, function: DTableViewModelRow.Function.Nothing)
+        let buttonItemLiked = DTableViewModelRow.ButtonItem.ButtonItemTitleImage(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Selected, buttonText: "\(totalLike)", buttonImage: DuangImage.Like, function: DTableViewModelRow.Function.Nothing)
+        let buttonItemComment = DTableViewModelRow.ButtonItem.ButtonItemTitleImage(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "\(totalComment)", buttonImage: DuangImage.Comment, function: DTableViewModelRow.Function.Nothing)
+        let buttonItemShare = DTableViewModelRow.ButtonItem.ButtonItemTitleImage(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "4", buttonImage: DuangImage.Share, function: DTableViewModelRow.Function.Nothing)
+        
+        if likePhoto {
+            newButtonItemArray = [buttonItemLiked, buttonItemComment, buttonItemShare]
+        } else {
+            newButtonItemArray = [buttonItemLike, buttonItemComment, buttonItemShare]
+        }
+        
+        buttonItemArray = newButtonItemArray
+        
+        reloadButtonsView()
+    }
+    
+    private func reloadButtonsView() {
+        if let theButtonItemArray = self.buttonItemArray {
+            let buttonWidth = (self.bounds.width - (DuangGlobal.spacing * CGFloat(theButtonItemArray.count + 1))) / CGFloat(theButtonItemArray.count)
+            let buttonHeight = self.bounds.height - (DuangGlobal.spacing * 2)
+            
+            for var index = 0; index < theButtonItemArray.count; ++index {
+                let buttonRect = CGRectMake((buttonWidth + DuangGlobal.spacing) * CGFloat(index) + DuangGlobal.spacing, DuangGlobal.spacing, buttonWidth, buttonHeight)
+                let button = UIButton(frame: buttonRect)
+                
+                button.setButton(theButtonItemArray[index], buttonSize: buttonRect.size)
+                button.tag = index
+                
+                switch index {
+                case 0:
+                    if likePhoto {
+                        button.addTarget(self, action: "buttonActionUnike:", forControlEvents: UIControlEvents.TouchUpInside)
+                    } else {
+                        button.addTarget(self, action: "buttonActionLike:", forControlEvents: UIControlEvents.TouchUpInside)
                     }
-                 })
+                case 1:
+                    button.addTarget(self, action: "buttonActionComment:", forControlEvents: UIControlEvents.TouchUpInside)
+                case 2:
+                    button.addTarget(self, action: "buttonActionShare:", forControlEvents: UIControlEvents.TouchUpInside)
+                default:
+                    break
+                }
+                self.addSubview(button)
+                self.buttons.append(button)
             }
         }
     }
@@ -142,12 +168,20 @@ class DTableViewCellButtons: UITableViewCell
     func buttonActionLike(sender: UIButton) {
         if let thePhoto = photo {
             delegate?.dTableViewCellButtonsActionLike(thePhoto)
+            
+            likePhoto = true
+            ++totalLike
+            reloadButtonsData()
         }
     }
     
     func buttonActionUnike(sender: UIButton) {
         if let thePhoto = photo {
             delegate?.dTableViewCellButtonsActionUnlike(thePhoto)
+            
+            likePhoto = false
+            --totalLike
+            reloadButtonsData()
         }
     }
     

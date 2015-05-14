@@ -82,6 +82,15 @@ class APIManager {
         return nil
     }
     
+    class func getObjectFromObject(object: PFObject?, key: String) -> PFObject? {
+        if let theObject = object {
+            if let returnValue = theObject[key] as? PFObject {
+                return returnValue
+            }
+        }
+        return nil
+    }
+    
     class func fetchImageFromFile(file: PFFile?, success: (UIImage) -> ()) -> () {
         if let theFile = file {
             theFile.getDataInBackgroundWithBlock { (imageData, error) -> Void in
@@ -607,6 +616,27 @@ class APIManager {
         }
     }
     
+    class func unlikePhoto(photo: PFObject) {
+        if let user = PFUser.currentUser() {
+            let query = PFQuery(className: TablePhotoLike.ClassName)
+            query.whereKey(TablePhotoLike.User, equalTo: user)
+            query.whereKey(TablePhotoLike.Photo, equalTo: photo)
+            query.countObjectsInBackgroundWithBlock { (likeTotal, error) -> Void in
+                if likeTotal != 0 {
+                    query.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
+                        if error == nil {
+                            if let photoLikeArray = objects as? [PFObject] {
+                                for photoLike in photoLikeArray {
+                                    photoLike.deleteInBackground()
+                                }
+                            }
+                        }
+                    })
+                }
+            }
+        }
+    }
+    
     class func ifLikePhoto(user: PFUser, photo: PFObject, success: (Bool) -> ()) {
         var query = PFQuery(className: TablePhotoLike.ClassName)
         
@@ -624,7 +654,7 @@ class APIManager {
         }
     }
     
-    class func fetchPhotoLikeTotal(photo: PFObject, success: (Int32) -> ()) {
+    class func fetchLikeTotalPhoto(photo: PFObject, success: (Int32) -> ()) {
         var query = PFQuery(className: TablePhotoLike.ClassName)
         
         query.whereKey(TablePhotoLike.Photo, equalTo: photo)
@@ -636,6 +666,85 @@ class APIManager {
         }
     }
     
+    class func fetchLikeTotalUser(user: PFUser, success: (Int32) -> ()) {
+        var query = PFQuery(className: TablePhotoLike.ClassName)
+        
+        query.whereKey(TablePhotoLike.User, equalTo: user)
+        
+        query.countObjectsInBackgroundWithBlock { (countNumber, error) -> Void in
+            if error == nil {
+                success(countNumber)
+            }
+        }
+    }
+    
+    class func fetchPhotoArrayLike(pageSize: Int, page: Int, user: PFUser, success: ([PFObject]) -> (), failure: (NSError?) -> ()) {
+        var query = PFQuery(className: TablePhotoLike.ClassName)
+        query.limit = pageSize
+        query.skip = (page - 1) * pageSize
+        query.orderByDescending("updatedAt")
+        query.whereKey(TablePhotoLike.User, equalTo: user)
+        query.findObjectsInBackgroundWithBlock {
+            (photoLikeArray, error) -> Void in
+            if error == nil {
+                if let thePhotoLikeArray = photoLikeArray as? [PFObject] {
+                    
+                    var photoArray = [PFObject]()
+                    
+                    for photoLike in thePhotoLikeArray {
+                        
+                        if let photo = APIManager.getObjectFromObject(photoLike, key: TablePhotoLike.Photo) {
+                            photoArray.append(photo)
+                        }
+                    }
+                    
+                    success(photoArray)
+                }
+            } else {
+                failure(error)
+            }
+        }
+    }
+    
+    // MARK: - Table PhotoComment
+    
+    class func addComment(photo: PFObject, message: String) {
+        var comment = PFObject(className:TablePhotoComment.ClassName)
+        
+        comment[TablePhotoComment.Message] = message
+        comment[TablePhotoComment.Photo] = photo
+        comment[TablePhotoComment.User] = PFUser.currentUser()
+        
+        comment.saveInBackground()
+    }
+    
+    class func fetchCommentTotalPhoto(photo: PFObject, success: (Int32) -> ()) {
+        var query = PFQuery(className: TablePhotoComment.ClassName)
+        query.whereKey(TablePhotoComment.Photo, equalTo: photo)
+        query.countObjectsInBackgroundWithBlock { (countNumber, error) -> Void in
+            if error == nil {
+                success(countNumber)
+            }
+        }
+    }
+    
+    class func fetchCommentArray(pageSize: Int, page: Int, photo: PFObject, success: ([PFObject]) -> (), failure: (NSError?) -> ()) {
+        var query = PFQuery(className: TablePhotoComment.ClassName)
+        query.limit = pageSize
+        query.skip = (page - 1) * pageSize
+        query.orderByDescending("updatedAt")
+        query.whereKey(TablePhotoComment.Photo, equalTo: photo)
+        query.findObjectsInBackgroundWithBlock {
+            (objects, error) -> Void in
+            if error == nil {
+                if let objects = objects as? [PFObject] {
+                    success(objects)
+                }
+            } else {
+                failure(error)
+            }
+        }
+    }
     
     // MARK: - Table User
     

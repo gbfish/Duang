@@ -75,11 +75,14 @@ class DTableViewModel
         
         case Waterfall(waterfallType: WaterfallType)
         case Profile(user: PFUser)
+        
+        case Comment(photo: PFObject)
     }
     
     enum WaterfallType {
         case Feed
         case PhotosUser(user: PFUser)
+        case PhotosLike(user: PFUser)
     }
 
     
@@ -111,10 +114,9 @@ class DTableViewModel
         case .SignUp:
             viewControllerTitle = "Sign up"
             
-            section = DTableViewModelSection()
             let textViewTitleArray = ["Username:", "Password:", "Email:"]
             let textViewTextArray = ["", "", ""]
-            addTextViewGroup(section, textViewTitleArray: textViewTitleArray, textViewTextArray: textViewTextArray)
+            section = textViewGroup(textViewTitleArray, textViewTextArray: textViewTextArray)
             sectionArray.append(section)
             
             section = DTableViewModelSection()
@@ -126,10 +128,9 @@ class DTableViewModel
         case .LogIn:
             viewControllerTitle = "Log in"
             
-            section = DTableViewModelSection()
             let textViewTitleArray = ["Username:", "Password:"]
             let textViewTextArray = ["", ""]
-            addTextViewGroup(section, textViewTitleArray: textViewTitleArray, textViewTextArray: textViewTextArray)
+            section = textViewGroup(textViewTitleArray, textViewTextArray: textViewTextArray)
             sectionArray.append(section)
             
             section = DTableViewModelSection()
@@ -171,10 +172,9 @@ class DTableViewModel
             
             sectionArray.append(section)
             
-            section = DTableViewModelSection()
             let textViewTitleArray = ["First name:", "Last name:", "Description:"]
             let textViewTextArray = [APIManager.getStringFromUser(user, key: TableUser.FirstName) ?? "", APIManager.getStringFromUser(user, key: TableUser.LastName) ?? "", APIManager.getStringFromUser(user, key: TableUser.Description) ?? ""]
-            addTextViewGroup(section, textViewTitleArray: textViewTitleArray, textViewTextArray: textViewTextArray)
+            section = textViewGroup(textViewTitleArray, textViewTextArray: textViewTextArray)
             sectionArray.append(section)
             
             section = DTableViewModelSection()
@@ -189,7 +189,7 @@ class DTableViewModel
             let user = PFUser.currentUser()
             let textViewTitleArray = ["Email:"]
             let textViewTextArray = [user?.email ?? ""]
-            addTextViewGroup(section, textViewTitleArray: textViewTitleArray, textViewTextArray: textViewTextArray)
+            section = textViewGroup(textViewTitleArray, textViewTextArray: textViewTextArray)
             sectionArray.append(section)
             
             section = DTableViewModelSection()
@@ -205,10 +205,9 @@ class DTableViewModel
         case .ChangePassword:
             viewControllerTitle = "Change password"
             
-            section = DTableViewModelSection()
             let textViewTitleArray = ["Old passowrd:", "New password:", "Retype password:"]
             let textViewTextArray = ["", "", ""]
-            addTextViewGroup(section, textViewTitleArray: textViewTitleArray, textViewTextArray: textViewTextArray)
+            section = textViewGroup(textViewTitleArray, textViewTextArray: textViewTextArray)
             sectionArray.append(section)
             
             section = DTableViewModelSection()
@@ -220,10 +219,9 @@ class DTableViewModel
         case .AddPhoto:
             viewControllerTitle = "Add a photo"
             
-            section = DTableViewModelSection()
             let textViewTitleArray = ["Description:"]
             let textViewTextArray = [""]
-            addTextViewGroup(section, textViewTitleArray: textViewTitleArray, textViewTextArray: textViewTextArray)
+            section = textViewGroup(textViewTitleArray, textViewTextArray: textViewTextArray)
             sectionArray.append(section)
             
             section = DTableViewModelSection()
@@ -243,6 +241,10 @@ class DTableViewModel
                 waterfallInit()
                 
             case .PhotosUser(let user):
+                viewControllerTitle = APIManager.getNameFromUser(user)
+                waterfallInit()
+                
+            case .PhotosLike(let user):
                 viewControllerTitle = APIManager.getNameFromUser(user)
                 waterfallInit()
             }
@@ -272,8 +274,11 @@ class DTableViewModel
             
         case .Profile(let user):
             viewControllerTitle = "Profile"
-            
             profileInit(user)
+            
+        case .Comment(let photo):
+            viewControllerTitle = "Comment"
+            commentInit(photo)
             
         }
         
@@ -296,6 +301,13 @@ class DTableViewModel
         }
         return nil
     }
+    
+    // MARK: - Page Control
+    
+    var pageCount: NSInteger = 1
+    var pageSize: NSInteger = 50
+    var pageEnd = false
+    var pageUpdating = false
     
     // MARK: - Waterfall
     
@@ -334,6 +346,14 @@ class DTableViewModel
             case .PhotosUser(let user):
                 waterfallUpdating = true
                 APIManager.sharedInstance.getPhotoArray(waterfallPageSize, page: waterfallPageCount, user: user, success: { (objectArray) -> () in
+                    self.waterfallSendRequestSuccess(objectArray)
+                }, failure: { (error) -> () in
+                    self.waterfallSendRequestFailure()
+                })
+                
+            case .PhotosLike(let user):
+                waterfallUpdating = true
+                APIManager.fetchPhotoArrayLike(waterfallPageSize, page: waterfallPageCount, user: user, success: { (objectArray) -> () in
                     self.waterfallSendRequestSuccess(objectArray)
                 }, failure: { (error) -> () in
                     self.waterfallSendRequestFailure()
@@ -406,30 +426,137 @@ class DTableViewModel
             APIManager.fetchPhotoTotal(theUser, success: { (photoTotal) -> () in
                 let buttonItemPhoto = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "\(photoTotal)", buttonSubtitleText: "Photos", function: self.functionShowWaterfallUser)
                 
-                let buttonItemLike = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "52", buttonSubtitleText: "Likes", function: self.functionShowSignUp)
-                let buttonItemFollowing = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "15", buttonSubtitleText: "Following", function: self.functionShowSignUp)
-                let buttonItemFollower = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "53", buttonSubtitleText: "Followers", function: self.functionShowSignUp)
-                
-                row.rowType = DTableViewModelRow.RowType.Buttons(buttonItemArray: [buttonItemPhoto, buttonItemLike, buttonItemFollowing, buttonItemFollower])
-                
-                section.rowArray.append(row)
-                
-                self.sectionArray.append(section)
-                
-                self.dataDidLoad()
+                APIManager.fetchLikeTotalUser(theUser, success: { (likeTotal) -> () in
+                    let buttonItemLike = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "\(likeTotal)", buttonSubtitleText: "Likes", function: self.functionShowWaterfallLike)
+                    
+                    
+                    
+                    let buttonItemFollowing = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "15", buttonSubtitleText: "Following", function: self.functionShowSignUp)
+                    let buttonItemFollower = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "53", buttonSubtitleText: "Followers", function: self.functionShowSignUp)
+                    
+                    row.rowType = DTableViewModelRow.RowType.Buttons(buttonItemArray: [buttonItemPhoto, buttonItemLike, buttonItemFollowing, buttonItemFollower])
+                    
+                    section.rowArray.append(row)
+                    
+                    self.sectionArray.append(section)
+                    
+                    self.dataDidLoad()
+                })
+               
             })
-            
-            
-            
-            
-            
-            
-            
         })
+    }
+    
+    // MARK: - Comment
+    
+    private var commentPageCount: NSInteger = 1
+    private var commentPageSize: NSInteger = 50
+    
+    private var commentEnd = false
+    private var commentUpdating = false
+    
+    private func commentInit(photo: PFObject) {
+        var section = DTableViewModelSection()
+        var row = DTableViewModelRow()
         
+        let user = APIManager.getUserFromObject(photo, key: TablePhoto.Owner)
+        
+        row.rowType = DTableViewModelRow.RowType.DetailUser(image: nil, user: user, detailButtonItem: nil)
+        section.rowArray.append(row)
+        
+        row = DTableViewModelRow()
+        row.rowType = DTableViewModelRow.RowType.Label(text: APIManager.getStringFromObject(photo, key: TablePhoto.Description), font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody))
+        section.rowArray.append(row)
+        
+        row = DTableViewModelRow()
+        let heightForRow = APIManager.getHeightFromPhoto(photo)
+        row.rowType = DTableViewModelRow.RowType.Image(heightForRow: heightForRow, image: ImagePlaceholder.Image, imageFile: APIManager.getFileFromObject(photo, key: TablePhoto.Image), function: nil)
+        section.rowArray.append(row)
+        
+        sectionArray.append(section)
+        
+        let textViewTitleArray = ["Comment:"]
+        let textViewTextArray = [""]
+        section = textViewGroup(textViewTitleArray, textViewTextArray: textViewTextArray)
+        sectionArray.append(section)
+        
+        section = DTableViewModelSection()
+        addButtonNormal(section, buttonText: "Leave a comment", function: functionSaveComment)
+        sectionArray.append(section)
+        
+        commentPageCount = 1
+        commentEnd = false
+        commentUpdating = false
+        commentSendRequest(photo)
         
         
     }
+    
+    private func commentSendRequest(photo: PFObject) {
+        APIManager.fetchCommentArray(commentPageSize, page: commentPageCount, photo: photo, success: { (objectArray) -> () in
+            self.commentSendRequestSuccess(objectArray)
+        }) { (error) -> () in
+            self.commentSendRequestFailure()
+        }
+        
+        self.dataDidLoad()
+    }
+    
+    private func commentSendRequestSuccess(objectArray: [PFObject]) {
+        commentUpdating = false
+        if objectArray.count < commentPageSize {
+            commentEnd = true
+        }
+        
+        var section = DTableViewModelSection()
+        var row = DTableViewModelRow()
+        
+        for comment in objectArray {
+            section = DTableViewModelSection()
+            row = DTableViewModelRow()
+            
+            let user = APIManager.getUserFromObject(comment, key: TablePhotoComment.User)
+            
+            row.rowType = DTableViewModelRow.RowType.DetailUser(image: nil, user: user, detailButtonItem: nil)
+            section.rowArray.append(row)
+            
+            row = DTableViewModelRow()
+            row.rowType = DTableViewModelRow.RowType.Label(text: APIManager.getStringFromObject(comment, key: TablePhotoComment.Message), font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody))
+            section.rowArray.append(row)
+            
+            sectionArray.append(section)
+        }
+        dataDidLoad()
+    }
+    
+    private func commentSendRequestFailure() {
+        waterfallUpdating = false
+        dataDidLoad()
+    }
+    
+    func addComment(photo: PFObject, message: String) {
+        
+        
+        let textViewTitleArray = ["Comment:"]
+        let textViewTextArray = [""]
+        sectionArray[1] = textViewGroup(textViewTitleArray, textViewTextArray: textViewTextArray)
+        
+        
+        var section = DTableViewModelSection()
+        var row = DTableViewModelRow()
+        
+        let user = PFUser.currentUser()
+        
+        row.rowType = DTableViewModelRow.RowType.DetailUser(image: nil, user: user, detailButtonItem: nil)
+        section.rowArray.append(row)
+        
+        row = DTableViewModelRow()
+        row.rowType = DTableViewModelRow.RowType.Label(text: message, font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody))
+        section.rowArray.append(row)
+        
+        sectionArray.insert(section, atIndex: 3) 
+    }
+    
     
     // MARK: - Add Button
     
@@ -440,9 +567,23 @@ class DTableViewModel
         section.rowArray.append(row)
     }
     
-    // MARK: - Add TextView Group
+    // MARK: - TextView Group
     
-    private func addTextViewGroup(section: DTableViewModelSection, textViewTitleArray: [String], textViewTextArray: [String]) {
+//    private func addTextViewGroup(section: DTableViewModelSection, textViewTitleArray: [String], textViewTextArray: [String]) {
+//        let textViewTitleWidth = APIManager.widthMaxForStrings(textViewTitleArray, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline))
+//        let textViewWidth = UIScreen.mainScreen().bounds.width - textViewTitleWidth - (DuangGlobal.spacing * 3)
+//        
+//        for var index = 0; index < textViewTitleArray.count; ++index {
+//            let row = DTableViewModelRow()
+//            let heightForRow = cellTextViewHeightForRow(textViewTextArray[index], font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody), width: textViewWidth)
+//            row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: heightForRow, textViewTitle: textViewTitleArray[index], textViewText: textViewTextArray[index], textViewTitleWidth: textViewTitleWidth)
+//            section.rowArray.append(row)
+//        }
+//    }
+    
+    private func textViewGroup(textViewTitleArray: [String], textViewTextArray: [String]) -> DTableViewModelSection {
+        var returnSection = DTableViewModelSection()
+        
         let textViewTitleWidth = APIManager.widthMaxForStrings(textViewTitleArray, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline))
         let textViewWidth = UIScreen.mainScreen().bounds.width - textViewTitleWidth - (DuangGlobal.spacing * 3)
         
@@ -450,8 +591,9 @@ class DTableViewModel
             let row = DTableViewModelRow()
             let heightForRow = cellTextViewHeightForRow(textViewTextArray[index], font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody), width: textViewWidth)
             row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: heightForRow, textViewTitle: textViewTitleArray[index], textViewText: textViewTextArray[index], textViewTitleWidth: textViewTitleWidth)
-            section.rowArray.append(row)
+            returnSection.rowArray.append(row)
         }
+        return returnSection
     }
     
     private func cellTextViewHeightForRow(string: String?, font: UIFont, width: CGFloat) -> CGFloat {
@@ -478,12 +620,15 @@ class DTableViewModel
     var functionShowEditProfile = DTableViewModelRow.Function.Nothing
     var functionShowAccountSettings = DTableViewModelRow.Function.Nothing
     var functionShowChangePassword = DTableViewModelRow.Function.Nothing
+    
     var functionShowWaterfallUser = DTableViewModelRow.Function.Nothing
+    var functionShowWaterfallLike = DTableViewModelRow.Function.Nothing
     
     var functionSaveEditProfile = DTableViewModelRow.Function.Nothing
     var functionSaveAccountSettings = DTableViewModelRow.Function.Nothing
     var functionSaveChangePassword = DTableViewModelRow.Function.Nothing
     var functionSaveAddPhoto = DTableViewModelRow.Function.Nothing
+    var functionSaveComment = DTableViewModelRow.Function.Nothing
     
     var functionSignUp = DTableViewModelRow.Function.Nothing
     var functionLogIn = DTableViewModelRow.Function.Nothing

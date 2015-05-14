@@ -79,19 +79,6 @@ struct TabBarTitle {
 
 // MARK: - Table
 
-struct TablePost {
-    static let ClassName = "Post"
-    
-    static let Title = "title"
-    static let Description = "description"
-    static let Owner = "owner"
-    static let Photos = "photos"
-    static let Like = "like"
-    static let LikeCount = "likeCount"
-    static let Share = "share"
-    static let Comments = "comments"
-}
-
 struct TablePhoto {
     static let ClassName = "Photo"
     
@@ -108,6 +95,29 @@ struct TablePhotoLike {
     static let User = "user"
     static let Photo = "photo"
 }
+
+struct TablePhotoComment {
+    static let ClassName = "PhotoComment"
+    
+    static let User = "user"
+    static let Photo = "photo"
+    static let Message = "message"
+}
+
+struct TablePost {
+    static let ClassName = "Post"
+    
+    static let Title = "title"
+    static let Description = "description"
+    static let Owner = "owner"
+    static let Photos = "photos"
+    static let Like = "like"
+    static let LikeCount = "likeCount"
+    static let Share = "share"
+    static let Comments = "comments"
+}
+
+
 
 struct TableUser {
     static let ClassName = "_User"

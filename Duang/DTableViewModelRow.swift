@@ -139,8 +139,8 @@ class DTableViewModelRow
         case Function1Argument(argument: Argument, function: (Argument) -> ())
         
         enum Argument {
-            case PFObject
-            case user(user: PFUser)
+            case Object(object: PFObject)
+            case User(user: PFUser)
         }
         
         func action() {
