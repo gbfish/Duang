@@ -220,6 +220,14 @@ class APIManager {
         }
     }
     
+    class func ifCurrentUser(user: PFUser) -> Bool {
+        if user == PFUser.currentUser() {
+            return true
+        } else {
+            return false
+        }
+    }
+    
     // MARK: Username
     
     func getCurrentUserUsername() -> String? {

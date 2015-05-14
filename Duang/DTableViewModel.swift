@@ -257,7 +257,7 @@ class DTableViewModel
             let user = PFUser.currentUser()
             let buttonItemSetting = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Settings", function: functionShowSettings)
             
-            row.rowType = DTableViewModelRow.RowType.DetailUser(image: nil, user: user, detailButtonItem: buttonItemSetting)
+            row.rowType = DTableViewModelRow.RowType.DetailUser(user: user, detailButtonItem: buttonItemSetting)
             section.rowArray.append(row)
             
             row = DTableViewModelRow()
@@ -380,7 +380,7 @@ class DTableViewModel
             
             let user = APIManager.getUserFromObject(photo, key: TablePhoto.Owner)
 
-            row.rowType = DTableViewModelRow.RowType.DetailUser(image: nil, user: user, detailButtonItem: nil)
+            row.rowType = DTableViewModelRow.RowType.DetailUser(user: user, detailButtonItem: nil)
             section.rowArray.append(row)
             
             row = DTableViewModelRow()
@@ -419,7 +419,7 @@ class DTableViewModel
             let user = PFUser.currentUser()
             let buttonItemSetting = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Settings", function: self.functionShowSettings)
             
-            row.rowType = DTableViewModelRow.RowType.DetailUser(image: nil, user: user, detailButtonItem: buttonItemSetting)
+            row.rowType = DTableViewModelRow.RowType.DetailUser(user: user, detailButtonItem: buttonItemSetting)
             section.rowArray.append(row)
             
             row = DTableViewModelRow()
@@ -462,7 +462,7 @@ class DTableViewModel
         
         let user = APIManager.getUserFromObject(photo, key: TablePhoto.Owner)
         
-        row.rowType = DTableViewModelRow.RowType.DetailUser(image: nil, user: user, detailButtonItem: nil)
+        row.rowType = DTableViewModelRow.RowType.DetailUser(user: user, detailButtonItem: nil)
         section.rowArray.append(row)
         
         row = DTableViewModelRow()
@@ -518,7 +518,7 @@ class DTableViewModel
             
             let user = APIManager.getUserFromObject(comment, key: TablePhotoComment.User)
             
-            row.rowType = DTableViewModelRow.RowType.DetailUser(image: nil, user: user, detailButtonItem: nil)
+            row.rowType = DTableViewModelRow.RowType.DetailUser(user: user, detailButtonItem: nil)
             section.rowArray.append(row)
             
             row = DTableViewModelRow()
@@ -548,7 +548,7 @@ class DTableViewModel
         
         let user = PFUser.currentUser()
         
-        row.rowType = DTableViewModelRow.RowType.DetailUser(image: nil, user: user, detailButtonItem: nil)
+        row.rowType = DTableViewModelRow.RowType.DetailUser(user: user, detailButtonItem: nil)
         section.rowArray.append(row)
         
         row = DTableViewModelRow()

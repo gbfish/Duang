@@ -249,7 +249,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         switch modelRow.rowType {
         case .DetailImage(_, _, _, let detailButtonItem):
             detailButtonItem?.functionAction()
-        case .DetailUser(_, _, let detailButtonItem):
+        case .DetailUser(_, let detailButtonItem):
             detailButtonItem?.functionAction()
         default:
             break
@@ -707,9 +707,6 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 switch theSelectedModelRow.rowType {
                 case .DetailImage(_, let imageFile, let detailTitle, let detailButtonItem):
                     theSelectedModelRow.rowType = DTableViewModelRow.RowType.DetailImage(image: image, imageFile: imageFile, detailTitle: detailTitle, detailButtonItem: detailButtonItem)
-                    tableView.reloadData()
-                case .DetailUser(_, let user, let detailButtonItem):
-                    theSelectedModelRow.rowType = DTableViewModelRow.RowType.DetailUser(image: image, user: user, detailButtonItem: detailButtonItem)
                     tableView.reloadData()
                 default:
                     break

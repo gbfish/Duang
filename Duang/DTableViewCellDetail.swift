@@ -39,29 +39,34 @@ class DTableViewCellDetail: UITableViewCell
                 
                 prepareButton(detailButtonItem)
                 
-            case .DetailUser(let image, let user, let detailButtonItem):
+            case .DetailUser(let user, let detailButtonItem):
                 detailImageView.layer.cornerRadius = detailImageView.frame.size.height / 2.0
-                
-                if let theImage = image {
-                    detailImageView.image = theImage
-                } else {
-                    detailImageView.image = ImagePlaceholder.Avatar
-                    if let theUser = user {
-                        APIManager.fetchUser(theUser, success: { (theUserResult) -> () in
-                            APIManager.fetchImageFromFile(APIManager.getFileFromUser(theUserResult, key: TableUser.Avatar), success: { (image) -> () in
-                                self.detailImageView.image = image
-                            })
-                        })
-                    }
-                }
+                detailImageView.image = ImagePlaceholder.Avatar
                 
                 if let theUser = user {
                     APIManager.fetchUser(theUser, success: { (theUserResult) -> () in
                         self.detailLabel.text = APIManager.getNameFromUser(theUserResult)
+                        
+                        APIManager.fetchImageFromFile(APIManager.getFileFromUser(theUserResult, key: TableUser.Avatar), success: { (image) -> () in
+                            self.detailImageView.image = image
+                        })
+                        
+                        self.detailButton.hidden = false
+                        if let theDetailButtonItem = detailButtonItem {
+                            self.detailButton.setButton(theDetailButtonItem, buttonSize: self.detailButton.frame.size)
+                            self.detailButton.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
+                        } else {
+                            if APIManager.ifCurrentUser(theUserResult) {
+                                //edit
+                            } else {
+                                //follow or following
+                            }
+                        }
                     })
                 }
                 
-                prepareButton(detailButtonItem)
+
+                
                 
             default:
                 break

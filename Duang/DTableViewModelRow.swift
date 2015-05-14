@@ -24,7 +24,7 @@ class DTableViewModelRow
         case Buttons(buttonItemArray: [ButtonItem])
         case ButtonsWaterfall(photo: PFObject)
         
-        case DetailUser(image: UIImage?, user: PFUser?, detailButtonItem: ButtonItem?)
+        case DetailUser(user: PFUser?, detailButtonItem: ButtonItem?)
         case DetailImage(image: UIImage?, imageFile: PFFile?, detailTitle: String?, detailButtonItem: ButtonItem?)
     }
     
