@@ -773,7 +773,25 @@ class APIManager {
         }
     }
     
+    // MARK: - Table UserFollow
     
+    class func ifFollowUser(user: PFUser, success: (Bool) -> ()) {
+        if let currentUser = PFUser.currentUser() {
+            var query = PFQuery(className: TableUserFollow.ClassName)
+            query.whereKey(TableUserFollow.User, equalTo: currentUser)
+            query.whereKey(TableUserFollow.UserFollowed, equalTo: user)
+            
+            query.countObjectsInBackgroundWithBlock { (countNumber, error) -> Void in
+                if error == nil {
+                    if countNumber == 1 {
+                        success(true)
+                    } else {
+                        success(false)
+                    }
+                }
+            }
+        }
+    }
     
     // MARK: - Table Comment
     

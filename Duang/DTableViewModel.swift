@@ -161,7 +161,8 @@ class DTableViewModel
             row = DTableViewModelRow()
             var buttonItem = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Edit", function: functionEditAvatar)
             
-            row.rowType = DTableViewModelRow.RowType.DetailUser(image: nil, user: user, detailButtonItem: buttonItem)
+//            row.rowType = DTableViewModelRow.RowType.DetailUser(image: nil, user: user, detailButtonItem: buttonItem)
+            row.rowType = DTableViewModelRow.RowType.DetailImage(image: nil, imageFile: APIManager.getFileFromUser(user, key: TableUser.Avatar), detailTitle: "Avatar", detailButtonItem: buttonItem)
             section.rowArray.append(row)
             
             row = DTableViewModelRow()
@@ -311,22 +312,22 @@ class DTableViewModel
     
     // MARK: - Waterfall
     
-    var waterfallPageCount: NSInteger = 1
-    var waterfallPageSize: NSInteger = 50
-    
-    var waterfallEnd = false
-    var waterfallUpdating = false
+//    var waterfallPageCount: NSInteger = 1
+//    var waterfallPageSize: NSInteger = 50
+//    
+//    var waterfallEnd = false
+//    var waterfallUpdating = false
     
     func waterfallInit() {
-        waterfallPageCount = 1
-        waterfallEnd = false
-        waterfallUpdating = false
+        pageCount = 1
+        pageEnd = false
+        pageUpdating = false
         waterfallSendRequest()
     }
     
     func waterfallMore() {
-        if !waterfallEnd && !waterfallUpdating {
-            ++waterfallPageCount
+        if !pageEnd && !pageUpdating {
+            ++pageCount
             waterfallSendRequest()
         }
     }
@@ -336,24 +337,24 @@ class DTableViewModel
         case .Waterfall(let waterfallType):
             switch waterfallType {
             case .Feed:
-                waterfallUpdating = true
-                APIManager.sharedInstance.getPhotoArray(waterfallPageSize, page: waterfallPageCount, user: nil, success: { (objectArray) -> () in
+                pageUpdating = true
+                APIManager.sharedInstance.getPhotoArray(pageSize, page: pageCount, user: nil, success: { (objectArray) -> () in
                     self.waterfallSendRequestSuccess(objectArray)
                 }, failure: { (error) -> () in
                     self.waterfallSendRequestFailure()
                 })
                 
             case .PhotosUser(let user):
-                waterfallUpdating = true
-                APIManager.sharedInstance.getPhotoArray(waterfallPageSize, page: waterfallPageCount, user: user, success: { (objectArray) -> () in
+                pageUpdating = true
+                APIManager.sharedInstance.getPhotoArray(pageSize, page: pageCount, user: user, success: { (objectArray) -> () in
                     self.waterfallSendRequestSuccess(objectArray)
                 }, failure: { (error) -> () in
                     self.waterfallSendRequestFailure()
                 })
                 
             case .PhotosLike(let user):
-                waterfallUpdating = true
-                APIManager.fetchPhotoArrayLike(waterfallPageSize, page: waterfallPageCount, user: user, success: { (objectArray) -> () in
+                pageUpdating = true
+                APIManager.fetchPhotoArrayLike(pageSize, page: pageCount, user: user, success: { (objectArray) -> () in
                     self.waterfallSendRequestSuccess(objectArray)
                 }, failure: { (error) -> () in
                     self.waterfallSendRequestFailure()
@@ -365,9 +366,9 @@ class DTableViewModel
     }
     
     private func waterfallSendRequestSuccess(objectArray: [PFObject]) {
-        waterfallUpdating = false
-        if objectArray.count < waterfallPageSize {
-            waterfallEnd = true
+        pageUpdating = false
+        if objectArray.count < pageSize {
+            pageEnd = true
         }
         
         var section = DTableViewModelSection()
@@ -401,7 +402,7 @@ class DTableViewModel
     }
     
     private func waterfallSendRequestFailure() {
-        waterfallUpdating = false
+        pageUpdating = false
         dataDidLoad()
     }
     
@@ -449,11 +450,11 @@ class DTableViewModel
     
     // MARK: - Comment
     
-    private var commentPageCount: NSInteger = 1
-    private var commentPageSize: NSInteger = 50
-    
-    private var commentEnd = false
-    private var commentUpdating = false
+//    private var commentPageCount: NSInteger = 1
+//    private var commentPageSize: NSInteger = 50
+//    
+//    private var commentEnd = false
+//    private var commentUpdating = false
     
     private func commentInit(photo: PFObject) {
         var section = DTableViewModelSection()
@@ -484,16 +485,16 @@ class DTableViewModel
         addButtonNormal(section, buttonText: "Leave a comment", function: functionSaveComment)
         sectionArray.append(section)
         
-        commentPageCount = 1
-        commentEnd = false
-        commentUpdating = false
+        pageCount = 1
+        pageEnd = false
+        pageUpdating = false
         commentSendRequest(photo)
         
         
     }
     
     private func commentSendRequest(photo: PFObject) {
-        APIManager.fetchCommentArray(commentPageSize, page: commentPageCount, photo: photo, success: { (objectArray) -> () in
+        APIManager.fetchCommentArray(pageSize, page: pageCount, photo: photo, success: { (objectArray) -> () in
             self.commentSendRequestSuccess(objectArray)
         }) { (error) -> () in
             self.commentSendRequestFailure()
@@ -503,9 +504,9 @@ class DTableViewModel
     }
     
     private func commentSendRequestSuccess(objectArray: [PFObject]) {
-        commentUpdating = false
-        if objectArray.count < commentPageSize {
-            commentEnd = true
+        pageUpdating = false
+        if objectArray.count < pageSize {
+            pageEnd = true
         }
         
         var section = DTableViewModelSection()
@@ -530,7 +531,7 @@ class DTableViewModel
     }
     
     private func commentSendRequestFailure() {
-        waterfallUpdating = false
+        pageUpdating = false
         dataDidLoad()
     }
     

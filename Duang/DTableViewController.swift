@@ -468,7 +468,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func saveEditProfile() {
         switch dTableViewModel.sectionArray[0].rowArray[0].rowType {
-        case .DetailUser(let image, _, _):
+        case .DetailImage(let image, _, _, _):
             if let theImage = image {
                 APIManager.sharedInstance.setCurrentUserAvatar(theImage)
             }
@@ -477,7 +477,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         
         switch dTableViewModel.sectionArray[0].rowArray[1].rowType {
-        case .DetailImage(let image, let imageFile, _, _):
+        case .DetailImage(let image, _, _, _):
             if let theImage = image {
                 APIManager.sharedInstance.setCurrentUserBanner(theImage)
             }

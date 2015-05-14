@@ -79,6 +79,24 @@ struct TabBarTitle {
 
 // MARK: - Table
 
+struct TableUser {
+    static let ClassName = "_User"
+    
+    static let Id = "objectId"
+    static let Avatar = "avatar"
+    static let Banner = "banner"
+    static let FirstName = "firstName"
+    static let LastName = "lastName"
+    static let Description = "description"
+}
+
+struct TableUserFollow {
+    static let ClassName = "UserFollow"
+    
+    static let User = "user"
+    static let UserFollowed = "userFollowed"
+}
+
 struct TablePhoto {
     static let ClassName = "Photo"
     
@@ -119,16 +137,7 @@ struct TablePost {
 
 
 
-struct TableUser {
-    static let ClassName = "_User"
-    
-    static let Id = "objectId"
-    static let Avatar = "avatar"
-    static let Banner = "banner"
-    static let FirstName = "firstName"
-    static let LastName = "lastName"
-    static let Description = "description"
-}
+
 
 struct TableComment {
     static let ClassName = "Comment"
