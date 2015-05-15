@@ -8,17 +8,18 @@
 
 import UIKit
 
-class DTableViewCellImageMutable: UITableViewCell {
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+class DTableViewCellImageMutable: UITableViewCell
+{
+    var modelRow: DTableViewModelRow?
+    
+    func reloadView() {
+        if let theModelRow = modelRow {
+            switch theModelRow.rowType {
+            case .ImageMutable(let collection):
+                var photoArray = collection.relationForKey(TablePhotoCollection.PhotoRelation)
+            default:
+                break
+            }
+        }
     }
-
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
 }

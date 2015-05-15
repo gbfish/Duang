@@ -130,7 +130,12 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     cell.reloadView()
                     return cell
                 }
-                
+            case .ImageMutable(let collection):
+                if let cell = tableView.dequeueReusableCellWithIdentifier(modelRow.cellIdentifier(), forIndexPath: indexPath) as? DTableViewCellImageMutable {
+                    cell.modelRow = modelRow
+                    cell.reloadView()
+                    return cell
+                }
             case .DetailImage(_), .DetailUser(_):
                 if let cell = tableView.dequeueReusableCellWithIdentifier(modelRow.cellIdentifier(), forIndexPath: indexPath) as? DTableViewCellDetail {
                     cell.delegate = self

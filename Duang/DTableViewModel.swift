@@ -536,7 +536,15 @@ class DTableViewModel
                 self.sectionArray.append(section)
                 
                 APIManager.fetchPhotoCollectionArray(theUser, success: { (objectArray) -> () in
-                    
+                    for collection in objectArray {
+                        var section = DTableViewModelSection()
+                        var row = DTableViewModelRow()
+                        
+                        row.rowType = DTableViewModelRow.RowType.ImageMutable(collection: collection)
+                        
+                        section.rowArray.append(row)
+                        self.sectionArray.append(section)
+                    }
                     
                     
                     section = DTableViewModelSection()

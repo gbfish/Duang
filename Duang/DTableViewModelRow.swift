@@ -17,7 +17,7 @@ class DTableViewModelRow
         case Nothing
         
         case Image(heightForRow: CGFloat?, image: UIImage?, imageFile: PFFile?, function: Function?)
-        
+        case ImageMutable(collection: PFObject)
         
         case TextView(heightForRow: CGFloat?, textViewTitle: String?, textViewText: String?, textViewTitleWidth: CGFloat?)
         case Label(text: String?, font: UIFont?)
@@ -37,6 +37,8 @@ class DTableViewModelRow
             return "DTableViewCellButtons"
         case .Image(_):
             return "DTableViewCellImage"
+        case .ImageMutable(_):
+            return "DTableViewCellImageMutable"
         case .DetailImage(_), .DetailUser(_):
             return "DTableViewCellDetail"
         case .Label(_):
@@ -66,6 +68,8 @@ class DTableViewModelRow
             if let theHeightForRow = heightForRow {
                 return theHeightForRow
             }
+        case .ImageMutable(_):
+            return 100.0
         default:
             break
         }
