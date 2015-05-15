@@ -76,10 +76,9 @@ class DTableViewModel
         
         case Profile(user: PFUser)
         
-        case Comment(photo: PFObject)
-        
         case WaterfallPhoto(type: WaterfallPhotoType)
         case WaterfallUser(type: WaterfallUserType)
+        case WaterfallComment(photo: PFObject)
     }
     
     enum WaterfallPhotoType {
@@ -271,9 +270,9 @@ class DTableViewModel
             viewControllerTitle = "Profile"
             profileInit(user)
             
-        case .Comment(let photo):
+        case .WaterfallComment(let photo):
             viewControllerTitle = "Comment"
-            commentInit(photo)
+            waterfallInit()
             
         case .WaterfallPhoto(_), .WaterfallUser(_):
             waterfallInit()
@@ -297,26 +296,6 @@ class DTableViewModel
         return nil
     }
     
-    // MARK: - Page Control
-    
-    private var pageCount: NSInteger = 1
-    private var pageSize: NSInteger = 50
-    private var pageEnd = false
-    private var pageUpdating = false
-    
-    private func pageInit() {
-        pageCount = 1
-        pageEnd = false
-        pageUpdating = false
-        waterfallSendRequest()
-    }
-    
-    func pageMore() {
-        if !pageEnd && !pageUpdating {
-            ++pageCount
-            waterfallSendRequest()
-        }
-    }
     
     // MARK: - Waterfall
     
@@ -340,6 +319,36 @@ class DTableViewModel
                 viewControllerTitle = "Follower"
             }
             pageInit()
+        case .WaterfallComment(let photo):
+            var section = DTableViewModelSection()
+            var row = DTableViewModelRow()
+            
+            let user = APIManager.getUserFromObject(photo, key: TablePhoto.Owner)
+            
+            row.rowType = DTableViewModelRow.RowType.DetailUser(user: user, detailButtonType: nil)
+            section.rowArray.append(row)
+            
+            row = DTableViewModelRow()
+            row.rowType = DTableViewModelRow.RowType.Label(text: APIManager.getStringFromObject(photo, key: TablePhoto.Description), font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody))
+            section.rowArray.append(row)
+            
+            row = DTableViewModelRow()
+            let heightForRow = APIManager.getHeightFromPhoto(photo)
+            row.rowType = DTableViewModelRow.RowType.Image(heightForRow: heightForRow, image: ImagePlaceholder.Image, imageFile: APIManager.getFileFromObject(photo, key: TablePhoto.Image), function: nil)
+            section.rowArray.append(row)
+            
+            sectionArray.append(section)
+            
+            let textViewTitleArray = ["Comment:"]
+            let textViewTextArray = [""]
+            section = textViewGroup(textViewTitleArray, textViewTextArray: textViewTextArray)
+            sectionArray.append(section)
+            
+            section = DTableViewModelSection()
+            addButtonNormal(section, buttonText: "Leave a comment", function: functionSaveComment)
+            sectionArray.append(section)
+            
+            pageInit()
         default:
             break
         }
@@ -350,25 +359,20 @@ class DTableViewModel
         case .WaterfallPhoto(let type):
             switch type {
             case .Feed:
-                pageUpdating = true
                 APIManager.sharedInstance.getPhotoArray(pageSize, page: pageCount, user: nil, success: { (objectArray) -> () in
-                    self.photoWaterfallSendRequestSuccess(objectArray)
+                    self.waterfallPhotoSendRequestSuccess(objectArray)
                 }, failure: { (error) -> () in
                     self.waterfallSendRequestFailure()
                 })
-                
             case .User(let user):
-                pageUpdating = true
                 APIManager.sharedInstance.getPhotoArray(pageSize, page: pageCount, user: user, success: { (objectArray) -> () in
-                    self.photoWaterfallSendRequestSuccess(objectArray)
+                    self.waterfallPhotoSendRequestSuccess(objectArray)
                 }, failure: { (error) -> () in
                     self.waterfallSendRequestFailure()
                 })
-                
             case .Like(let user):
-                pageUpdating = true
                 APIManager.fetchPhotoArrayLike(pageSize, page: pageCount, user: user, success: { (objectArray) -> () in
-                    self.photoWaterfallSendRequestSuccess(objectArray)
+                    self.waterfallPhotoSendRequestSuccess(objectArray)
                 }, failure: { (error) -> () in
                     self.waterfallSendRequestFailure()
                 })
@@ -376,26 +380,33 @@ class DTableViewModel
         case .WaterfallUser(let type):
             switch type {
             case .Following(let user):
-                APIManager.fetchFollowingArray(pageSize, page: pageCount, user: user, success: { (objectArray) -> () in
-                    
+                APIManager.fetchFollowingArray(pageSize, page: pageCount, user: user, success: { (userArray) -> () in
+                    self.waterfallUserSendRequestSuccess(userArray)
                 }, failure: { (error) -> () in
                     self.waterfallSendRequestFailure()
                 })
             case .Follower(let user):
-                viewControllerTitle = "Follower"/////
+                APIManager.fetchFollowerArray(pageSize, page: pageCount, user: user, success: { (userArray) -> () in
+                    self.waterfallUserSendRequestSuccess(userArray)
+                }, failure: { (error) -> () in
+                    self.waterfallSendRequestFailure()
+                })
             }
+        case .WaterfallComment(let photo):
+            APIManager.fetchCommentArray(pageSize, page: pageCount, photo: photo, success: { (objectArray) -> () in
+                self.waterfallCommentSendRequestSuccess(objectArray)
+            }, failure: { (error) -> () in
+                self.waterfallSendRequestFailure()
+            })
         default:
             break
         }
     }
     
-    // MARK: Photo Waterfall
+    // MARK: Waterfall Success
     
-    private func photoWaterfallSendRequestSuccess(objectArray: [PFObject]) {
-        pageUpdating = false
-        if objectArray.count < pageSize {
-            pageEnd = true
-        }
+    private func waterfallPhotoSendRequestSuccess(objectArray: [PFObject]) {
+        pageEnd(objectArray.count)
         
         var section = DTableViewModelSection()
         var row = DTableViewModelRow()
@@ -427,14 +438,83 @@ class DTableViewModel
         dataDidLoad()
     }
     
+    private func waterfallUserSendRequestSuccess(userArray: [PFUser]) {
+        pageEnd(userArray.count)
+        
+        var section = DTableViewModelSection()
+        var row = DTableViewModelRow()
+        
+        for user in userArray {
+            section = DTableViewModelSection()
+            row = DTableViewModelRow()
+            
+            row.rowType = DTableViewModelRow.RowType.DetailUser(user: user, detailButtonType: DTableViewModelRow.ButtonType.Follow)
+            section.rowArray.append(row)
+            
+            sectionArray.append(section)
+        }
+        dataDidLoad()
+    }
+    
+    private func waterfallCommentSendRequestSuccess(objectArray: [PFObject]) {
+        pageEnd(objectArray.count)
+        
+        var section = DTableViewModelSection()
+        var row = DTableViewModelRow()
+        
+        for comment in objectArray {
+            section = DTableViewModelSection()
+            row = DTableViewModelRow()
+            
+            let user = APIManager.getUserFromObject(comment, key: TablePhotoComment.User)
+            
+            row.rowType = DTableViewModelRow.RowType.DetailUser(user: user, detailButtonType: nil)
+            section.rowArray.append(row)
+            
+            row = DTableViewModelRow()
+            row.rowType = DTableViewModelRow.RowType.Label(text: APIManager.getStringFromObject(comment, key: TablePhotoComment.Message), font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody))
+            section.rowArray.append(row)
+            
+            sectionArray.append(section)
+        }
+        dataDidLoad()
+    }
+    
+    // MARK: Waterfall Failure
+    
     private func waterfallSendRequestFailure() {
         pageUpdating = false
         dataDidLoad()
     }
     
-    // MARK: User Waterfall
+    // MARK: Page Control
     
+    private var pageCount: NSInteger = 1
+    private var pageSize: NSInteger = 50
+    private var pageIfEnd = false
+    private var pageUpdating = false
     
+    private func pageInit() {
+        pageCount = 1
+        pageIfEnd = false
+        pageUpdating = false
+        waterfallSendRequest()
+    }
+    
+    func pageMore() {
+        if !pageIfEnd && !pageUpdating {
+            ++pageCount
+            waterfallSendRequest()
+            pageUpdating = true
+        }
+    }
+    
+    func pageEnd(objectArrayCount: NSInteger) {
+        pageUpdating = false
+        if objectArrayCount < pageSize {
+            pageIfEnd = true
+        }
+    }
     
     // MARK: - Profile
     
@@ -482,88 +562,7 @@ class DTableViewModel
     
     // MARK: - Comment
     
-    private func commentInit(photo: PFObject) {
-        var section = DTableViewModelSection()
-        var row = DTableViewModelRow()
-        
-        let user = APIManager.getUserFromObject(photo, key: TablePhoto.Owner)
-        
-        row.rowType = DTableViewModelRow.RowType.DetailUser(user: user, detailButtonType: nil)
-        section.rowArray.append(row)
-        
-        row = DTableViewModelRow()
-        row.rowType = DTableViewModelRow.RowType.Label(text: APIManager.getStringFromObject(photo, key: TablePhoto.Description), font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody))
-        section.rowArray.append(row)
-        
-        row = DTableViewModelRow()
-        let heightForRow = APIManager.getHeightFromPhoto(photo)
-        row.rowType = DTableViewModelRow.RowType.Image(heightForRow: heightForRow, image: ImagePlaceholder.Image, imageFile: APIManager.getFileFromObject(photo, key: TablePhoto.Image), function: nil)
-        section.rowArray.append(row)
-        
-        sectionArray.append(section)
-        
-        let textViewTitleArray = ["Comment:"]
-        let textViewTextArray = [""]
-        section = textViewGroup(textViewTitleArray, textViewTextArray: textViewTextArray)
-        sectionArray.append(section)
-        
-        section = DTableViewModelSection()
-        addButtonNormal(section, buttonText: "Leave a comment", function: functionSaveComment)
-        sectionArray.append(section)
-        
-        pageCount = 1
-        pageEnd = false
-        pageUpdating = false
-        commentSendRequest(photo)
-        
-        
-    }
-    
-    private func commentSendRequest(photo: PFObject) {
-        APIManager.fetchCommentArray(pageSize, page: pageCount, photo: photo, success: { (objectArray) -> () in
-            self.commentSendRequestSuccess(objectArray)
-        }) { (error) -> () in
-            self.commentSendRequestFailure()
-        }
-        
-        self.dataDidLoad()
-    }
-    
-    private func commentSendRequestSuccess(objectArray: [PFObject]) {
-        pageUpdating = false
-        if objectArray.count < pageSize {
-            pageEnd = true
-        }
-        
-        var section = DTableViewModelSection()
-        var row = DTableViewModelRow()
-        
-        for comment in objectArray {
-            section = DTableViewModelSection()
-            row = DTableViewModelRow()
-            
-            let user = APIManager.getUserFromObject(comment, key: TablePhotoComment.User)
-            
-            row.rowType = DTableViewModelRow.RowType.DetailUser(user: user, detailButtonType: nil)
-            section.rowArray.append(row)
-            
-            row = DTableViewModelRow()
-            row.rowType = DTableViewModelRow.RowType.Label(text: APIManager.getStringFromObject(comment, key: TablePhotoComment.Message), font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody))
-            section.rowArray.append(row)
-            
-            sectionArray.append(section)
-        }
-        dataDidLoad()
-    }
-    
-    private func commentSendRequestFailure() {
-        pageUpdating = false
-        dataDidLoad()
-    }
-    
     func addComment(photo: PFObject, message: String) {
-        
-        
         let textViewTitleArray = ["Comment:"]
         let textViewTextArray = [""]
         sectionArray[1] = textViewGroup(textViewTitleArray, textViewTextArray: textViewTextArray)

@@ -912,7 +912,7 @@ class APIManager {
                 if let objects = objects as? [PFObject] {
                     var followingArray = [PFUser]()
                     for userFollow in objects {
-                        if let userFollowing = APIManager.getUserFromObject(userFollow, key: TableUserFollow.UserFollowed) {
+                        if let userFollowing = APIManager.getUserFromObject(userFollow, key: TableUserFollow.User) {
                             followingArray.append(userFollowing)
                         }
                     }

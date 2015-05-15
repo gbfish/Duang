@@ -398,7 +398,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         case .AddPhoto:
             dTableViewModel.functionAddPhoto = DTableViewModelRow.Function.Function(argumentCount: 0, function: selectImage)
             dTableViewModel.functionSaveAddPhoto = DTableViewModelRow.Function.Function(argumentCount: 0, function: saveAddPhoto)
-        case .Comment(let photo):
+        case .WaterfallComment(let photo):
             
             let argument = DTableViewModelRow.Function.Argument.Object(object: photo)
             dTableViewModel.functionSaveComment = DTableViewModelRow.Function.Function1Argument(argument: argument, function: saveComment)
@@ -451,7 +451,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func showComment(photo: PFObject) {
         if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DTableViewController") as? DTableViewController {
             viewController.delegate = self
-            viewController.dTableViewModel.tableType = DTableViewModel.TableType.Comment(photo: photo)
+            viewController.dTableViewModel.tableType = DTableViewModel.TableType.WaterfallComment(photo: photo)
             self.navigationController?.pushViewController(viewController, animated: true)
         }
     }
