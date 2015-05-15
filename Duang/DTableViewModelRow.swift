@@ -16,7 +16,6 @@ class DTableViewModelRow
     enum RowType {
         case Nothing
         
-        
         case Image(heightForRow: CGFloat?, image: UIImage?, imageFile: PFFile?, function: Function?)
         case TextView(heightForRow: CGFloat?, textViewTitle: String?, textViewText: String?, textViewTitleWidth: CGFloat?)
         case Label(text: String?, font: UIFont?)
@@ -24,7 +23,6 @@ class DTableViewModelRow
         case Buttons(buttonItemArray: [ButtonItem])
         case ButtonsWaterfall(photo: PFObject)
         
-//        case DetailUser(user: PFUser?, detailButtonItem: ButtonItem?)
         case DetailUser(user: PFUser?, detailButtonType: ButtonType?)
         case DetailImage(image: UIImage?, imageFile: PFFile?, detailTitle: String?, detailButtonItem: ButtonItem?)
     }
