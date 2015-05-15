@@ -24,7 +24,6 @@ extension UIButton {
             subView.removeFromSuperview()
         }
         
-        
         var buttonStytle = DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal
         
         switch buttonItem {

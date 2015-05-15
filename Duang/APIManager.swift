@@ -856,40 +856,70 @@ class APIManager {
         }
     }
     
-    class func fetchFollowingTotal(success: (Int32) -> ()) {
-        if let currentUser = PFUser.currentUser() {
-            var query = PFQuery(className: TableUserFollow.ClassName)
-            query.whereKey(TableUserFollow.User, equalTo: currentUser)
-            query.countObjectsInBackgroundWithBlock { (countNumber, error) -> Void in
-                if error == nil {
-                    success(countNumber)
-                }
+    class func fetchFollowingTotal(user: PFUser, success: (Int32) -> ()) {
+        var query = PFQuery(className: TableUserFollow.ClassName)
+        query.whereKey(TableUserFollow.User, equalTo: user)
+        query.countObjectsInBackgroundWithBlock { (countNumber, error) -> Void in
+            if error == nil {
+                success(countNumber)
             }
         }
     }
     
-    class func fetchFollowingArray(pageSize: Int, page: Int, success: ([PFUser]) -> (), failure: (NSError?) -> ()) {
-        if let currentUser = PFUser.currentUser() {
-            var query = PFQuery(className: TableUserFollow.ClassName)
-            query.limit = pageSize
-            query.skip = (page - 1) * pageSize
-            query.orderByDescending("updatedAt")
-            query.whereKey(TableUserFollow.User, equalTo: currentUser)
-            query.findObjectsInBackgroundWithBlock {
-                (objects, error) -> Void in
-                if error == nil {
-                    if let objects = objects as? [PFObject] {
-                        var followingArray = [PFUser]()
-                        for userFollow in objects {
-                            if let userFollowing = APIManager.getUserFromObject(userFollow, key: TableUserFollow.UserFollowed) {
-                                followingArray.append(userFollowing)
-                            }
+    class func fetchFollowingArray(pageSize: Int, page: Int, user: PFUser, success: ([PFUser]) -> (), failure: (NSError?) -> ()) {
+        var query = PFQuery(className: TableUserFollow.ClassName)
+        query.limit = pageSize
+        query.skip = (page - 1) * pageSize
+        query.orderByDescending("updatedAt")
+        query.whereKey(TableUserFollow.User, equalTo: user)
+        query.findObjectsInBackgroundWithBlock {
+            (objects, error) -> Void in
+            if error == nil {
+                if let objects = objects as? [PFObject] {
+                    var followingArray = [PFUser]()
+                    for userFollow in objects {
+                        if let userFollowing = APIManager.getUserFromObject(userFollow, key: TableUserFollow.UserFollowed) {
+                            followingArray.append(userFollowing)
                         }
-                        success(followingArray)
                     }
-                } else {
-                    failure(error)
+                    success(followingArray)
                 }
+            } else {
+                failure(error)
+            }
+        }
+    }
+    
+    class func fetchFollowerTotal(user: PFUser, success: (Int32) -> ()) {
+        var query = PFQuery(className: TableUserFollow.ClassName)
+        query.whereKey(TableUserFollow.UserFollowed, equalTo: user)
+        query.countObjectsInBackgroundWithBlock { (countNumber, error) -> Void in
+            if error == nil {
+                success(countNumber)
+            }
+        }
+    }
+    
+    class func fetchFollowerArray(pageSize: Int, page: Int, user: PFUser, success: ([PFUser]) -> (), failure: (NSError?) -> ()) {
+        var query = PFQuery(className: TableUserFollow.ClassName)
+        query.limit = pageSize
+        query.skip = (page - 1) * pageSize
+        query.orderByDescending("updatedAt")
+        query.whereKey(TableUserFollow.UserFollowed, equalTo: user)
+        query.findObjectsInBackgroundWithBlock {
+            (objects, error) -> Void in
+            if error == nil {
+                if let objects = objects as? [PFObject] {
+                    var followingArray = [PFUser]()
+                    for userFollow in objects {
+                        if let userFollowing = APIManager.getUserFromObject(userFollow, key: TableUserFollow.UserFollowed) {
+                            followingArray.append(userFollowing)
+                        }
+                    }
+                    success(followingArray)
+                }
+            } else {
+                failure(error)
             }
         }
     }

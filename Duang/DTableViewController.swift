@@ -64,7 +64,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             if APIManager.sharedInstance.isCurrentUserAuthenticated {
                 showMainTabBarController()
             }
-        case .Waterfall(_):
+        case .WaterfallPhoto(_), .WaterfallUser(_):
             endRefreshing()
         default:
             break
@@ -172,7 +172,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func addRefreshControl() {
         switch dTableViewModel.tableType {
-        case .Waterfall(_):
+        case .WaterfallPhoto(_), .WaterfallUser(_):
             refreshControl = UIRefreshControl()
             refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
             refreshControl.addTarget(self, action: "beginRefreshingFeed", forControlEvents: UIControlEvents.ValueChanged)
@@ -212,8 +212,8 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func loadMoreData() {
         switch dTableViewModel.tableType {
-        case .Waterfall(_):
-            dTableViewModel.waterfallMore()
+        case .WaterfallPhoto(_), .WaterfallUser(_):
+            dTableViewModel.pageMore()
         default:
             break
         }
@@ -375,9 +375,10 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
             if let theUser = PFUser.currentUser() {
                 let argument = DTableViewModelRow.Function.Argument.User(user: theUser)
-                dTableViewModel.functionShowWaterfallUser = DTableViewModelRow.Function.Function1Argument(argument: argument, function: showWaterfallUser)
-                
-                dTableViewModel.functionShowWaterfallLike = DTableViewModelRow.Function.Function1Argument(argument: argument, function: showWaterfallLike)
+                dTableViewModel.function1 = DTableViewModelRow.Function.Function1Argument(argument: argument, function: showWaterfallPhotoUser)
+                dTableViewModel.function2 = DTableViewModelRow.Function.Function1Argument(argument: argument, function: showWaterfallPhotoLike)
+                dTableViewModel.function3 = DTableViewModelRow.Function.Function1Argument(argument: argument, function: showWaterfallUserFollowing)
+                dTableViewModel.function4 = DTableViewModelRow.Function.Function1Argument(argument: argument, function: showWaterfallUserFollower)
             }
             
             
@@ -447,37 +448,67 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-    func showWaterfallUser(argumentPFUser: DTableViewModelRow.Function.Argument) {
-        switch argumentPFUser {
-        case .User(let user):
-            if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DTableViewController") as? DTableViewController {
-                viewController.delegate = self
-                viewController.dTableViewModel.tableType = DTableViewModel.TableType.Waterfall(waterfallType: DTableViewModel.WaterfallType.PhotosUser(user: user))
-                self.navigationController?.pushViewController(viewController, animated: true)
-            }
-        default:
-            break
-        }
-    }
-    
-    func showWaterfallLike(argumentPFUser: DTableViewModelRow.Function.Argument) {
-        switch argumentPFUser {
-        case .User(let user):
-            if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DTableViewController") as? DTableViewController {
-                viewController.delegate = self
-                viewController.dTableViewModel.tableType = DTableViewModel.TableType.Waterfall(waterfallType: DTableViewModel.WaterfallType.PhotosLike(user: user))
-                self.navigationController?.pushViewController(viewController, animated: true)
-            }
-        default:
-            break
-        }
-    }
-    
     func showComment(photo: PFObject) {
         if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DTableViewController") as? DTableViewController {
             viewController.delegate = self
             viewController.dTableViewModel.tableType = DTableViewModel.TableType.Comment(photo: photo)
             self.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
+    
+    // MARK: Waterfall Photo
+    
+    func showWaterfallPhotoUser(argumentPFUser: DTableViewModelRow.Function.Argument) {
+        switch argumentPFUser {
+        case .User(let user):
+            if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DTableViewController") as? DTableViewController {
+                viewController.delegate = self
+                viewController.dTableViewModel.tableType = DTableViewModel.TableType.WaterfallPhoto(type: DTableViewModel.WaterfallPhotoType.User(user: user))
+                self.navigationController?.pushViewController(viewController, animated: true)
+            }
+        default:
+            break
+        }
+    }
+    
+    func showWaterfallPhotoLike(argumentPFUser: DTableViewModelRow.Function.Argument) {
+        switch argumentPFUser {
+        case .User(let user):
+            if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DTableViewController") as? DTableViewController {
+                viewController.delegate = self
+                viewController.dTableViewModel.tableType = DTableViewModel.TableType.WaterfallPhoto(type: DTableViewModel.WaterfallPhotoType.Like(user: user))
+                self.navigationController?.pushViewController(viewController, animated: true)
+            }
+        default:
+            break
+        }
+    }
+    
+    // MARK: Waterfall User
+    
+    func showWaterfallUserFollowing(argumentPFUser: DTableViewModelRow.Function.Argument) {
+        switch argumentPFUser {
+        case .User(let user):
+            if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DTableViewController") as? DTableViewController {
+                viewController.delegate = self
+                viewController.dTableViewModel.tableType = DTableViewModel.TableType.WaterfallUser(type: DTableViewModel.WaterfallUserType.Following(user: user))
+                self.navigationController?.pushViewController(viewController, animated: true)
+            }
+        default:
+            break
+        }
+    }
+    
+    func showWaterfallUserFollower(argumentPFUser: DTableViewModelRow.Function.Argument) {
+        switch argumentPFUser {
+        case .User(let user):
+            if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DTableViewController") as? DTableViewController {
+                viewController.delegate = self
+                viewController.dTableViewModel.tableType = DTableViewModel.TableType.WaterfallUser(type: DTableViewModel.WaterfallUserType.Follower(user: user))
+                self.navigationController?.pushViewController(viewController, animated: true)
+            }
+        default:
+            break
         }
     }
     

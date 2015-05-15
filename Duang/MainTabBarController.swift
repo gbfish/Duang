@@ -14,7 +14,7 @@ class MainTabBarController: UITabBarController
         super.viewDidLoad()
         
         var temViewControllers = [UIViewController]()
-        if let viewController = getViewController(DTableViewModel.TableType.Waterfall(waterfallType: DTableViewModel.WaterfallType.Feed), itemTitle: TabBarTitle.Feed, itemImageName: "TabBar_Images", tag: 0) {
+        if let viewController = getViewController(DTableViewModel.TableType.WaterfallPhoto(type: DTableViewModel.WaterfallPhotoType.Feed), itemTitle: TabBarTitle.Feed, itemImageName: "TabBar_Images", tag: 0) {
             temViewControllers.append(viewController)
         }
         if let viewController = getViewController(DTableViewModel.TableType.AddPhoto, itemTitle: TabBarTitle.AddPhoto, itemImageName: "TabBar_Add", tag: 1) {

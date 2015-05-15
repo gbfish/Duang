@@ -73,16 +73,24 @@ class DTableViewModel
         case ChangePassword
         case AddPhoto
         
-        case Waterfall(waterfallType: WaterfallType)
+        
         case Profile(user: PFUser)
         
         case Comment(photo: PFObject)
+        
+        case WaterfallPhoto(type: WaterfallPhotoType)
+        case WaterfallUser(type: WaterfallUserType)
     }
     
-    enum WaterfallType {
+    enum WaterfallPhotoType {
         case Feed
-        case PhotosUser(user: PFUser)
-        case PhotosLike(user: PFUser)
+        case User(user: PFUser)
+        case Like(user: PFUser)
+    }
+    
+    enum WaterfallUserType {
+        case Following(user: PFUser)
+        case Follower(user: PFUser)
     }
 
     
@@ -161,7 +169,6 @@ class DTableViewModel
             row = DTableViewModelRow()
             var buttonItem = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Edit", function: functionEditAvatar)
             
-//            row.rowType = DTableViewModelRow.RowType.DetailUser(image: nil, user: user, detailButtonItem: buttonItem)
             row.rowType = DTableViewModelRow.RowType.DetailImage(image: nil, imageFile: APIManager.getFileFromUser(user, key: TableUser.Avatar), detailTitle: "Avatar", detailButtonItem: buttonItem)
             section.rowArray.append(row)
             
@@ -235,20 +242,7 @@ class DTableViewModel
             
             dataDidLoad()
             
-        case .Waterfall(let waterfallType):
-            switch waterfallType {
-            case .Feed:
-                viewControllerTitle = "Feed"
-                waterfallInit()
-                
-            case .PhotosUser(let user):
-                viewControllerTitle = APIManager.getNameFromUser(user)
-                waterfallInit()
-                
-            case .PhotosLike(let user):
-                viewControllerTitle = APIManager.getNameFromUser(user)
-                waterfallInit()
-            }
+        
             
         case .MyProfile:
             viewControllerTitle = "Me"
@@ -257,12 +251,11 @@ class DTableViewModel
             let user = PFUser.currentUser()
             let buttonItemSetting = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Settings", function: functionShowSettings)
             
-//            row.rowType = DTableViewModelRow.RowType.DetailUser(user: user, detailButtonItem: buttonItemSetting)
             row.rowType = DTableViewModelRow.RowType.DetailUser(user: user, detailButtonType: DTableViewModelRow.ButtonType.ButtonItem(buttonItem: buttonItemSetting))
             section.rowArray.append(row)
             
             row = DTableViewModelRow()
-            let buttonItemPhoto = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "5", buttonSubtitleText: "Photos", function: functionShowWaterfallUser)
+            let buttonItemPhoto = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "5", buttonSubtitleText: "Photos", function: functionShowWaterfallPhotoUser)
             let buttonItemLike = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "52", buttonSubtitleText: "Likes", function: functionShowSignUp)
             let buttonItemFollowing = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "15", buttonSubtitleText: "Following", function: functionShowSignUp)
             let buttonItemFollower = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "53", buttonSubtitleText: "Followers", function: functionShowSignUp)
@@ -282,9 +275,9 @@ class DTableViewModel
             viewControllerTitle = "Comment"
             commentInit(photo)
             
+        case .WaterfallPhoto(_), .WaterfallUser(_):
+            waterfallInit()
         }
-        
-        
     }
     
     func dataDidLoad() {
@@ -306,67 +299,99 @@ class DTableViewModel
     
     // MARK: - Page Control
     
-    var pageCount: NSInteger = 1
-    var pageSize: NSInteger = 50
-    var pageEnd = false
-    var pageUpdating = false
+    private var pageCount: NSInteger = 1
+    private var pageSize: NSInteger = 50
+    private var pageEnd = false
+    private var pageUpdating = false
     
-    // MARK: - Waterfall
-    
-//    var waterfallPageCount: NSInteger = 1
-//    var waterfallPageSize: NSInteger = 50
-//    
-//    var waterfallEnd = false
-//    var waterfallUpdating = false
-    
-    func waterfallInit() {
+    private func pageInit() {
         pageCount = 1
         pageEnd = false
         pageUpdating = false
         waterfallSendRequest()
     }
     
-    func waterfallMore() {
+    func pageMore() {
         if !pageEnd && !pageUpdating {
             ++pageCount
             waterfallSendRequest()
         }
     }
     
+    // MARK: - Waterfall
+    
+    func waterfallInit() {
+        switch tableType {
+        case .WaterfallPhoto(let type):
+            switch type {
+            case .Feed:
+                viewControllerTitle = "Feed"
+            case .User(let user):
+                viewControllerTitle = APIManager.getNameFromUser(user)
+            case .Like(let user):
+                viewControllerTitle = APIManager.getNameFromUser(user)
+            }
+            pageInit()
+        case .WaterfallUser(let type):
+            switch type {
+            case .Following(_):
+                viewControllerTitle = "Following"
+            case .Follower(_):
+                viewControllerTitle = "Follower"
+            }
+            pageInit()
+        default:
+            break
+        }
+    }
+    
     private func waterfallSendRequest() {
         switch tableType {
-        case .Waterfall(let waterfallType):
-            switch waterfallType {
+        case .WaterfallPhoto(let type):
+            switch type {
             case .Feed:
                 pageUpdating = true
                 APIManager.sharedInstance.getPhotoArray(pageSize, page: pageCount, user: nil, success: { (objectArray) -> () in
-                    self.waterfallSendRequestSuccess(objectArray)
+                    self.photoWaterfallSendRequestSuccess(objectArray)
                 }, failure: { (error) -> () in
                     self.waterfallSendRequestFailure()
                 })
                 
-            case .PhotosUser(let user):
+            case .User(let user):
                 pageUpdating = true
                 APIManager.sharedInstance.getPhotoArray(pageSize, page: pageCount, user: user, success: { (objectArray) -> () in
-                    self.waterfallSendRequestSuccess(objectArray)
+                    self.photoWaterfallSendRequestSuccess(objectArray)
                 }, failure: { (error) -> () in
                     self.waterfallSendRequestFailure()
                 })
                 
-            case .PhotosLike(let user):
+            case .Like(let user):
                 pageUpdating = true
                 APIManager.fetchPhotoArrayLike(pageSize, page: pageCount, user: user, success: { (objectArray) -> () in
-                    self.waterfallSendRequestSuccess(objectArray)
+                    self.photoWaterfallSendRequestSuccess(objectArray)
                 }, failure: { (error) -> () in
                     self.waterfallSendRequestFailure()
                 })
+            }
+        case .WaterfallUser(let type):
+            switch type {
+            case .Following(let user):
+                APIManager.fetchFollowingArray(pageSize, page: pageCount, user: user, success: { (objectArray) -> () in
+                    
+                }, failure: { (error) -> () in
+                    self.waterfallSendRequestFailure()
+                })
+            case .Follower(let user):
+                viewControllerTitle = "Follower"/////
             }
         default:
             break
         }
     }
     
-    private func waterfallSendRequestSuccess(objectArray: [PFObject]) {
+    // MARK: Photo Waterfall
+    
+    private func photoWaterfallSendRequestSuccess(objectArray: [PFObject]) {
         pageUpdating = false
         if objectArray.count < pageSize {
             pageEnd = true
@@ -407,6 +432,10 @@ class DTableViewModel
         dataDidLoad()
     }
     
+    // MARK: User Waterfall
+    
+    
+    
     // MARK: - Profile
     
     func profileInit(user: PFUser) {
@@ -420,43 +449,38 @@ class DTableViewModel
             let user = PFUser.currentUser()
             let buttonItemSetting = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Settings", function: self.functionShowSettings)
             
-//            row.rowType = DTableViewModelRow.RowType.DetailUser(user: user, detailButtonItem: buttonItemSetting)
             row.rowType = DTableViewModelRow.RowType.DetailUser(user: user, detailButtonType: DTableViewModelRow.ButtonType.ButtonItem(buttonItem: buttonItemSetting))
             section.rowArray.append(row)
             
             row = DTableViewModelRow()
             
             APIManager.fetchPhotoTotal(theUser, success: { (photoTotal) -> () in
-                let buttonItemPhoto = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "\(photoTotal)", buttonSubtitleText: "Photos", function: self.functionShowWaterfallUser)
+                let buttonItemPhoto = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "\(photoTotal)", buttonSubtitleText: "Photos", function: self.function1)
                 
                 APIManager.fetchLikeTotalUser(theUser, success: { (likeTotal) -> () in
-                    let buttonItemLike = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "\(likeTotal)", buttonSubtitleText: "Likes", function: self.functionShowWaterfallLike)
+                    let buttonItemLike = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "\(likeTotal)", buttonSubtitleText: "Likes", function: self.function2)
                     
-                    
-                    
-                    let buttonItemFollowing = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "15", buttonSubtitleText: "Following", function: self.functionShowSignUp)
-                    let buttonItemFollower = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "53", buttonSubtitleText: "Followers", function: self.functionShowSignUp)
-                    
-                    row.rowType = DTableViewModelRow.RowType.Buttons(buttonItemArray: [buttonItemPhoto, buttonItemLike, buttonItemFollowing, buttonItemFollower])
-                    
-                    section.rowArray.append(row)
-                    
-                    self.sectionArray.append(section)
-                    
-                    self.dataDidLoad()
+                    APIManager.fetchFollowingTotal(theUser, success: { (followingTotal) -> () in
+                        let buttonItemFollowing = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "\(followingTotal)", buttonSubtitleText: "Following", function: self.function3)
+                        
+                        APIManager.fetchFollowerTotal(theUser, success: { (followerTotal) -> () in
+                            let buttonItemFollower = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "\(followerTotal)", buttonSubtitleText: "Followers", function: self.function4)
+                            
+                            row.rowType = DTableViewModelRow.RowType.Buttons(buttonItemArray: [buttonItemPhoto, buttonItemLike, buttonItemFollowing, buttonItemFollower])
+                            
+                            section.rowArray.append(row)
+                            
+                            self.sectionArray.append(section)
+                            
+                            self.dataDidLoad()
+                        })
+                    })
                 })
-               
             })
         })
     }
     
     // MARK: - Comment
-    
-//    private var commentPageCount: NSInteger = 1
-//    private var commentPageSize: NSInteger = 50
-//    
-//    private var commentEnd = false
-//    private var commentUpdating = false
     
     private func commentInit(photo: PFObject) {
         var section = DTableViewModelSection()
@@ -572,18 +596,6 @@ class DTableViewModel
     
     // MARK: - TextView Group
     
-//    private func addTextViewGroup(section: DTableViewModelSection, textViewTitleArray: [String], textViewTextArray: [String]) {
-//        let textViewTitleWidth = APIManager.widthMaxForStrings(textViewTitleArray, font: UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline))
-//        let textViewWidth = UIScreen.mainScreen().bounds.width - textViewTitleWidth - (DuangGlobal.spacing * 3)
-//        
-//        for var index = 0; index < textViewTitleArray.count; ++index {
-//            let row = DTableViewModelRow()
-//            let heightForRow = cellTextViewHeightForRow(textViewTextArray[index], font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody), width: textViewWidth)
-//            row.rowType = DTableViewModelRow.RowType.TextView(heightForRow: heightForRow, textViewTitle: textViewTitleArray[index], textViewText: textViewTextArray[index], textViewTitleWidth: textViewTitleWidth)
-//            section.rowArray.append(row)
-//        }
-//    }
-    
     private func textViewGroup(textViewTitleArray: [String], textViewTextArray: [String]) -> DTableViewModelSection {
         var returnSection = DTableViewModelSection()
         
@@ -617,6 +629,11 @@ class DTableViewModel
     
     // MARK: - Function
 
+    var function1 = DTableViewModelRow.Function.Nothing
+    var function2 = DTableViewModelRow.Function.Nothing
+    var function3 = DTableViewModelRow.Function.Nothing
+    var function4 = DTableViewModelRow.Function.Nothing
+    
     var functionShowSignUp = DTableViewModelRow.Function.Nothing
     var functionShowLogIn = DTableViewModelRow.Function.Nothing
     var functionShowSettings = DTableViewModelRow.Function.Nothing
@@ -624,8 +641,8 @@ class DTableViewModel
     var functionShowAccountSettings = DTableViewModelRow.Function.Nothing
     var functionShowChangePassword = DTableViewModelRow.Function.Nothing
     
-    var functionShowWaterfallUser = DTableViewModelRow.Function.Nothing
-    var functionShowWaterfallLike = DTableViewModelRow.Function.Nothing
+    var functionShowWaterfallPhotoUser = DTableViewModelRow.Function.Nothing
+    var functionShowWaterfallPhotoLike = DTableViewModelRow.Function.Nothing
     
     var functionSaveEditProfile = DTableViewModelRow.Function.Nothing
     var functionSaveAccountSettings = DTableViewModelRow.Function.Nothing
