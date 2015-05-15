@@ -160,10 +160,16 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.cellForRowAtIndexPath(indexPath)?.selected = false
         
-//        selectedIndexPath = indexPath
-//        duangTableData.sectionArray[indexPath.section].rowArray[indexPath.row].tapAction()
-        
-        
+        switch dTableViewModel.sectionArray[indexPath.section].rowArray[indexPath.row].rowType {
+        case .DetailUser(let user, _):
+            if let theUser = user {
+                if theUser != PFUser.currentUser() {
+                    showProfile(theUser)
+                }
+            }
+        default:
+            break
+        }
     }
     
     // MARK: - UIRefreshControl
@@ -370,17 +376,15 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             dTableViewModel.functionSignUp = DTableViewModelRow.Function.Function(argumentCount: 0, function: signUp)
         case .LogIn:
             dTableViewModel.functionLogIn = DTableViewModelRow.Function.Function(argumentCount: 0, function: logIn)
-        case .MyProfile, .Profile(_) :
-            dTableViewModel.functionShowSettings = DTableViewModelRow.Function.Function(argumentCount: 0, function: showSettings)
-            
-            if let theUser = PFUser.currentUser() {
-                let argument = DTableViewModelRow.Function.Argument.User(user: theUser)
-                dTableViewModel.function1 = DTableViewModelRow.Function.Function1Argument(argument: argument, function: showWaterfallPhotoUser)
-                dTableViewModel.function2 = DTableViewModelRow.Function.Function1Argument(argument: argument, function: showWaterfallPhotoLike)
-                dTableViewModel.function3 = DTableViewModelRow.Function.Function1Argument(argument: argument, function: showWaterfallUserFollowing)
-                dTableViewModel.function4 = DTableViewModelRow.Function.Function1Argument(argument: argument, function: showWaterfallUserFollower)
+        case .Profile(let user):
+            if user == PFUser.currentUser() {
+                dTableViewModel.functionShowSettings = DTableViewModelRow.Function.Function(argumentCount: 0, function: showSettings)
             }
-            
+            let argument = DTableViewModelRow.Function.Argument.User(user: user)
+            dTableViewModel.function1 = DTableViewModelRow.Function.Function1Argument(argument: argument, function: showWaterfallPhotoUser)
+            dTableViewModel.function2 = DTableViewModelRow.Function.Function1Argument(argument: argument, function: showWaterfallPhotoLike)
+            dTableViewModel.function3 = DTableViewModelRow.Function.Function1Argument(argument: argument, function: showWaterfallUserFollowing)
+            dTableViewModel.function4 = DTableViewModelRow.Function.Function1Argument(argument: argument, function: showWaterfallUserFollower)
             
         case .Settings:
             dTableViewModel.functionShowEditProfile = DTableViewModelRow.Function.Function(argumentCount: 0, function: showEditProfile)
@@ -402,6 +406,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
             let argument = DTableViewModelRow.Function.Argument.Object(object: photo)
             dTableViewModel.functionSaveComment = DTableViewModelRow.Function.Function1Argument(argument: argument, function: saveComment)
+            
             
         default:
             break
@@ -509,6 +514,16 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
         default:
             break
+        }
+    }
+    
+    // MARK: Profile
+    
+    func showProfile(user: PFUser) {
+        if let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DTableViewController") as? DTableViewController {
+            viewController.delegate = self
+            viewController.dTableViewModel.tableType = DTableViewModel.TableType.Profile(user: user)
+            self.navigationController?.pushViewController(viewController, animated: true)
         }
     }
     

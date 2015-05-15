@@ -66,7 +66,7 @@ class DTableViewModel
         case Landing
         case SignUp
         case LogIn
-        case MyProfile
+//        case MyProfile
         case Settings
         case EditProfile
         case AccountSettings
@@ -241,33 +241,8 @@ class DTableViewModel
             
             dataDidLoad()
             
-        
-            
-        case .MyProfile:
-            viewControllerTitle = "Me"
-            
-            row = DTableViewModelRow()
-            let user = PFUser.currentUser()
-            let buttonItemSetting = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Settings", function: functionShowSettings)
-            
-            row.rowType = DTableViewModelRow.RowType.DetailUser(user: user, detailButtonType: DTableViewModelRow.ButtonType.ButtonItem(buttonItem: buttonItemSetting))
-            section.rowArray.append(row)
-            
-            row = DTableViewModelRow()
-            let buttonItemPhoto = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "5", buttonSubtitleText: "Photos", function: functionShowWaterfallPhotoUser)
-            let buttonItemLike = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "52", buttonSubtitleText: "Likes", function: functionShowSignUp)
-            let buttonItemFollowing = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "15", buttonSubtitleText: "Following", function: functionShowSignUp)
-            let buttonItemFollower = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "53", buttonSubtitleText: "Followers", function: functionShowSignUp)
-            
-            row.rowType = DTableViewModelRow.RowType.Buttons(buttonItemArray: [buttonItemPhoto, buttonItemLike, buttonItemFollowing, buttonItemFollower])
-            section.rowArray.append(row)
-            
-            sectionArray.append(section)
-            
-            dataDidLoad()
-            
         case .Profile(let user):
-            viewControllerTitle = "Profile"
+//            viewControllerTitle = "Profile"
             profileInit(user)
             
         case .WaterfallComment(let photo):
@@ -523,17 +498,24 @@ class DTableViewModel
         var row = DTableViewModelRow()
         
         APIManager.fetchUser(user, success: { (theUser) -> () in
-            self.viewControllerTitle = APIManager.getNameFromUser(theUser)
-            
-            row = DTableViewModelRow()
-            let user = PFUser.currentUser()
-            let buttonItemSetting = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Settings", function: self.functionShowSettings)
-            
-            row.rowType = DTableViewModelRow.RowType.DetailUser(user: user, detailButtonType: DTableViewModelRow.ButtonType.ButtonItem(buttonItem: buttonItemSetting))
-            section.rowArray.append(row)
+            if theUser == PFUser.currentUser() {
+                self.viewControllerTitle = TabBarTitle.MyProfile
+            } else {
+                self.viewControllerTitle = APIManager.getNameFromUser(theUser)
+            }
             
             row = DTableViewModelRow()
             
+            if theUser == PFUser.currentUser() {
+                let buttonItemSetting = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Settings", function: self.functionShowSettings)
+                row.rowType = DTableViewModelRow.RowType.DetailUser(user: user, detailButtonType: DTableViewModelRow.ButtonType.ButtonItem(buttonItem: buttonItemSetting))
+                section.rowArray.append(row)
+            } else {
+                row.rowType = DTableViewModelRow.RowType.DetailUser(user: user, detailButtonType: nil)
+                section.rowArray.append(row)
+            }
+            
+            row = DTableViewModelRow()
             APIManager.fetchPhotoTotal(theUser, success: { (photoTotal) -> () in
                 let buttonItemPhoto = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "\(photoTotal)", buttonSubtitleText: "Photos", function: self.function1)
                 
@@ -642,6 +624,8 @@ class DTableViewModel
     
     var functionShowWaterfallPhotoUser = DTableViewModelRow.Function.Nothing
     var functionShowWaterfallPhotoLike = DTableViewModelRow.Function.Nothing
+    
+    var functionShowProfile = DTableViewModelRow.Function.Nothing
     
     var functionSaveEditProfile = DTableViewModelRow.Function.Nothing
     var functionSaveAccountSettings = DTableViewModelRow.Function.Nothing

@@ -126,14 +126,12 @@ class DTableViewCellDetail: UITableViewCell
     }
     
     private func setDetailButtonFollow() {
-//        detailButton = UIButton()
         let buttonItem = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Follow", function: DTableViewModelRow.Function.Nothing)
         detailButton.setButton(buttonItem, buttonSize: self.detailButton.frame.size)
         detailButton.addTarget(self, action: "buttonActionFollow:", forControlEvents: UIControlEvents.TouchUpInside)
     }
     
     private func setDetailButtonUnfollow() {
-//        detailButton = UIButton()
         let buttonItem = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Unfollow", function: DTableViewModelRow.Function.Nothing)
         detailButton.setButton(buttonItem, buttonSize: self.detailButton.frame.size)
         detailButton.addTarget(self, action: "buttonActionUnfollow:", forControlEvents: UIControlEvents.TouchUpInside)

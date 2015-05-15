@@ -46,26 +46,6 @@ class APIManager {
         return nil
     }
     
-    class func getFileArrayFromPost(object: PFObject, success: ([PFFile]) -> (), failure: (error: NSError) -> ()) {
-        
-        if let relation = object[TablePost.Photos] as? PFRelation {
-            
-            relation.query()?.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
-                if error == nil {
-                    var returnValue = [PFFile]()
-                    if let theObjects = objects {
-                        for object in theObjects {
-                            if let file = object[TablePhoto.Image] as? PFFile {
-                                returnValue.append(file)
-                            }
-                        }
-                        success(returnValue)
-                    }
-                }
-            })
-        }
-    }
-    
     class func getFileFromObject(object: PFObject, key: String) -> PFFile? {
         if let returnValue = object[key] as? PFFile {
             return returnValue
@@ -293,11 +273,6 @@ class APIManager {
     // MARK: Avatar
     
     
-
-    
-//    let imagePlaceholderAvatar = UIImage(named: "placeholder_user")
-//    let imagePlaceholderImage = UIImage(named: "placeholder_image")
-    
     
     func getCurrentUserAvatarFile() -> PFFile? {
         if let imageFile = currentUser[TableUser.Avatar] as? PFFile {
@@ -370,166 +345,6 @@ class APIManager {
         currentUser[TableUser.Description] = description
         currentUser.saveInBackground()
     }
-    
-    // MARK: - Table Post
-    
-    func addPost(title: String, description: String, photoArray: NSArray, success: () -> (), failure: (NSError?) -> ()) {
-        var post = PFObject(className:TablePost.ClassName)
-        post[TablePost.Title] = title
-        post[TablePost.Description] = description
-        post[TablePost.Owner] = PFUser.currentUser()
-        
-        post.save()
-        
-        var photos = post.relationForKey(TablePost.Photos)
-        
-//        var postPhotoArray = [PFObject]()
-        for photoData in photoArray {
-            if let photoDictionary = photoData as? NSDictionary {
-                if let photoImage = photoDictionary.objectForKey("photo") as? UIImage {
-                    if let photoDescriptionData = photoDictionary.objectForKey("description") as? String {
-                        var photo = PFObject(className:TablePhoto.ClassName)
-                        photo[TablePhoto.Description] = photoDescriptionData
-                        photo[TablePhoto.ImageWidth] = photoImage.size.width
-                        photo[TablePhoto.ImageHeight] = photoImage.size.height
-                        
-                        let imageData = UIImagePNGRepresentation(photoImage)
-                        let imageFile = PFFile(name:"image.png", data:imageData)
-                        photo[TablePhoto.Image] = imageFile
-                        photo[TablePhoto.Owner] = PFUser.currentUser()
-//                        photo.saveInBackground()
-                        
-//                        postPhotoArray.append(photo)
-                        
-                        photo.save()
-                        
-                        photos.addObject(photo)
-                    }
-                }
-            }
-        }
-//        post[TablePost.PhotoArray] = postPhotoArray
-
-        post.saveInBackgroundWithBlock { (ifSuccess, error) -> Void in
-            if error == nil {
-                success()
-            } else {
-                failure(error)
-            }
-        }
-    }
-    
-    func addPhotoForPost(post: PFObject, photoArray: NSArray, success: () -> (), failure: (NSError?) -> ()) {
-        
-        var photos = post.relationForKey(TablePost.Photos)
-        
-        for photoData in photoArray {
-            if let photoDictionary = photoData as? NSDictionary {
-                if let photoImage = photoDictionary.objectForKey("photo") as? UIImage {
-                    if let photoDescriptionData = photoDictionary.objectForKey("description") as? String {
-                        var photo = PFObject(className:TablePhoto.ClassName)
-                        photo[TablePhoto.Description] = photoDescriptionData
-                        photo[TablePhoto.ImageWidth] = photoImage.size.width
-                        photo[TablePhoto.ImageHeight] = photoImage.size.height
-                        
-                        let imageData = UIImagePNGRepresentation(photoImage)
-                        let imageFile = PFFile(name:"image.png", data:imageData)
-                        photo[TablePhoto.Image] = imageFile
-                        photo[TablePhoto.Owner] = PFUser.currentUser()
-                        
-                        
-                        photos.addObject(photo)
-                    }
-                }
-            }
-        }
-        
-        post.saveInBackgroundWithBlock({ (ifSuccess, error) -> Void in
-            if error == nil {
-                success()
-            } else {
-                failure(error)
-            }
-        })
-
-    }
-    
-    func getPostArray(success: ([PFObject]) -> (), failure: (NSError?) -> ()) {
-        var query = PFQuery(className:TablePost.ClassName)
-        query.limit = 20
-        query.findObjectsInBackgroundWithBlock {
-            (objects, error) -> Void in
-            if error == nil {
-                if let objects = objects as? [PFObject] {
-                    success(objects)
-                }
-            } else {
-                failure(error)
-            }
-        }
-    }
-    
-    func hasLikedPost(post: PFObject, hasLiked: (Bool) -> ()) {
-        if let likeQuery = post.relationForKey(TablePost.Like).query(), theCurrentUser = PFUser.currentUser(), theCurrentUserObjectId = theCurrentUser.objectId{
-            likeQuery.whereKey(TableUser.Id, equalTo: theCurrentUserObjectId)
-            likeQuery.countObjectsInBackgroundWithBlock { (likeCount, error) -> Void in
-                if likeCount == 1 {
-                    hasLiked(true)
-                } else {
-                    hasLiked(false)
-                }
-            }
-        }
-    }
-    /*
-    func likePost(post: PFObject) {
-        var like = post.relationForKey(TablePost.Like)
-        like.addObject(PFUser.currentUser())
-        post.saveInBackgroundWithBlock { (objects, error) -> Void in
-            like.query().countObjectsInBackgroundWithBlock({ (count, error) -> Void in
-                post[TablePost.LikeCount] = NSInteger(count)
-                post.saveInBackground()
-            })
-        }
-    }*/
-    
-    func likePost(post: PFObject, success: () -> ()) {//增加like 表
-//        var like = post.relationForKey(TablePost.Like)
-//        like.addObject(PFUser.currentUser())
-//        post.saveInBackgroundWithBlock { (objects, error) -> Void in
-//            like.query().countObjectsInBackgroundWithBlock({ (count, error) -> Void in
-//                post[TablePost.LikeCount] = NSInteger(count)
-//                post.saveInBackgroundWithBlock({ (finish, error) -> Void in
-//                    success()
-//                })
-//            })
-//        }
-    }
-    /*
-    func unlikePost(post: PFObject) {
-        var like = post.relationForKey(TablePost.Like)
-        like.removeObject(PFUser.currentUser())
-        post.saveInBackgroundWithBlock { (objects, error) -> Void in
-            like.query().countObjectsInBackgroundWithBlock({ (count, error) -> Void in
-                post[TablePost.LikeCount] = NSInteger(count)
-                post.saveInBackground()
-            })
-        }
-    }*/
-    
-    func unlikePost(post: PFObject, success: () -> ()) {//增加like 表
-//        var like = post.relationForKey(TablePost.Like)
-//        like.removeObject(PFUser.currentUser())
-//        post.saveInBackgroundWithBlock { (objects, error) -> Void in
-//            like.query().countObjectsInBackgroundWithBlock({ (count, error) -> Void in
-//                post[TablePost.LikeCount] = NSInteger(count)
-//                post.saveInBackgroundWithBlock({ (finish, error) -> Void in
-//                    success()
-//                })
-//            })
-//        }
-    }
-
     
     // MARK: - Table Photo
     
@@ -924,33 +739,6 @@ class APIManager {
         }
     }
     
-    // MARK: - Table Comment
-    
-
-    
-    func addNewComment(post: PFObject, image: UIImage, commentText: String, success: () -> (), failure: (NSError?) -> ()) {
-        var comments = post.relationForKey(TablePost.Comments)
-        
-        var comment = PFObject(className:TableComment.ClassName)
-        
-        comment[TableComment.Message] = commentText
-        comment[TableComment.Owner] = PFUser.currentUser()
-        
-        let imageData = UIImagePNGRepresentation(image)
-        let imageFile = PFFile(name:"image.png", data:imageData)
-        comment[TableComment.Image] = imageFile
-        comment.save()
-        
-        comments.addObject(comment)
-        post.saveInBackgroundWithBlock { (ifSuccess, error) -> Void in
-            if (ifSuccess) {
-                success()
-            } else {
-                failure(error)
-            }
-        }
-    }
-    
     // MARK: - Class Function
     
     class func validateEmail(email: NSString) -> Bool {
@@ -994,34 +782,6 @@ class APIManager {
             return CGSizeZero
         }
     }
-    
-//    class func cellTextViewHeightForRow(string: String?, font: UIFont, width: CGFloat) -> CGFloat {
-//        var returnValue: CGFloat = 0
-//        
-//        
-//        if let theString = string {
-//            var textView = UITextView()
-//            textView.text = theString
-//            textView.font = font
-//            returnValue = textView.sizeThatFits(CGSizeMake(width, CGFloat.max)).height + (DuangGlobal.spacing * 2)
-//        }
-//        
-//        if returnValue < 50.0 {
-//            returnValue = 50.0
-//        }
-//        return returnValue
-//    }
-//
-//    class func sizeForTextView(string: String?, font: UIFont, width: CGFloat, height: CGFloat) -> CGSize {
-//        if let theString = string {
-//            var textView = UITextView()
-//            textView.text = theString
-//            textView.font = font
-//            return textView.sizeThatFits(CGSizeMake(width, height))
-//        } else {
-//            return CGSizeZero
-//        }
-//    }
     
     class func widthMaxForStrings(stringArray: [String], font: UIFont) -> CGFloat {
         var returnValue: CGFloat = 0.0

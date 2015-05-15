@@ -122,28 +122,4 @@ struct TablePhotoComment {
     static let Message = "message"
 }
 
-struct TablePost {
-    static let ClassName = "Post"
-    
-    static let Title = "title"
-    static let Description = "description"
-    static let Owner = "owner"
-    static let Photos = "photos"
-    static let Like = "like"
-    static let LikeCount = "likeCount"
-    static let Share = "share"
-    static let Comments = "comments"
-}
 
-
-
-
-
-struct TableComment {
-    static let ClassName = "Comment"
-    
-    static let Image = "image"
-    static let Owner = "owner"
-    static let Message = "message"
-    static let Comments = "comments"
-}
