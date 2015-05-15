@@ -79,36 +79,8 @@ class DTableViewCellDetail: UITableViewCell
                         } else {
                             self.detailButton.hidden = true
                         }
-                        /*
-                        self.detailButton.hidden = false
-                        if let theDetailButtonItem = detailButtonItem {
-                            self.detailButton.setButton(theDetailButtonItem, buttonSize: self.detailButton.frame.size)
-                            self.detailButton.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
-                        } else {
-                            if !APIManager.ifCurrentUser(theUserResult) {
-                                APIManager.ifFollowUser(theUserResult, success: { (followed) -> () in
-                                    if followed {
-                                        self.setDetailButtonUnfollow()
-//                                        let buttonItem = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Unfollow", function: DTableViewModelRow.Function.Nothing)
-//                                        self.detailButton.setButton(buttonItem, buttonSize: self.detailButton.frame.size)
-//                                        self.detailButton.addTarget(self, action: "buttonActionUnfollow:", forControlEvents: UIControlEvents.TouchUpInside)
-                                    } else {
-                                        self.setDetailButtonFollow()
-//                                        let buttonItem = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Follow", function: DTableViewModelRow.Function.Nothing)
-//                                        self.detailButton.setButton(buttonItem, buttonSize: self.detailButton.frame.size)
-//                                        self.detailButton.addTarget(self, action: "buttonActionFollow:", forControlEvents: UIControlEvents.TouchUpInside)
-                                    }
-                                })
-                            } else {
-                                self.detailButton.hidden = true
-                            }
-                        }*/
                     })
                 }
-                
-
-                
-                
             default:
                 break
             }

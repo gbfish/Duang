@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		564849F11B06AAF000DF9F83 /* DTableViewCellImageMutable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564849F01B06AAF000DF9F83 /* DTableViewCellImageMutable.swift */; };
 		566BB6721AEAB52F00ED868F /* DTableViewCellTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566BB6711AEAB52F00ED868F /* DTableViewCellTextView.swift */; };
 		5687C6451AB0E6C400ED0005 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5687C6441AB0E6C400ED0005 /* AudioToolbox.framework */; };
 		5687C6471AB0E6D000ED0005 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5687C6461AB0E6D000ED0005 /* CFNetwork.framework */; };
@@ -55,6 +56,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		564849F01B06AAF000DF9F83 /* DTableViewCellImageMutable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTableViewCellImageMutable.swift; sourceTree = "<group>"; };
 		566BB6711AEAB52F00ED868F /* DTableViewCellTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTableViewCellTextView.swift; sourceTree = "<group>"; };
 		5687C6441AB0E6C400ED0005 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		5687C6461AB0E6D000ED0005 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -238,6 +240,7 @@
 			children = (
 				56E70EB21AE811A8008478A3 /* DTableViewCellButtons.swift */,
 				56E70EB51AE833B9008478A3 /* DTableViewCellImage.swift */,
+				564849F01B06AAF000DF9F83 /* DTableViewCellImageMutable.swift */,
 				566BB6711AEAB52F00ED868F /* DTableViewCellTextView.swift */,
 				E8ABCDC21AEA1F7100B222BD /* DTableViewCellDetail.swift */,
 				E8ABCDC41AEA3D6000B222BD /* DTableViewCellLabel.swift */,
@@ -386,6 +389,7 @@
 				5687C6631AB11D1F00ED0005 /* Extension.swift in Sources */,
 				E8ABCDC51AEA3D6000B222BD /* DTableViewCellLabel.swift in Sources */,
 				56E70EB61AE833B9008478A3 /* DTableViewCellImage.swift in Sources */,
+				564849F11B06AAF000DF9F83 /* DTableViewCellImageMutable.swift in Sources */,
 				569E7A771AB0DADF009BF47B /* AppDelegate.swift in Sources */,
 				56E70EA81AE70BB7008478A3 /* DTableViewModel.swift in Sources */,
 				56E70EB11AE71503008478A3 /* DTableViewModelRow.swift in Sources */,

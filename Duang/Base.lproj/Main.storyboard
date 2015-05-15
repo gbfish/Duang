@@ -143,6 +143,40 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DTableViewCellImageMutable" rowHeight="100" id="Yh8-GN-wXf" customClass="DTableViewCellImageMutable" customModule="Duang" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Yh8-GN-wXf" id="fHR-G2-qXX">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hBa-dG-sB9">
+                                                    <rect key="frame" x="3" y="3" width="196" height="94"/>
+                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OlI-ey-nzs">
+                                                    <rect key="frame" x="202" y="3" width="196" height="94"/>
+                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RIL-2V-iUE">
+                                                    <rect key="frame" x="401" y="3" width="196" height="94"/>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottomMargin" secondItem="hBa-dG-sB9" secondAttribute="bottom" constant="-5" id="0Gs-Bm-w5h"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="OlI-ey-nzs" secondAttribute="bottom" constant="-5" id="2hm-Ba-yNt"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="RIL-2V-iUE" secondAttribute="bottom" constant="-5" id="3yp-xZ-n5A"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="RIL-2V-iUE" secondAttribute="trailing" constant="-5" id="8O9-hd-VWO"/>
+                                                <constraint firstItem="OlI-ey-nzs" firstAttribute="leading" secondItem="hBa-dG-sB9" secondAttribute="trailing" constant="3" id="ARn-Ox-gF9"/>
+                                                <constraint firstItem="OlI-ey-nzs" firstAttribute="leading" secondItem="hBa-dG-sB9" secondAttribute="trailing" constant="3" id="JOa-pt-yPB"/>
+                                                <constraint firstItem="RIL-2V-iUE" firstAttribute="leading" secondItem="OlI-ey-nzs" secondAttribute="trailing" constant="3" id="Kic-fa-5gy"/>
+                                                <constraint firstItem="OlI-ey-nzs" firstAttribute="width" secondItem="hBa-dG-sB9" secondAttribute="width" id="Vlb-VJ-B5b"/>
+                                                <constraint firstItem="OlI-ey-nzs" firstAttribute="top" secondItem="fHR-G2-qXX" secondAttribute="topMargin" constant="-5" id="VxN-zX-TdV"/>
+                                                <constraint firstItem="RIL-2V-iUE" firstAttribute="leading" secondItem="OlI-ey-nzs" secondAttribute="trailing" constant="3" id="c0s-D8-Hm2"/>
+                                                <constraint firstItem="RIL-2V-iUE" firstAttribute="top" secondItem="fHR-G2-qXX" secondAttribute="topMargin" constant="-5" id="exR-Ed-AtX"/>
+                                                <constraint firstItem="hBa-dG-sB9" firstAttribute="leading" secondItem="fHR-G2-qXX" secondAttribute="leadingMargin" constant="-5" id="mXP-BU-xY1"/>
+                                                <constraint firstItem="OlI-ey-nzs" firstAttribute="width" secondItem="RIL-2V-iUE" secondAttribute="width" id="nTn-JX-pmn"/>
+                                                <constraint firstItem="hBa-dG-sB9" firstAttribute="top" secondItem="fHR-G2-qXX" secondAttribute="topMargin" constant="-5" id="of3-Qy-fqP"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="tQ9-8h-W4D" id="kIU-S1-EKe"/>

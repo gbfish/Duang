@@ -346,6 +346,28 @@ class APIManager {
         currentUser.saveInBackground()
     }
     
+    // MARK: - Table Main
+    
+    class func fetchProfileCount(user: PFUser, success: (photo: Int32, like: Int32, following: Int32, follower: Int32) -> ()) {
+        var photo: Int32 = 0
+        var like: Int32 = 0
+        var following: Int32 = 0
+        var follower: Int32 = 0
+        APIManager.fetchPhotoTotal(user, success: { (photoTotal) -> () in
+            photo = photoTotal
+            APIManager.fetchLikeTotalUser(user, success: { (likeTotal) -> () in
+                like = likeTotal
+                APIManager.fetchFollowingTotal(user, success: { (followingTotal) -> () in
+                    following = followingTotal
+                    APIManager.fetchFollowerTotal(user, success: { (followerTotal) -> () in
+                        follower = followerTotal
+                        success(photo: photo, like: like, following: following, follower: follower)
+                    })
+                })
+            })
+        })
+    }
+    
     // MARK: - Table Photo
     
     func addNewPhoto(image: UIImage, description: String, success: () -> (), failure: (error: NSError?) -> ()) {
@@ -565,6 +587,57 @@ class APIManager {
                 }
             } else {
                 failure(error)
+            }
+        }
+    }
+    
+    // MARK: - Table PhotoCollection
+    
+    class func addPhotoCollection(name: String, success: () -> ()) {
+        if let user = PFUser.currentUser() {
+            let query = PFQuery(className: TablePhotoCollection.ClassName)
+            query.whereKey(TablePhotoCollection.User, equalTo: user)
+            query.whereKey(TablePhotoCollection.Name, equalTo: name)
+            query.countObjectsInBackgroundWithBlock { (countNumber, error) -> Void in
+                if countNumber == 0 {
+                    var photoCollection = PFObject(className:TablePhotoCollection.ClassName)
+                    photoCollection[TablePhotoCollection.User] = user
+                    photoCollection[TablePhotoCollection.Name] = name
+                    photoCollection.saveInBackground()
+                    success()
+                } else if countNumber == 1 {
+                    //already like
+                } else {
+                    //something wrong
+                    query.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
+                        if error == nil {
+                            if let photoCollectionArray = objects as? [PFObject] {
+                                for photoCollection in photoCollectionArray {
+                                    photoCollection.deleteInBackground()
+                                }
+                            }
+                        }
+                        var photoCollection = PFObject(className:TablePhotoCollection.ClassName)
+                        photoCollection[TablePhotoCollection.User] = user
+                        photoCollection[TablePhotoCollection.Name] = name
+                        photoCollection.saveInBackground()
+                        success()
+                    })
+                }
+            }
+        }
+    }
+    
+    class func fetchPhotoCollectionArray(user: PFUser, success: ([PFObject]) -> ()) {
+        var query = PFQuery(className: TablePhotoCollection.ClassName)
+        query.orderByDescending("updatedAt")
+        query.whereKey(TablePhotoCollection.User, equalTo: user)
+        query.findObjectsInBackgroundWithBlock {
+            (objects, error) -> Void in
+            if error == nil {
+                if let objects = objects as? [PFObject] {
+                    success(objects)
+                }
             }
         }
     }

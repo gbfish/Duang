@@ -66,13 +66,13 @@ class DTableViewModel
         case Landing
         case SignUp
         case LogIn
-//        case MyProfile
         case Settings
         case EditProfile
         case AccountSettings
         case ChangePassword
-        case AddPhoto
         
+        case AddPhoto
+        case AddCollection
         
         case Profile(user: PFUser)
         
@@ -241,15 +241,24 @@ class DTableViewModel
             
             dataDidLoad()
             
+        case .AddCollection:
+            viewControllerTitle = "Create a collection"
+            
+            let textViewTitleArray = ["Name:"]
+            let textViewTextArray = [""]
+            section = textViewGroup(textViewTitleArray, textViewTextArray: textViewTextArray)
+            sectionArray.append(section)
+            
+            section = DTableViewModelSection()
+            addButtonNormal(section, buttonText: "Save", function: functionSaveAddCollection)
+            sectionArray.append(section)
+            
+            dataDidLoad()
+            
         case .Profile(let user):
-//            viewControllerTitle = "Profile"
             profileInit(user)
             
-        case .WaterfallComment(let photo):
-            viewControllerTitle = "Comment"
-            waterfallInit()
-            
-        case .WaterfallPhoto(_), .WaterfallUser(_):
+        case .WaterfallPhoto(_), .WaterfallUser(_), .WaterfallComment(_):
             waterfallInit()
         }
     }
@@ -295,6 +304,7 @@ class DTableViewModel
             }
             pageInit()
         case .WaterfallComment(let photo):
+            viewControllerTitle = "Comment"
             var section = DTableViewModelSection()
             var row = DTableViewModelRow()
             
@@ -505,7 +515,6 @@ class DTableViewModel
             }
             
             row = DTableViewModelRow()
-            
             if theUser == PFUser.currentUser() {
                 let buttonItemSetting = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Settings", function: self.functionShowSettings)
                 row.rowType = DTableViewModelRow.RowType.DetailUser(user: user, detailButtonType: DTableViewModelRow.ButtonType.ButtonItem(buttonItem: buttonItemSetting))
@@ -516,27 +525,25 @@ class DTableViewModel
             }
             
             row = DTableViewModelRow()
-            APIManager.fetchPhotoTotal(theUser, success: { (photoTotal) -> () in
-                let buttonItemPhoto = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "\(photoTotal)", buttonSubtitleText: "Photos", function: self.function1)
+            APIManager.fetchProfileCount(theUser, success: { (photo, like, following, follower) -> () in
+                let buttonItemPhoto = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "\(photo)", buttonSubtitleText: "Photos", function: self.functionShowWaterfallPhotoUser)
+                let buttonItemLike = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "\(like)", buttonSubtitleText: "Likes", function: self.functionShowWaterfallPhotoLike)
+                let buttonItemFollowing = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "\(following)", buttonSubtitleText: "Following", function: self.functionShowWaterfallUserFollowing)
+                let buttonItemFollower = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "\(follower)", buttonSubtitleText: "Followers", function: self.functionShowWaterfallUserFollower)
                 
-                APIManager.fetchLikeTotalUser(theUser, success: { (likeTotal) -> () in
-                    let buttonItemLike = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "\(likeTotal)", buttonSubtitleText: "Likes", function: self.function2)
+                row.rowType = DTableViewModelRow.RowType.Buttons(buttonItemArray: [buttonItemPhoto, buttonItemLike, buttonItemFollowing, buttonItemFollower])
+                section.rowArray.append(row)
+                self.sectionArray.append(section)
+                
+                APIManager.fetchPhotoCollectionArray(theUser, success: { (objectArray) -> () in
                     
-                    APIManager.fetchFollowingTotal(theUser, success: { (followingTotal) -> () in
-                        let buttonItemFollowing = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "\(followingTotal)", buttonSubtitleText: "Following", function: self.function3)
-                        
-                        APIManager.fetchFollowerTotal(theUser, success: { (followerTotal) -> () in
-                            let buttonItemFollower = DTableViewModelRow.ButtonItem.ButtonItemTitleSubtitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonTitleText: "\(followerTotal)", buttonSubtitleText: "Followers", function: self.function4)
-                            
-                            row.rowType = DTableViewModelRow.RowType.Buttons(buttonItemArray: [buttonItemPhoto, buttonItemLike, buttonItemFollowing, buttonItemFollower])
-                            
-                            section.rowArray.append(row)
-                            
-                            self.sectionArray.append(section)
-                            
-                            self.dataDidLoad()
-                        })
-                    })
+                    
+                    
+                    section = DTableViewModelSection()
+                    self.addButtonNormal(section, buttonText: "Create a collection", function: self.functionShowAddCollection)
+                    self.sectionArray.append(section)
+                    
+                    self.dataDidLoad()
                 })
             })
         })
@@ -610,11 +617,6 @@ class DTableViewModel
     
     // MARK: - Function
 
-    var function1 = DTableViewModelRow.Function.Nothing
-    var function2 = DTableViewModelRow.Function.Nothing
-    var function3 = DTableViewModelRow.Function.Nothing
-    var function4 = DTableViewModelRow.Function.Nothing
-    
     var functionShowSignUp = DTableViewModelRow.Function.Nothing
     var functionShowLogIn = DTableViewModelRow.Function.Nothing
     var functionShowSettings = DTableViewModelRow.Function.Nothing
@@ -622,16 +624,23 @@ class DTableViewModel
     var functionShowAccountSettings = DTableViewModelRow.Function.Nothing
     var functionShowChangePassword = DTableViewModelRow.Function.Nothing
     
+    var functionShowAddCollection = DTableViewModelRow.Function.Nothing
+    
     var functionShowWaterfallPhotoUser = DTableViewModelRow.Function.Nothing
     var functionShowWaterfallPhotoLike = DTableViewModelRow.Function.Nothing
     
+    var functionShowWaterfallUserFollowing = DTableViewModelRow.Function.Nothing
+    var functionShowWaterfallUserFollower = DTableViewModelRow.Function.Nothing
+    
     var functionShowProfile = DTableViewModelRow.Function.Nothing
     
+    var functionSaveAddPhoto = DTableViewModelRow.Function.Nothing
+    var functionSaveAddCollection = DTableViewModelRow.Function.Nothing
     var functionSaveEditProfile = DTableViewModelRow.Function.Nothing
     var functionSaveAccountSettings = DTableViewModelRow.Function.Nothing
     var functionSaveChangePassword = DTableViewModelRow.Function.Nothing
-    var functionSaveAddPhoto = DTableViewModelRow.Function.Nothing
     var functionSaveComment = DTableViewModelRow.Function.Nothing
+    
     
     var functionSignUp = DTableViewModelRow.Function.Nothing
     var functionLogIn = DTableViewModelRow.Function.Nothing

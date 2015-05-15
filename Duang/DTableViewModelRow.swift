@@ -17,6 +17,8 @@ class DTableViewModelRow
         case Nothing
         
         case Image(heightForRow: CGFloat?, image: UIImage?, imageFile: PFFile?, function: Function?)
+        
+        
         case TextView(heightForRow: CGFloat?, textViewTitle: String?, textViewText: String?, textViewTitleWidth: CGFloat?)
         case Label(text: String?, font: UIFont?)
         

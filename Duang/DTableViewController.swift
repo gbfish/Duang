@@ -13,6 +13,8 @@ protocol DTableViewControllerProtocol
 {
     func protocolSignUpSuccess()
     func protocolLogInSuccess()
+    
+    func protocolReloadData()
 }
 
 class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, DTableViewControllerProtocol, DTableViewModelProtocol, DTableViewCellButtonsProtocol, DTableViewCellTextViewProtocol, DTableViewCellDetailProtocol
@@ -43,6 +45,10 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func protocolLogInSuccess() {
         showMainTabBarController()
+    }
+    
+    func protocolReloadData() {
+        
     }
     
     // MARK: - Data
@@ -381,10 +387,11 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 dTableViewModel.functionShowSettings = DTableViewModelRow.Function.Function(argumentCount: 0, function: showSettings)
             }
             let argument = DTableViewModelRow.Function.Argument.User(user: user)
-            dTableViewModel.function1 = DTableViewModelRow.Function.Function1Argument(argument: argument, function: showWaterfallPhotoUser)
-            dTableViewModel.function2 = DTableViewModelRow.Function.Function1Argument(argument: argument, function: showWaterfallPhotoLike)
-            dTableViewModel.function3 = DTableViewModelRow.Function.Function1Argument(argument: argument, function: showWaterfallUserFollowing)
-            dTableViewModel.function4 = DTableViewModelRow.Function.Function1Argument(argument: argument, function: showWaterfallUserFollower)
+            dTableViewModel.functionShowWaterfallPhotoUser = DTableViewModelRow.Function.Function1Argument(argument: argument, function: showWaterfallPhotoUser)
+            dTableViewModel.functionShowWaterfallPhotoLike = DTableViewModelRow.Function.Function1Argument(argument: argument, function: showWaterfallPhotoLike)
+            dTableViewModel.functionShowWaterfallUserFollowing = DTableViewModelRow.Function.Function1Argument(argument: argument, function: showWaterfallUserFollowing)
+            dTableViewModel.functionShowWaterfallUserFollower = DTableViewModelRow.Function.Function1Argument(argument: argument, function: showWaterfallUserFollower)
+            dTableViewModel.functionShowAddCollection = DTableViewModelRow.Function.Function(argumentCount: 0, function: showAddCollection)
             
         case .Settings:
             dTableViewModel.functionShowEditProfile = DTableViewModelRow.Function.Function(argumentCount: 0, function: showEditProfile)
@@ -402,6 +409,8 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         case .AddPhoto:
             dTableViewModel.functionAddPhoto = DTableViewModelRow.Function.Function(argumentCount: 0, function: selectImage)
             dTableViewModel.functionSaveAddPhoto = DTableViewModelRow.Function.Function(argumentCount: 0, function: saveAddPhoto)
+        case .AddCollection:
+            dTableViewModel.functionSaveAddCollection = DTableViewModelRow.Function.Function(argumentCount: 0, function: saveAddCollection)
         case .WaterfallComment(let photo):
             
             let argument = DTableViewModelRow.Function.Argument.Object(object: photo)
@@ -445,6 +454,10 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func showChangePassword() {
         showDTableViewController(DTableViewModel.TableType.ChangePassword)
+    }
+    
+    func showAddCollection() {
+        showDTableViewController(DTableViewModel.TableType.AddCollection)
     }
     
     func showMainTabBarController() {
@@ -591,28 +604,6 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-    func saveAddPhoto() {
-        if dTableViewModel.sectionArray.count == 3 {
-            showAlert("Sorry", message: "Please select a photo.")
-        } else if dTableViewModel.sectionArray.count == 4 {
-            switch dTableViewModel.sectionArray[0].rowArray[0].rowType {
-            case .Image(_, let image, _, _):
-                if let theImage = image {
-                    let textArray = getTextArrayFromTextViewArray()
-                    let description = textArray[0]
-                    
-                    APIManager.sharedInstance.addNewPhoto(theImage, description: description, success: { () -> () in
-                        self.showAlert("Success", message: "Success.")
-                    }, failure: { (error) -> () in
-                        
-                    })
-                }
-            default:
-                break
-            }
-        }
-    }
-    
     func saveComment(argumentPFObject: DTableViewModelRow.Function.Argument) {
         switch argumentPFObject {
         case .Object(let object):
@@ -632,6 +623,42 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
         default:
             break
+        }
+    }
+    
+    func saveAddPhoto() {
+        if dTableViewModel.sectionArray.count == 3 {
+            showAlert("Sorry", message: "Please select a photo.")
+        } else if dTableViewModel.sectionArray.count == 4 {
+            switch dTableViewModel.sectionArray[0].rowArray[0].rowType {
+            case .Image(_, let image, _, _):
+                if let theImage = image {
+                    let textArray = getTextArrayFromTextViewArray()
+                    let description = textArray[0]
+                    
+                    APIManager.sharedInstance.addNewPhoto(theImage, description: description, success: { () -> () in
+                        self.showAlert("Success", message: "Success.")
+                        }, failure: { (error) -> () in
+                            
+                    })
+                }
+            default:
+                break
+            }
+        }
+    }
+    
+    func saveAddCollection() {
+        let textArray = getTextArrayFromTextViewArray()
+        let name = textArray[0]
+        
+        if name == "" {
+            showAlert("Sorry", message: "Name is empty.")
+        } else {
+            APIManager.addPhotoCollection(name, success: { () -> () in
+                self.delegate?.protocolReloadData()
+                self.navigationController?.popViewControllerAnimated(true)
+            })
         }
     }
     

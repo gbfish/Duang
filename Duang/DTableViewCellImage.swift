@@ -23,15 +23,5 @@ class DTableViewCellImage: UITableViewCell
         APIManager.fetchImageFromFile(cellImageFile, success: { (image) -> () in
             self.cellImageView.image = image
         })
-        
-//        if let theCellImageFile = cellImageFile {
-//            theCellImageFile.getDataInBackgroundWithBlock { (imageData, error) -> Void in
-//                if error == nil {
-//                    if let theImageData = imageData, image = UIImage(data:theImageData) {
-//                        self.cellImageView.image = image
-//                    }
-//                }
-//            }
-//        }
     }
 }

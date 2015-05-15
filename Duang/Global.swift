@@ -122,4 +122,11 @@ struct TablePhotoComment {
     static let Message = "message"
 }
 
+struct TablePhotoCollection {
+    static let ClassName = "PhotoCollection"
+    
+    static let User = "user"
+    static let Name = "name"
+    static let PhotoArray = "photoArray"
+}
 
