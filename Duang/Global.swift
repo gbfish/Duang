@@ -127,6 +127,6 @@ struct TablePhotoCollection {
     
     static let User = "user"
     static let Name = "name"
-    static let PhotoRelation = "PhotoRelation"
+    static let Photos = "photos"
 }
 

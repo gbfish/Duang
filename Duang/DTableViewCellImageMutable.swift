@@ -16,7 +16,7 @@ class DTableViewCellImageMutable: UITableViewCell
         if let theModelRow = modelRow {
             switch theModelRow.rowType {
             case .ImageMutable(let collection):
-                var photoArray = collection.relationForKey(TablePhotoCollection.PhotoRelation)
+                var photos = collection.relationForKey(TablePhotoCollection.Photos)
             default:
                 break
             }
