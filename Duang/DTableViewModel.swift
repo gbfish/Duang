@@ -71,6 +71,8 @@ class DTableViewModel
         case AccountSettings
         case ChangePassword
         
+        case SelectCollection
+        
         case AddPhoto
         case AddCollection
         
@@ -232,7 +234,10 @@ class DTableViewModel
             sectionArray.append(section)
             
             section = DTableViewModelSection()
-            addButtonNormal(section, buttonText: "Select a photo", function: functionAddPhoto)
+            let buttonItemSignUp = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Select a photo", function: functionAddPhoto)
+            let buttonItemLogin = DTableViewModelRow.ButtonItem.ButtonItemTitle(style: DTableViewModelRow.ButtonItem.ButtonItemStyle.Normal, buttonText: "Select a collection", function: functionShowSelectCollection)
+            row.rowType = DTableViewModelRow.RowType.Buttons(buttonItemArray: [buttonItemSignUp, buttonItemLogin])
+            section.rowArray.append(row)
             sectionArray.append(section)
             
             section = DTableViewModelSection()
@@ -240,6 +245,15 @@ class DTableViewModel
             sectionArray.append(section)
             
             dataDidLoad()
+            
+        case .SelectCollection:
+            viewControllerTitle = "Select a collection"
+            
+            if let theUser = PFUser.currentUser() {
+                self.addPhotoCollection(theUser, success: { () -> () in
+                    self.dataDidLoad()
+                })
+            }
             
         case .AddCollection:
             viewControllerTitle = "Create a collection"
@@ -535,25 +549,61 @@ class DTableViewModel
                 section.rowArray.append(row)
                 self.sectionArray.append(section)
                 
-                APIManager.fetchPhotoCollectionArray(theUser, success: { (objectArray) -> () in
-                    for collection in objectArray {
-                        var section = DTableViewModelSection()
-                        var row = DTableViewModelRow()
-                        
-                        row.rowType = DTableViewModelRow.RowType.ImageMutable(collection: collection)
-                        
-                        section.rowArray.append(row)
-                        self.sectionArray.append(section)
-                    }
-                    
-                    
-                    section = DTableViewModelSection()
-                    self.addButtonNormal(section, buttonText: "Create a collection", function: self.functionShowAddCollection)
-                    self.sectionArray.append(section)
-                    
+                self.addPhotoCollection(theUser, success: { () -> () in
                     self.dataDidLoad()
                 })
+                
+//                APIManager.fetchPhotoCollectionArray(theUser, success: { (objectArray) -> () in
+//                    for collection in objectArray {
+//                        section = DTableViewModelSection()
+//                        
+//                        row = DTableViewModelRow()
+//                        let name = APIManager.getStringFromObject(collection, key: TablePhotoCollection.Name)
+//                        row.rowType = DTableViewModelRow.RowType.Label(text: name, font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody))
+//                        section.rowArray.append(row)
+//                        
+//                        row = DTableViewModelRow()
+//                        row.rowType = DTableViewModelRow.RowType.ImageMutable(collection: collection)
+//                        section.rowArray.append(row)
+//                        
+//                        self.sectionArray.append(section)
+//                    }
+//                    
+//                    section = DTableViewModelSection()
+//                    self.addButtonNormal(section, buttonText: "Create a collection", function: self.functionShowAddCollection)
+//                    self.sectionArray.append(section)
+//                    
+//                    self.dataDidLoad()
+//                })
             })
+        })
+    }
+    
+    private func addPhotoCollection(user: PFUser, success: () -> ()) {
+        var section = DTableViewModelSection()
+        var row = DTableViewModelRow()
+        
+        APIManager.fetchPhotoCollectionArray(user, success: { (objectArray) -> () in
+            for collection in objectArray {
+                section = DTableViewModelSection()
+                
+                row = DTableViewModelRow()
+                let name = APIManager.getStringFromObject(collection, key: TablePhotoCollection.Name)
+                row.rowType = DTableViewModelRow.RowType.Label(text: name, font: UIFont.preferredFontForTextStyle(UIFontTextStyleBody))
+                section.rowArray.append(row)
+                
+                row = DTableViewModelRow()
+                row.rowType = DTableViewModelRow.RowType.ImageMutable(collection: collection)
+                section.rowArray.append(row)
+                
+                self.sectionArray.append(section)
+            }
+            
+            section = DTableViewModelSection()
+            self.addButtonNormal(section, buttonText: "Create a collection", function: self.functionShowAddCollection)
+            self.sectionArray.append(section)
+            
+            success()
         })
     }
     
@@ -632,6 +682,7 @@ class DTableViewModel
     var functionShowAccountSettings = DTableViewModelRow.Function.Nothing
     var functionShowChangePassword = DTableViewModelRow.Function.Nothing
     
+    var functionShowSelectCollection = DTableViewModelRow.Function.Nothing
     var functionShowAddCollection = DTableViewModelRow.Function.Nothing
     
     var functionShowWaterfallPhotoUser = DTableViewModelRow.Function.Nothing

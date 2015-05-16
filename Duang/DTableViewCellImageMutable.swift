@@ -16,7 +16,14 @@ class DTableViewCellImageMutable: UITableViewCell
         if let theModelRow = modelRow {
             switch theModelRow.rowType {
             case .ImageMutable(let collection):
-                var photos = collection.relationForKey(TablePhotoCollection.Photos)
+                let photos = collection.relationForKey(TablePhotoCollection.Photos)
+                if let photosQuery = photos.query() {
+                    photosQuery.findObjectsInBackgroundWithBlock({ (objectArray, error) -> Void in
+                        println("objectArray = \(objectArray?.count)")
+                    })
+                }
+                
+                
             default:
                 break
             }

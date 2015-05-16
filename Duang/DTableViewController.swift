@@ -413,6 +413,7 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             dTableViewModel.functionSaveChangePassword = DTableViewModelRow.Function.Function(argumentCount: 0, function: saveChangePassword)
         case .AddPhoto:
             dTableViewModel.functionAddPhoto = DTableViewModelRow.Function.Function(argumentCount: 0, function: selectImage)
+            dTableViewModel.functionShowSelectCollection = DTableViewModelRow.Function.Function(argumentCount: 0, function: showSelectCollection)
             dTableViewModel.functionSaveAddPhoto = DTableViewModelRow.Function.Function(argumentCount: 0, function: saveAddPhoto)
         case .AddCollection:
             dTableViewModel.functionSaveAddCollection = DTableViewModelRow.Function.Function(argumentCount: 0, function: saveAddCollection)
@@ -463,6 +464,10 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func showAddCollection() {
         showDTableViewController(DTableViewModel.TableType.AddCollection)
+    }
+    
+    func showSelectCollection() {
+        showDTableViewController(DTableViewModel.TableType.SelectCollection)
     }
     
     func showMainTabBarController() {
