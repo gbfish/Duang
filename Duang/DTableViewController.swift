@@ -437,7 +437,6 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
             self.navigationController?.pushViewController(viewController, animated: true)
         }
     }
-    
     func showSignUp() {
         showDTableViewController(DTableViewModel.TableType.SignUp)
     }
