@@ -15,6 +15,8 @@ protocol DTableViewControllerProtocol
     func protocolLogInSuccess()
     
     func protocolReloadData()
+    
+    
 }
 
 class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UIImagePickerControllerDelegate, DTableViewControllerProtocol, DTableViewModelProtocol, DTableViewCellButtonsProtocol, DTableViewCellTextViewProtocol, DTableViewCellDetailProtocol
@@ -28,6 +30,8 @@ class DTableViewController: UIViewController, UITableViewDelegate, UITableViewDa
         setDTableViewModelFunctions()
         
         dTableViewModel.dataWillLoad()
+        
+        println("")
     }
 
     override func didReceiveMemoryWarning() {
