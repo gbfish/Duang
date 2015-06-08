@@ -35,6 +35,11 @@
 		56E70EB11AE71503008478A3 /* DTableViewModelRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E70EB01AE71503008478A3 /* DTableViewModelRow.swift */; };
 		56E70EB31AE811A8008478A3 /* DTableViewCellButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E70EB21AE811A8008478A3 /* DTableViewCellButtons.swift */; };
 		56E70EB61AE833B9008478A3 /* DTableViewCellImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E70EB51AE833B9008478A3 /* DTableViewCellImage.swift */; };
+		E8A74A2E1B258DC80025B33E /* CVMSectionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A74A2D1B258DC80025B33E /* CVMSectionGroup.swift */; };
+		E8A74A301B258DD60025B33E /* CVMSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A74A2F1B258DD60025B33E /* CVMSection.swift */; };
+		E8A74A321B258DF00025B33E /* CVMCellGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A74A311B258DF00025B33E /* CVMCellGroup.swift */; };
+		E8A74A341B258E020025B33E /* CVMCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A74A331B258E020025B33E /* CVMCell.swift */; };
+		E8A74A361B25901A0025B33E /* CVModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A74A351B25901A0025B33E /* CVModel.swift */; };
 		E8ABCDC31AEA1F7100B222BD /* DTableViewCellDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8ABCDC21AEA1F7100B222BD /* DTableViewCellDetail.swift */; };
 		E8ABCDC51AEA3D6000B222BD /* DTableViewCellLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8ABCDC41AEA3D6000B222BD /* DTableViewCellLabel.swift */; };
 		E8E416C71ABEA52500D7727C /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E416C61ABEA52500D7727C /* MainTabBarController.swift */; };
@@ -84,6 +89,11 @@
 		56E70EB01AE71503008478A3 /* DTableViewModelRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTableViewModelRow.swift; sourceTree = "<group>"; };
 		56E70EB21AE811A8008478A3 /* DTableViewCellButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTableViewCellButtons.swift; sourceTree = "<group>"; };
 		56E70EB51AE833B9008478A3 /* DTableViewCellImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTableViewCellImage.swift; sourceTree = "<group>"; };
+		E8A74A2D1B258DC80025B33E /* CVMSectionGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVMSectionGroup.swift; sourceTree = "<group>"; };
+		E8A74A2F1B258DD60025B33E /* CVMSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVMSection.swift; sourceTree = "<group>"; };
+		E8A74A311B258DF00025B33E /* CVMCellGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVMCellGroup.swift; sourceTree = "<group>"; };
+		E8A74A331B258E020025B33E /* CVMCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVMCell.swift; sourceTree = "<group>"; };
+		E8A74A351B25901A0025B33E /* CVModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVModel.swift; sourceTree = "<group>"; };
 		E8ABCDC21AEA1F7100B222BD /* DTableViewCellDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTableViewCellDetail.swift; sourceTree = "<group>"; };
 		E8ABCDC41AEA3D6000B222BD /* DTableViewCellLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTableViewCellLabel.swift; sourceTree = "<group>"; };
 		E8E416C21ABDCAFC00D7727C /* Duang-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Duang-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -166,6 +176,7 @@
 				5687C65F1AB1185200ED0005 /* Global */,
 				E8E416C51ABE976600D7727C /* API */,
 				56E70EA41AE70B77008478A3 /* DTable */,
+				E8A74A231B258CA10025B33E /* CollectionView */,
 				E8E416C81ABEA53600D7727C /* TabBar */,
 				569E7A7A1AB0DADF009BF47B /* Main.storyboard */,
 				569E7A7D1AB0DADF009BF47B /* Images.xcassets */,
@@ -251,6 +262,26 @@
 				3342806AF0EE3100681A15B0 /* Pods.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		E8A74A231B258CA10025B33E /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				E8A74A241B258CB70025B33E /* Model */,
+			);
+			name = CollectionView;
+			sourceTree = "<group>";
+		};
+		E8A74A241B258CB70025B33E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E8A74A351B25901A0025B33E /* CVModel.swift */,
+				E8A74A2D1B258DC80025B33E /* CVMSectionGroup.swift */,
+				E8A74A2F1B258DD60025B33E /* CVMSection.swift */,
+				E8A74A311B258DF00025B33E /* CVMCellGroup.swift */,
+				E8A74A331B258E020025B33E /* CVMCell.swift */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		E8E416C51ABE976600D7727C /* API */ = {
@@ -406,19 +437,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				5687C65E1AB110D800ED0005 /* Global.swift in Sources */,
+				E8A74A301B258DD60025B33E /* CVMSection.swift in Sources */,
 				56E70EAC1AE71445008478A3 /* DTableViewModelSection.swift in Sources */,
 				56E70EB31AE811A8008478A3 /* DTableViewCellButtons.swift in Sources */,
 				5687C6611AB118A800ED0005 /* APIManager.swift in Sources */,
 				E8ABCDC31AEA1F7100B222BD /* DTableViewCellDetail.swift in Sources */,
+				E8A74A321B258DF00025B33E /* CVMCellGroup.swift in Sources */,
 				566BB6721AEAB52F00ED868F /* DTableViewCellTextView.swift in Sources */,
 				56E70EAA1AE70EBA008478A3 /* DTableViewController.swift in Sources */,
 				E8E416C71ABEA52500D7727C /* MainTabBarController.swift in Sources */,
+				E8A74A2E1B258DC80025B33E /* CVMSectionGroup.swift in Sources */,
 				5687C6631AB11D1F00ED0005 /* Extension.swift in Sources */,
 				E8ABCDC51AEA3D6000B222BD /* DTableViewCellLabel.swift in Sources */,
 				56E70EB61AE833B9008478A3 /* DTableViewCellImage.swift in Sources */,
 				564849F11B06AAF000DF9F83 /* DTableViewCellImageMutable.swift in Sources */,
 				569E7A771AB0DADF009BF47B /* AppDelegate.swift in Sources */,
+				E8A74A341B258E020025B33E /* CVMCell.swift in Sources */,
 				56E70EA81AE70BB7008478A3 /* DTableViewModel.swift in Sources */,
+				E8A74A361B25901A0025B33E /* CVModel.swift in Sources */,
 				56E70EB11AE71503008478A3 /* DTableViewModelRow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
