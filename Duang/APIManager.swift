@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Parse
 
 class APIManager {
     class var sharedInstance: APIManager {

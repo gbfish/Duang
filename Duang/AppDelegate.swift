@@ -8,8 +8,8 @@
 
 import UIKit
 
-import Bolts
-import Parse
+//import Bolts
+//import Parse
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

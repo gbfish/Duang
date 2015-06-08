@@ -6,45 +6,39 @@
 // project.
 
 
-// AFNetworking
-#define COCOAPODS_POD_AVAILABLE_AFNetworking
-#define COCOAPODS_VERSION_MAJOR_AFNetworking 2
-#define COCOAPODS_VERSION_MINOR_AFNetworking 5
-#define COCOAPODS_VERSION_PATCH_AFNetworking 4
+// Bolts
+#define COCOAPODS_POD_AVAILABLE_Bolts
+#define COCOAPODS_VERSION_MAJOR_Bolts 1
+#define COCOAPODS_VERSION_MINOR_Bolts 2
+#define COCOAPODS_VERSION_PATCH_Bolts 0
 
-// AFNetworking/NSURLConnection
-#define COCOAPODS_POD_AVAILABLE_AFNetworking_NSURLConnection
-#define COCOAPODS_VERSION_MAJOR_AFNetworking_NSURLConnection 2
-#define COCOAPODS_VERSION_MINOR_AFNetworking_NSURLConnection 5
-#define COCOAPODS_VERSION_PATCH_AFNetworking_NSURLConnection 4
+// Bolts/AppLinks
+#define COCOAPODS_POD_AVAILABLE_Bolts_AppLinks
+#define COCOAPODS_VERSION_MAJOR_Bolts_AppLinks 1
+#define COCOAPODS_VERSION_MINOR_Bolts_AppLinks 2
+#define COCOAPODS_VERSION_PATCH_Bolts_AppLinks 0
 
-// AFNetworking/NSURLSession
-#define COCOAPODS_POD_AVAILABLE_AFNetworking_NSURLSession
-#define COCOAPODS_VERSION_MAJOR_AFNetworking_NSURLSession 2
-#define COCOAPODS_VERSION_MINOR_AFNetworking_NSURLSession 5
-#define COCOAPODS_VERSION_PATCH_AFNetworking_NSURLSession 4
+// Bolts/Tasks
+#define COCOAPODS_POD_AVAILABLE_Bolts_Tasks
+#define COCOAPODS_VERSION_MAJOR_Bolts_Tasks 1
+#define COCOAPODS_VERSION_MINOR_Bolts_Tasks 2
+#define COCOAPODS_VERSION_PATCH_Bolts_Tasks 0
 
-// AFNetworking/Reachability
-#define COCOAPODS_POD_AVAILABLE_AFNetworking_Reachability
-#define COCOAPODS_VERSION_MAJOR_AFNetworking_Reachability 2
-#define COCOAPODS_VERSION_MINOR_AFNetworking_Reachability 5
-#define COCOAPODS_VERSION_PATCH_AFNetworking_Reachability 4
+// Facebook-iOS-SDK
+#define COCOAPODS_POD_AVAILABLE_Facebook_iOS_SDK
+#define COCOAPODS_VERSION_MAJOR_Facebook_iOS_SDK 3
+#define COCOAPODS_VERSION_MINOR_Facebook_iOS_SDK 23
+#define COCOAPODS_VERSION_PATCH_Facebook_iOS_SDK 2
 
-// AFNetworking/Security
-#define COCOAPODS_POD_AVAILABLE_AFNetworking_Security
-#define COCOAPODS_VERSION_MAJOR_AFNetworking_Security 2
-#define COCOAPODS_VERSION_MINOR_AFNetworking_Security 5
-#define COCOAPODS_VERSION_PATCH_AFNetworking_Security 4
+// Parse
+#define COCOAPODS_POD_AVAILABLE_Parse
+#define COCOAPODS_VERSION_MAJOR_Parse 1
+#define COCOAPODS_VERSION_MINOR_Parse 7
+#define COCOAPODS_VERSION_PATCH_Parse 4
 
-// AFNetworking/Serialization
-#define COCOAPODS_POD_AVAILABLE_AFNetworking_Serialization
-#define COCOAPODS_VERSION_MAJOR_AFNetworking_Serialization 2
-#define COCOAPODS_VERSION_MINOR_AFNetworking_Serialization 5
-#define COCOAPODS_VERSION_PATCH_AFNetworking_Serialization 4
-
-// AFNetworking/UIKit
-#define COCOAPODS_POD_AVAILABLE_AFNetworking_UIKit
-#define COCOAPODS_VERSION_MAJOR_AFNetworking_UIKit 2
-#define COCOAPODS_VERSION_MINOR_AFNetworking_UIKit 5
-#define COCOAPODS_VERSION_PATCH_AFNetworking_UIKit 4
+// ParseFacebookUtils
+#define COCOAPODS_POD_AVAILABLE_ParseFacebookUtils
+#define COCOAPODS_VERSION_MAJOR_ParseFacebookUtils 1
+#define COCOAPODS_VERSION_MINOR_ParseFacebookUtils 7
+#define COCOAPODS_VERSION_PATCH_ParseFacebookUtils 4
 
